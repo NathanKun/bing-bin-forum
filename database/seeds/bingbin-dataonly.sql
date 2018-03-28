@@ -12,9 +12,9 @@
 --
 
 --
--- 转存表中的数据 `Users`
+-- 转存表中的数据 `Users`  密码已从sha1转成Bcrypt，账号已经无法使用
 --
-
+/*
 INSERT INTO `Users` (`id`, `name`, `firstname`, `email`, `img_url`, `date_nais`, `eco_point`, `fb_id`, `google_id`, `pseudo`, `password`, `id_usagi`, `id_leaf`, `sun_point`) VALUES
 ('15183825355a80adc78f32e4.18416273', '何', '俊阳', '346463323@qq.com', 'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/1604597_595138380562604_528375247_n.jpg?oh=0a6fec3c4ee59ad97b57b58e1570266c&oe=5B1B5D5D', NULL, 162, '1541567275919705', NULL, NULL, NULL, 7, 2, 22),
 ('15183827435a80ae97285d04.47171239', 'Junyang', 'HE', 'j.he.12@groupe-esigelec.fr', 'https://lh5.googleusercontent.com/-3K6kQ4wu3BQ/AAAAAAAAAAI/AAAAAAAAAAA/ACSILjVhOxuFQVOUG9WcBbrbs7zeCaDEtQ/s96-c/photo.jpg', NULL, 15, NULL, NULL, NULL, NULL, 1, 1, 4),
@@ -47,7 +47,7 @@ INSERT INTO `Users` (`id`, `name`, `firstname`, `email`, `img_url`, `date_nais`,
 ('15207890445aa56634424552.88024750', 'nexus 5 2', 'nexus 5 2', 'z@z.zz', NULL, NULL, 46, NULL, NULL, 'nexus 5 2', '984ff6ee7c78078d4cb1ca08255303fb8741d986', 2, 2, 2),
 ('15207891105aa5667607bcc1.10267398', 'nexus 6p 2', 'nexus 6p 2', 'x@x.xx', NULL, NULL, 46, NULL, NULL, 'nexus 6p 2', '018f4d7f06cb8626e1756452581373e05ae41c56', 4, 2, 0),
 ('15209356625aa7a2eee8f459.54531281', '团子', '团子', 'unknown4621@me.com', NULL, NULL, 10, NULL, NULL, '团子', '17d425ceb8721070d7d29e0ca2295701dec5000e', 3, 2, 2);
-
+*/
 --
 -- 转存表中的数据 `Trashes`
 --
