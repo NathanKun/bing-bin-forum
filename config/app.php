@@ -150,7 +150,9 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Riari\Forum\ForumServiceProvider::class,
+        Riari\Forum\Frontend\ForumFrontendServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */
