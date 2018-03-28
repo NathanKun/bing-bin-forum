@@ -16,7 +16,7 @@ class CreateForumTablePosts extends Migration
         {
             $table->increments('id');
             $table->integer('parent_thread')->unsigned();
-            $table->integer('author_id')->unsigned();
+            $table->string('author_id', 50);
             $table->text('content');
 
             $table->timestamps();
