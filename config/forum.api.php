@@ -16,6 +16,6 @@ return [
     |
     */
 
-    'token' => '112233'
+    'token' => '4dU8nlndgcrnp97I'
 
 ];
