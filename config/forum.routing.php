@@ -53,6 +53,6 @@ return [
     | All api calls will use this middleware
     |
     */
-    'middleware' => 'forum.api.auth.override'
+    'middleware' => 'forum.api.auth'
 
 ];

@@ -60,6 +60,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        'forum.api.auth.override' => \App\Http\Middleware\ForumApiAuth::class,
+        'forum.api.auth' => \App\Http\Middleware\ForumApiAuth::class,
     ];
 }

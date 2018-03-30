@@ -46,7 +46,6 @@ class ForumFrontendServiceProvider extends ServiceProvider
     {
         $this->baseDir = __DIR__.'/../';
 
-        $this->setPublishables();
         $this->loadStaticFiles();
         $this->registerAliases();
 
@@ -67,29 +66,13 @@ class ForumFrontendServiceProvider extends ServiceProvider
     public function register() {}
 
     /**
-     * Define files published by this package.
-     *
-     * @return void
-     */
-    protected function setPublishables()
-    {
-        $this->publishes([
-            "{$this->baseDir}config/frontend.php" => config_path('forum.frontend.php')
-        ], 'config');
-
-        $this->publishes([
-            "{$this->baseDir}views/" => base_path('resources/views/vendor/forum')
-        ], 'views');
-    }
-
-    /**
      * Load config and views.
      *
      * @return void
      */
     protected function loadStaticFiles()
     {
-        $this->mergeConfigFrom("{$this->baseDir}config/frontend.php", "forum.frontend");
+        //$this->mergeConfigFrom("{$this->baseDir}config/frontend.php", "forum.frontend");
         $this->loadViewsFrom("{$this->baseDir}views", 'forum');
     }
 

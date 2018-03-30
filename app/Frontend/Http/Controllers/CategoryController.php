@@ -21,7 +21,6 @@ class CategoryController extends BaseController
                            ->get();
 
         event(new UserViewingIndex);
-
         return view('forum::category.index', compact('categories'));
     }
 

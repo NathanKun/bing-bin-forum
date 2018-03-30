@@ -8,7 +8,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use App\Console\Commands\RefreshStats;
-use App\Http\Middleware\APIAuth;
+use App\Http\Middleware\ForumApiAuth;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\Observers\PostObserver;
@@ -68,9 +68,9 @@ class ForumServiceProvider extends ServiceProvider
     protected function loadStaticFiles()
     {
         // Merge config
-        foreach (['api', 'integration', 'preferences', 'routing', 'validation'] as $name) {
+        /*foreach (['api', 'integration', 'preferences', 'routing', 'validation'] as $name) {
             $this->mergeConfigFrom("{$this->baseDir()}config/{$name}.php", "forum.{$name}");
-        }
+        }*/
 
         // Load translations
         $this->loadTranslationsFrom("{$this->baseDir()}translations", 'forum');
@@ -130,6 +130,6 @@ class ForumServiceProvider extends ServiceProvider
      */
     public function registerMiddleware(Router $router)
     {
-        $router->aliasMiddleware('forum.api.auth', APIAuth::class);
+        $router->aliasMiddleware('forum.api.auth', ForumApiAuth::class);
     }
 }
