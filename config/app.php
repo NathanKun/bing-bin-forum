@@ -150,8 +150,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Riari\Forum\ForumServiceProvider::class,
-        Riari\Forum\Frontend\ForumFrontendServiceProvider::class,
         
         /*
          * Application Service Providers...
@@ -161,6 +159,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ForumServiceProvider::class,
+        App\Frontend\ForumFrontendServiceProvider::class,
 
     ],
 

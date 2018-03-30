@@ -8,6 +8,7 @@ class BingBinToken extends Model
 {
 
     protected $table = 'BingBinTokens';
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.

@@ -38,7 +38,7 @@ return [
     */
 
     'controllers' => [
-        'namespace' => 'App\Frontend\Http\Controllers',
+        'namespace' => 'App\Http\Controllers',
         'category'  => 'CategoryController',
         'thread'    => 'ThreadController',
         'post'      => 'PostController'
@@ -55,6 +55,6 @@ return [
     |
     */
 
-    'utility_class' => App\Frontend\Support\Forum::class,
+    'utility_class' => App\Support\Forum::class,
 
 ];

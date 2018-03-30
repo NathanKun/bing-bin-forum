@@ -40,6 +40,14 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
 
         //
+        /*$dir = base_path();
+        Route::group([
+            'namespace' => 'App\Http\Controllers',
+            'as' => config('forum.routing.as'),
+            'prefix' => config('forum.routing.root')
+        ], function ($r) use ($dir) {
+            require "{$dir}/app/routes.php";
+        });*/
     }
 
     /**
