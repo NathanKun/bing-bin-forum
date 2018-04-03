@@ -30,8 +30,18 @@ class User extends Authenticatable
         'password',
     ];
 
-    /*public function bingbintokens()
+    public function threads()
     {
-        return $this->hasMany('App\BingBinToken', 'id_user', 'id');
-    }*/
+        return $this->hasMany('App\Models\Thread');
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany('App\Models\Post', 'forum_like_posts', 'user_id', 'post_id');
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany('App\Models\Thread', 'forum_favorite_threads', 'user_id', 'thread_id');
+    }
 }

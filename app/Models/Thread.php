@@ -43,6 +43,17 @@ class Thread extends BaseModel
         parent::__construct($attributes);
         $this->perPage = config('forum.preferences.pagination.threads');
     }
+    
+    public function favoriteCount() {
+        $this->belongsToMany('App\User')->count();
+    }
+    
+    public function markPostsReadByOp() {
+        $this->posts()->each(function ($post) {
+            $post->read_by_op = true;
+            $post->save();
+        });
+    }
 
     /**
      * Relationship: Category.

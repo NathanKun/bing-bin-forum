@@ -20,7 +20,7 @@ class Post extends BaseModel
 	 *
 	 * @var array
 	 */
-    protected $fillable = ['thread_id', 'author_id', 'post_id', 'content'];
+    protected $fillable = ['thread_id', 'author_id', 'post_id', 'content', 'read_by_op'];
 
     /**
      * Create a new post model instance.
@@ -31,6 +31,10 @@ class Post extends BaseModel
     {
         parent::__construct($attributes);
         $this->setPerPage(config('forum.preferences.pagination.posts'));
+    }
+    
+    public function likeCount() {
+        $this->belongsToMany('App\User')->count();
     }
 
     /**

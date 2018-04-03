@@ -18,6 +18,7 @@ class CreateForumTablePosts extends Migration
             $table->integer('parent_thread')->unsigned();
             $table->string('author_id', 50);
             $table->text('content');
+            $table->boolean('read_by_op')->default(false);
 
             $table->timestamps();
             $table->softDeletes();
