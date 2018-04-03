@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Thread;
+use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends BaseController
 {
@@ -82,17 +83,18 @@ class ThreadController extends BaseController
      */
     public function store(Request $request)
     {
-        error_log("thread store");
-        error_log($request->author_id);
         $this->validate($request, [
             'author_id' => ['required', 'string'],
             'title'     => ['required'],
             'content'   => ['required']
         ]);
+        
+        $user = Auth::user();
+        //error_log($user->can('createThreads'));
 
         $category = Category::find($request->input('category_id'));
 
-        $this->authorize('createThreads', $category);
+        //$this->authorize('createThreads', $category);
 
         if (!$category->threadsEnabled) {
             return $this->buildFailedValidationResponse($request, trans('forum::validation.category_threads_enabled'));

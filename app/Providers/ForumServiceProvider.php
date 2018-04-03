@@ -39,7 +39,7 @@ class ForumServiceProvider extends ServiceProvider
 
         $this->observeModels();
 
-        $this->registerPolicies($gate);
+        //$this->registerPolicies($gate);
 
         if (config('forum.routing.enabled')) {
             $this->registerMiddleware($router);
@@ -130,6 +130,6 @@ class ForumServiceProvider extends ServiceProvider
      */
     public function registerMiddleware(Router $router)
     {
-        $router->aliasMiddleware('forum.api.auth', ForumApiAuth::class);
+        //$router->aliasMiddleware('forum.api.auth', ForumApiAuth::class);
     }
 }

@@ -257,6 +257,8 @@ abstract class BaseController extends Controller
         $validator = $this->getValidationFactory()->make($request->all(), $rules, $messages, $customAttributes);
 
         if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            error_log($error);
             throw new ValidationException($validator);
         }
     }

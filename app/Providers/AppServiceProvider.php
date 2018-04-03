@@ -7,6 +7,8 @@ use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Support\Facades\Auth;
 
 use App\CoreExtensions\SessionGuardExtended;
+use App\CoreExtensions\TokenGuardExtended;
+use App\CoreExtensions\UserProvider as BingBinUserProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,10 +19,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Auth::extend('tokenExtended', 
+            function($app, $name, array $config) {
+                $provider = new BingBinUserProvider();
+                return new TokenGuardExtended($provider, $app['request']);
+            }
+        );
+        
         Auth::extend(
             'sessionExtended',
             function ($app) {
-                $provider = new EloquentUserProvider($app['hash'], config('auth.providers.users.model'));
+                $provider = new BingBinUserProvider();
                 return new SessionGuardExtended('sessionExtended', $provider, app()->make('session.store'), request());
             }
         );

@@ -5,7 +5,8 @@ $r->group(
         'prefix' => config('forum.routing.api_prefix', "api"),
         'namespace' => 'API',
         'as' => 'api.',
-        'middleware' => config('forum.routing.middleware', 'forum.api.auth')
+        'guard' => 'api',
+        'middleware' => 'api'
     ], function ($r)
 {
     // Categories

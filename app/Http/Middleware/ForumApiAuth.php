@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use App\User;
 use App\BingBinToken;
 
@@ -33,7 +35,7 @@ class ForumApiAuth
             $bbt = BingBinToken::where('token_value', $token)->first();
             if($bbt) {
                 if($bbt->expire_date > time()) {
-                    $user = $bbt->user()->get();
+                    //$user = $bbt->user()->first();
                     return $next($request);
                 } else {
                     // token expired

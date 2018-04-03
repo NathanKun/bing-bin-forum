@@ -19,7 +19,7 @@ class SessionGuardExtended extends SessionGuard
         $this->lastAttempted = $user = $this->provider->retrieveByCredentials($credentials);
 
         // only admin can login with session guard
-        if($user->id !== "adminId")
+        if($user === null || $user->id !== "adminId")
         	return false;
 
         // If an implementation of UserInterface was returned, we'll ask the provider

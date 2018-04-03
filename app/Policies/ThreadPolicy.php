@@ -6,6 +6,19 @@ use App\Models\Thread;
 
 class ThreadPolicy
 {
+    
+    /**
+     * Permission: favorite a thread.
+     *
+     * @param  object  $user
+     * @param  Thread  $thread
+     * @return bool
+     */
+    public function markFavorite($user, Thread $thread)
+    {
+        return $user->getKey() === $thread->author_id;
+    }
+    
     /**
      * Permission: Delete posts in thread.
      *
