@@ -29,6 +29,8 @@ abstract class BaseController extends Controller
     protected $user;
     
     protected const threadsByPage = 3;
+    
+    protected const postsByPage = 3;
 
     /**
      * Create a new API controller instance.

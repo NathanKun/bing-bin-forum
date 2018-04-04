@@ -29,8 +29,8 @@ $r->group(
     {
         $r->get('/', ['as' => 'index', 'uses' => 'ThreadController@index']);
         $r->get('/not-read', ['as' => 'not-read', 'uses' => 'ThreadController@countNotReadThreadsOfUser']);
-        $r->get('/my-threads', ['as' => 'index', 'uses' => 'ThreadController@myThreads']);
-        $r->get('/my-favorite', ['as' => 'index', 'uses' => 'ThreadController@myFavorite']);
+        $r->get('/my-threads', ['as' => 'my-threads', 'uses' => 'ThreadController@myThreads']);
+        $r->get('/my-favorite', ['as' => 'my-favorite', 'uses' => 'ThreadController@myFavorite']);
         /*$r->get('new', ['as' => 'index-new', 'uses' => 'ThreadController@indexNew']);
         $r->patch('new', ['as' => 'mark-new', 'uses' => 'ThreadController@markNew']);*/
         $r->post('/', ['as' => 'store', 'uses' => 'ThreadController@store']);
@@ -57,6 +57,8 @@ $r->group(
         $r->delete('{id}', ['as' => 'delete', 'uses' => 'PostController@destroy']);
         $r->patch('{id}/restore', ['as' => 'restore', 'uses' => 'PostController@restore']);
         $r->patch('{id}', ['as' => 'update', 'uses' => 'PostController@update']);
+        $r->patch('{id}/like', ['as' => 'like', 'uses' => 'PostController@like']);
+        $r->patch('{id}/unlike', ['as' => 'unlike', 'uses' => 'PostController@unLike']);
     });
 
     // Bulk actions

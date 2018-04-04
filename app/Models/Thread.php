@@ -6,10 +6,11 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Traits\HasAuthor;
 use App\Support\Traits\CachesData;
+use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 
 class Thread extends BaseModel
 {
-    use SoftDeletes, HasAuthor, CachesData;
+    use SoftDeletes, HasAuthor, CachesData, PivotEventTrait;
 
     /**
      * Eloquent attributes
@@ -44,14 +45,51 @@ class Thread extends BaseModel
         $this->perPage = config('forum.preferences.pagination.threads');
     }
     
-    public function favorite() {
+    
+    public static function boot()
+    {
+        static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
+            error_log("thread favorited");
+            $model->favorite_count++;
+            $model->save();
+        });
+
+        static::pivotDetached(function ($model, $relationName, $pivotIds) {
+            error_log("thread unfavorited");
+            $model->favorite_count--;
+            $model->save();
+        });
+    }
+    
+    public function favoritesBy() {
         return $this->belongsToMany('App\User', 'forum_favorite_threads')
             ->withTimestamps();
     }
     
     public function favoriteCount() {
-        return $this->favorite()
+        return $this->favoritesBy()
             ->count();
+    }
+    
+    public function markFavorite($user_id) {
+        if($this->favoritesBy()
+            ->where('user_id', $user_id)
+            ->count() > 0)
+            return false;
+        $this->favoritesBy()
+            ->attach($user_id);
+        return true;
+    }
+    
+    public function unmarkFavorite($user_id) {
+        if($this->favoritesBy()
+            ->where('user_id', $user_id)
+            ->count() === 0)
+            return false;
+        $this->favoritesBy()
+            ->withTimestamps()
+            ->detach($user_id);
+        return true;
     }
     
     public function markPostsReadByOp() {
@@ -59,27 +97,6 @@ class Thread extends BaseModel
             $post->read_by_op = true;
             $post->save();
         });
-    }
-    
-    public function markFavorite($user_id) {
-        if($this->favorite()
-            ->where('user_id', $user_id)
-            ->count() > 0)
-            return false;
-        $this->favorite()
-            ->attach($user_id);
-        return true;
-    }
-    
-    public function unmarkFavorite($user_id) {
-        if($this->favorite()
-            ->where('user_id', $user_id)
-            ->count() === 0)
-            return false;
-        $this->favorite()
-            ->withTimestamps()
-            ->detach($user_id);
-        return true;
     }
 
     /**

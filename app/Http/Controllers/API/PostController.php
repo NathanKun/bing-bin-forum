@@ -2,6 +2,7 @@
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Post;
 use App\Models\Thread;
 
@@ -26,6 +27,53 @@ class PostController extends BaseController
     {
         return 'posts';
     }
+    
+    /*
+     * PATCH: Mark favorite a thread by current user
+     * 
+     * @param int       $id         thread id
+     * @param Request   $request    request
+     * 
+     * @return JsonResponse
+     */
+    public function like($id, Request $request) {
+        return $this->doLike($id, $request, true);
+    }
+    
+    /*
+     * PATCH: Unmark favorite a thread by current user
+     * 
+     * @param int       $id         thread id
+     * @param Request   $request    request
+     * 
+     * @return JsonResponse
+     */
+    public function unLike($id, Request $request) {
+        return $this->doLike($id, $request, false);
+    }
+    
+    /*
+     * Internal functoin, mark/unmark favorite a thread by current user
+     *
+     * @return JsonResponse
+     */
+    private function doLike($id, Request $request, bool $like) {
+        
+        $model = $this->model()->find($id);
+        
+        if (is_null($model) || !$model->exists) {
+            return $this->notFoundResponse();
+        }
+        
+        if($like) 
+            $result = $model->markLike($this->user->id); 
+        else 
+            $result = $model->unmarkLike($this->user->id);
+        
+        if($result) return $this->response($model);
+        else return $this->errorResponse("Post had already been " . 
+                                         ($like ? "liked" : "unliked"), 400);
+    }
 
     /**
      * GET: Return an index of posts by thread ID.
@@ -35,9 +83,30 @@ class PostController extends BaseController
      */
     public function index(Request $request)
     {
-        $this->validate($request, ['thread_id' => ['required']]);
-
-        $posts = $this->model()->where('thread_id', $request->input('thread_id'))->get();
+        $this->validate($request, ['thread_id' => ['required'], 'page' => 'integer|min:1']);
+        
+        $page = $request->input('page') ? $request->input('page') : 1;
+        
+        $posts = $this->model()
+            ->where('thread_id', $request->input('thread_id'))
+            // is current user like
+            ->leftJoin(
+                DB::raw("(SELECT post_id, user_id FROM forum_like_posts) as `pivot1`"), 
+                function($join) {
+                    $join->where('user_id', $this->user->id)
+                        ->on('pivot1.post_id', '=', 'forum_posts.id');
+            })
+            ->skip(BaseController::postsByPage * ($page - 1))
+            ->take(BaseController::postsByPage)
+            ->get()
+            ->toArray();
+        
+        // remove unwanted fields
+        foreach($posts as &$p) {
+            $p['like'] = (!is_null($p['user_id']) && $p['user_id'] === $this->user->id); 
+            
+            $p = array_except($p, ['read_by_op', 'deleted_at', 'user_id']);
+        }
 
         return $this->response($posts);
     }
@@ -56,6 +125,15 @@ class PostController extends BaseController
         if (is_null($post) || !$post->exists) {
             return $this->notFoundResponse();
         }
+        
+        $post = $this->model()
+            ->where('forum_posts.id', $id)
+            ->leftJoin('forum_like_posts', 'forum_posts.id', '=', 'forum_like_posts.post_id')
+            ->first()
+            ->toArray();
+        
+        $post['like'] = !is_null($post['user_id']);
+        $post = array_except($post, ['post_id', 'deleted_at', 'user_id']);
 
         return $this->response($post);
     }

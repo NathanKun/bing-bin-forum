@@ -192,12 +192,19 @@ class ThreadController extends BaseController
         $threads = $this->model()
             ->withRequestScopes($request)
             ->where('category_id', $request->input('category_id'))
+            // is current user favorite
             ->leftJoin(
-                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot`"), 
+                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"), 
                 function($join) {
                     $join->where('user_id', $this->user->id)
-                        ->on('pivot.thread_id', '=', 'forum_threads.id');
+                        ->on('pivot1.thread_id', '=', 'forum_threads.id');
             })
+            // favorite count
+            /*->leftJoin(
+                DB::raw("(SELECT thread_id, count(user_id) AS `favorite_count` FROM forum_favorite_threads GROUP BY thread_id) as `pivot2`"), 
+                function($join) {
+                    $join->on('pivot2.thread_id', '=', 'forum_threads.id');
+            })*/
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
             ->get()
@@ -240,7 +247,7 @@ class ThreadController extends BaseController
         }*/
         
         $thread = $this->model()
-            ->where('id', $id)
+            ->where('forum_threads.id', $id)
             ->leftJoin('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
             ->first()
             ->toArray();

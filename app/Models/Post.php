@@ -3,10 +3,11 @@
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\HasAuthor;
 use App\Support\Traits\CachesData;
+use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 
 class Post extends BaseModel
 {
-    use SoftDeletes, HasAuthor, CachesData;
+    use SoftDeletes, HasAuthor, CachesData, PivotEventTrait;
 
     /**
      * The table associated with the model.
@@ -33,8 +34,60 @@ class Post extends BaseModel
         $this->setPerPage(config('forum.preferences.pagination.posts'));
     }
     
+    public static function boot()
+    {
+        static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
+            error_log("post liked");
+            $model->like_count++;
+            $model->save();
+            
+            if($model->sequence === 1) {
+                $t = $model->thread;
+                $t->like_count++;
+                $t->save();
+            }
+        });
+
+        static::pivotDetached(function ($model, $relationName, $pivotIds) {
+            error_log("post unliked");
+            $model->like_count--;
+            $model->save();
+            
+            if($model->sequence === 1) {
+                $t = $model->thread;
+                $t->like_count--;
+                $t->save();
+            }
+        });
+    }
+    
+    public function likesBy() {
+        return $this->belongsToMany('App\User', 'forum_like_posts', 'post_id', 'user_id')->withTimestamps();
+    }
+    
     public function likeCount() {
-        $this->belongsToMany('App\User')->count();
+        return $this->likesBy()->count();
+    }
+    
+    public function markLike($user_id) {
+        if($this->likesBy()
+            ->where('user_id', $user_id)
+            ->count() > 0)
+            return false;
+        $this->likesBy()
+            ->attach($user_id);
+        return true;
+    }
+    
+    public function unmarkLike($user_id) {
+        if($this->likesBy()
+            ->where('user_id', $user_id)
+            ->count() === 0)
+            return false;
+        $this->likesBy()
+            ->withTimestamps()
+            ->detach($user_id);
+        return true;
     }
 
     /**
@@ -44,7 +97,7 @@ class Post extends BaseModel
      */
     public function thread()
     {
-        return $this->belongsTo(Thread::class)->withTrashed();
+        return $this->belongsTo(Thread::class)/*->withTrashed()*/;
     }
 
     /**
