@@ -28,6 +28,62 @@ class ThreadController extends BaseController
     {
         return 'threads';
     }
+    
+    public function markRead($id, Request $request) {
+        
+        $model = $this->model()->find($id);
+        
+        if (is_null($model) || !$model->exists) {
+            return $this->notFoundResponse();
+        }
+        
+        if($model->author_id !== $this->user->id && $this->user->id !== "adminId") {
+            return $this->errorResponse("No Permission", 403);
+        }
+        
+        $model->markPostsReadByOp();
+        
+        return $this->response($model);
+    }
+    
+    public function favorite($id, Request $request) {
+        return $this->doFavorite($id, $request, true);
+    }
+    
+    public function unFavorite($id, Request $request) {
+        return $this->doFavorite($id, $request, false);
+    }
+    
+    private function doFavorite($id, Request $request, bool $favorite) {
+        
+        $model = $this->model()->find($id);
+        
+        if (is_null($model) || !$model->exists) {
+            return $this->notFoundResponse();
+        }
+        
+        if($favorite) 
+            $model->favorite($this->user->id); 
+        else 
+            $model->unFavorite($this->user->id);
+        
+        return $this->response($model);
+    }
+    
+    public function countNotReadThreadsOfUser(Request $request) {
+        $counter = 0;
+        $threads = $this->user->threads()->with('posts')->get()->toArray();
+        foreach($threads as $t) {
+            foreach($t['posts'] as $p) {
+                if($p['read_by_op'] === 0) {
+                    $counter++;
+                    break;
+                }
+            }
+        };
+        
+        return $this->response(array('not_read' => $counter));
+    }
 
     /**
      * GET: return an index of threads by category ID.
@@ -42,7 +98,15 @@ class ThreadController extends BaseController
         $threads = $this->model()
             ->withRequestScopes($request)
             ->where('category_id', $request->input('category_id'))
-            ->get();
+            ->leftJoin('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
+            ->get()
+            ->toArray();
+        
+        // remove unwanted fields
+        foreach($threads as &$t) {
+            $t['favorite'] = !is_null($t['user_id']);
+            $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
+        }
 
         return $this->response($threads);
     }
@@ -63,13 +127,24 @@ class ThreadController extends BaseController
             return $this->notFoundResponse();
         }
 
-        if ($thread->trashed()) {
+        /*if ($thread->trashed()) {
             $this->authorize('delete', $thread);
+            $this->checkPermission();
         }
 
         if ($thread->category->private) {
             $this->authorize('view', $thread->category);
-        }
+            $this->checkPermission();
+        }*/
+        
+        $thread = $this->model()
+            ->where('id', $id)
+            ->leftJoin('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
+            ->first()
+            ->toArray();
+        
+        $thread['favorite'] = !is_null($thread['user_id']);
+        $thread = array_except($thread, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
 
         return $this->response($thread);
     }
@@ -81,25 +156,30 @@ class ThreadController extends BaseController
      * @return JsonResponse|Response
      */
     public function store(Request $request)
-    {
-        error_log("thread store");
-        error_log($request->author_id);
+    {        
         $this->validate($request, [
-            'author_id' => ['required', 'string'],
+            //'author_id' => ['required', 'string'],
             'title'     => ['required'],
             'content'   => ['required']
         ]);
 
         $category = Category::find($request->input('category_id'));
+        if(is_null($category)) {
+            return $this->errorResponse("Category id not exists", 404);
+        }
 
-        $this->authorize('createThreads', $category);
+        /*$this->authorize('createThreads', $category);*/
 
-        if (!$category->threadsEnabled) {
+        if (!$this->isAdmin() && !$category->threadsEnabled) {
             return $this->buildFailedValidationResponse($request, trans('forum::validation.category_threads_enabled'));
         }
 
-        $thread = $this->model()->create($request->only(['category_id', 'author_id', 'title']));
-        Post::create(['thread_id' => $thread->id] + $request->only('author_id', 'content'));
+        $thread = $this->model()->create(['category_id' => $request->category_id,
+                                         'author_id' => $this->user->id, 
+                                         'title' => $request->title]);
+        Post::create(['thread_id' => $thread->id,
+                     'author_id' => $this->user->id,
+                     'content' => $request->content]);
 
         return $this->response($thread, 201);
     }
@@ -113,9 +193,11 @@ class ThreadController extends BaseController
      */
     public function restore($id, Request $request)
     {
+        $this->checkPermission();
+        
         $thread = $this->model()->withTrashed()->find($id);
 
-        $this->authorize('deleteThreads', $thread->category);
+        /*$this->authorize('deleteThreads', $thread->category);*/
 
         return parent::restore($id, $request);
     }
@@ -163,7 +245,7 @@ class ThreadController extends BaseController
      */
     public function markNew(Request $request)
     {
-        $this->authorize('markNewThreadsAsRead');
+        /*$this->authorize('markNewThreadsAsRead');*/
 
         $threads = $this->indexNew($request)->getOriginalContent();
 
@@ -209,6 +291,8 @@ class ThreadController extends BaseController
      */
     public function lock($id, Request $request)
     {
+        $this->checkPermission();
+        
         $thread = $this->model()->where('locked', 0)->find($id);
 
         $category = !is_null($thread) ? $thread->category : [];
@@ -225,6 +309,8 @@ class ThreadController extends BaseController
      */
     public function unlock($id, Request $request)
     {
+        $this->checkPermission();
+        
         $thread = $this->model()->where('locked', 1)->find($id);
 
         $category = !is_null($thread) ? $thread->category : [];
@@ -241,6 +327,8 @@ class ThreadController extends BaseController
      */
     public function pin($id, Request $request)
     {
+        $this->checkPermission();
+        
         $thread = $this->model()->where('pinned', 0)->find($id);
 
         $category = !is_null($thread) ? $thread->category : [];
@@ -257,6 +345,8 @@ class ThreadController extends BaseController
      */
     public function unpin($id, Request $request)
     {
+        $this->checkPermission();
+        
         $thread = $this->model()->where('pinned', 1)->find($id);
 
         $category = ($thread) ? $thread->category : [];
@@ -273,6 +363,8 @@ class ThreadController extends BaseController
      */
     public function rename($id, Request $request)
     {
+        $this->checkPermission();
+        
         $this->validate($request, ['title' => ['required']]);
 
         $thread = $this->model()->find($id);

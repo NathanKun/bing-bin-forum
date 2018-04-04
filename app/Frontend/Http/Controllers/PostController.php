@@ -36,7 +36,7 @@ class PostController extends BaseController
     {
         $thread = $this->api('thread.fetch', $request->route('thread'))->parameters(['with' => ['posts']])->get();
 
-        $this->authorize('reply', $thread);
+        /*$this->authorize('reply', $thread);*/
 
         event(new UserCreatingPost($thread));
 
@@ -58,7 +58,7 @@ class PostController extends BaseController
     {
         $thread = $this->api('thread.fetch', $request->route('thread'))->parameters(['with' => ['posts']])->get();
 
-        $this->authorize('reply', $thread);
+        /*$this->authorize('reply', $thread);*/
 
         $post = null;
         if ($request->has('post')) {
@@ -95,7 +95,7 @@ class PostController extends BaseController
             return abort(404);
         }
 
-        $this->authorize('edit', $post);
+        /*$this->authorize('edit', $post);*/
 
         $thread = $post->thread;
         $category = $post->thread->category;
@@ -113,7 +113,7 @@ class PostController extends BaseController
     {
         $post = $this->api('post.fetch', $request->route('post'))->get();
 
-        $this->authorize('edit', $post);
+        /*$this->authorize('edit', $post);*/
 
         $post = $this->api('post.update', $request->route('post'))->parameters($request->only('content'))->patch();
 

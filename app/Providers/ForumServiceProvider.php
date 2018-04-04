@@ -39,7 +39,7 @@ class ForumServiceProvider extends ServiceProvider
 
         $this->observeModels();
 
-        $this->registerPolicies($gate);
+        //$this->registerPolicies($gate);
 
         if (config('forum.routing.enabled')) {
             $this->registerMiddleware($router);

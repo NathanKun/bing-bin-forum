@@ -17,29 +17,33 @@ $r->group(
         $r->delete('{id}', ['as' => 'delete', 'uses' => 'CategoryController@destroy']);
         $r->patch('{id}/enable-threads', ['as' => 'enable-threads', 'uses' => 'CategoryController@enableThreads']);
         $r->patch('{id}/disable-threads', ['as' => 'disable-threads', 'uses' => 'CategoryController@disableThreads']);
-        $r->patch('{id}/make-public', ['as' => 'make-public', 'uses' => 'CategoryController@makePublic']);
+        /*$r->patch('{id}/make-public', ['as' => 'make-public', 'uses' => 'CategoryController@makePublic']);
         $r->patch('{id}/make-private', ['as' => 'make-private', 'uses' => 'CategoryController@makePrivate']);
         $r->patch('{id}/move', ['as' => 'move', 'uses' => 'CategoryController@move']);
         $r->patch('{id}/rename', ['as' => 'rename', 'uses' => 'CategoryController@rename']);
-        $r->patch('{id}/reorder', ['as' => 'reorder', 'uses' => 'CategoryController@reorder']);
+        $r->patch('{id}/reorder', ['as' => 'reorder', 'uses' => 'CategoryController@reorder']);*/
     });
 
     // Threads
     $r->group(['prefix' => 'thread', 'as' => 'thread.'], function ($r)
     {
         $r->get('/', ['as' => 'index', 'uses' => 'ThreadController@index']);
-        $r->get('new', ['as' => 'index-new', 'uses' => 'ThreadController@indexNew']);
-        $r->patch('new', ['as' => 'mark-new', 'uses' => 'ThreadController@markNew']);
+        $r->get('/not-read', ['as' => 'not-read', 'uses' => 'ThreadController@countNotReadThreadsOfUser']);
+        /*$r->get('new', ['as' => 'index-new', 'uses' => 'ThreadController@indexNew']);
+        $r->patch('new', ['as' => 'mark-new', 'uses' => 'ThreadController@markNew']);*/
         $r->post('/', ['as' => 'store', 'uses' => 'ThreadController@store']);
         $r->get('{id}', ['as' => 'fetch', 'uses' => 'ThreadController@fetch']);
         $r->delete('{id}', ['as' => 'delete', 'uses' => 'ThreadController@destroy']);
-        $r->patch('{id}/restore', ['as' => 'restore', 'uses' => 'ThreadController@restore']);
+        /*$r->patch('{id}/restore', ['as' => 'restore', 'uses' => 'ThreadController@restore']);
         $r->patch('{id}/move', ['as' => 'move', 'uses' => 'ThreadController@move']);
         $r->patch('{id}/lock', ['as' => 'lock', 'uses' => 'ThreadController@lock']);
         $r->patch('{id}/unlock', ['as' => 'unlock', 'uses' => 'ThreadController@unlock']);
         $r->patch('{id}/pin', ['as' => 'pin', 'uses' => 'ThreadController@pin']);
         $r->patch('{id}/unpin', ['as' => 'unpin', 'uses' => 'ThreadController@unpin']);
-        $r->patch('{id}/rename', ['as' => 'rename', 'uses' => 'ThreadController@rename']);
+        $r->patch('{id}/rename', ['as' => 'rename', 'uses' => 'ThreadController@rename']);*/
+        $r->patch('{id}/mark-read', ['as' => 'mark-read', 'uses' => 'ThreadController@markRead']);
+        $r->patch('{id}/favorite', ['as' => 'favorite', 'uses' => 'ThreadController@favorite']);
+        $r->patch('{id}/unfavorite', ['as' => 'unfavorite', 'uses' => 'ThreadController@unFavorite']);
     });
 
     // Posts
@@ -54,7 +58,7 @@ $r->group(
     });
 
     // Bulk actions
-    $r->group(['prefix' => 'bulk', 'as' => 'bulk.'], function ($r)
+    /*$r->group(['prefix' => 'bulk', 'as' => 'bulk.'], function ($r)
     {
         // Threads
         $r->group(['prefix' => 'thread', 'as' => 'thread.'], function ($r)
@@ -75,5 +79,5 @@ $r->group(
             $r->delete('/', ['as' => 'delete', 'uses' => 'PostController@bulkDestroy']);
             $r->patch('restore', ['as' => 'restore', 'uses' => 'PostController@bulkRestore']);
         });
-    });
+    });*/
 });

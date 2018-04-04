@@ -63,9 +63,9 @@ class CategoryController extends BaseController
             return $this->notFoundResponse();
         }
 
-        if ($category->private) {
+        /*if ($category->private) {
             $this->authorize('view', $category);
-        }
+        }*/
 
         return $this->response($category);
     }
@@ -78,8 +78,10 @@ class CategoryController extends BaseController
      */
     public function store(Request $request)
     {
-        $this->authorize('createCategories');
+        /*$this->authorize('createCategories');*/
 
+        $this->checkPermission();
+        
         $this->validate($request, [
             'title'             => ['required'],
             'weight'            => ['required'],
@@ -101,11 +103,9 @@ class CategoryController extends BaseController
      */
     public function destroy($id, Request $request)
     {
+        $this->checkPermission();
+        
         $category = $this->model()->find($id);
-
-        if (!$category->threads->isEmpty() || !$category->children->isEmpty()) {
-            return $this->buildFailedValidationResponse($request, trans('forum::validation.category_is_empty'));
-        }
 
         return $this->deleteModel($category, 'delete');
     }
@@ -119,7 +119,7 @@ class CategoryController extends BaseController
      */
     public function move($id, Request $request)
     {
-        $this->authorize('moveCategories');
+        /*$this->authorize('moveCategories');*/
         $this->validate($request, ['category_id' => ['required']]);
 
         $category = $this->model()->find($id);
@@ -136,6 +136,8 @@ class CategoryController extends BaseController
      */
     public function enableThreads($id, Request $request)
     {
+        $this->checkPermission();
+        
         $category = $this->model()->where('enable_threads', 0)->find($id);
 
         return $this->updateModel($category, ['enable_threads' => 1], 'enableThreads');
@@ -150,11 +152,13 @@ class CategoryController extends BaseController
      */
     public function disableThreads($id, Request $request)
     {
+        $this->checkPermission();
+        
         $category = $this->model()->where('enable_threads', 1)->find($id);
 
-        if (!$category->threads->isEmpty()) {
+        /*if (!$category->threads->isEmpty()) {
             return $this->buildFailedValidationResponse($request, trans('forum::validation.category_has_no_threads'));
-        }
+        }*/
 
         return $this->updateModel($category, ['enable_threads' => 0], 'enableThreads');
     }
@@ -168,7 +172,7 @@ class CategoryController extends BaseController
      */
     public function makePublic($id, Request $request)
     {
-        $this->authorize('createCategories');
+        /*$this->authorize('createCategories');*/
 
         $category = $this->model()->where('private', 1)->find($id);
 
@@ -184,7 +188,7 @@ class CategoryController extends BaseController
      */
     public function makePrivate($id, Request $request)
     {
-        $this->authorize('createCategories');
+        /*$this->authorize('createCategories');*/
 
         $category = $this->model()->where('private', 0)->find($id);
 
@@ -200,7 +204,7 @@ class CategoryController extends BaseController
      */
     public function rename($id, Request $request)
     {
-        $this->authorize('renameCategories');
+        /*$this->authorize('renameCategories');*/
         $this->validate($request, ['title' => ['required']]);
 
         $category = $this->model()->find($id);
@@ -217,7 +221,7 @@ class CategoryController extends BaseController
      */
     public function reorder($id, Request $request)
     {
-        $this->authorize('moveCategories');
+        /*$this->authorize('moveCategories');*/
         $this->validate($request, ['weight' => ['required']]);
 
         $category = $this->model()->find($id);

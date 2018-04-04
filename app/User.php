@@ -32,7 +32,7 @@ class User extends Authenticatable
 
     public function threads()
     {
-        return $this->hasMany('App\Models\Thread');
+        return $this->hasMany('App\Models\Thread', 'author_id');
     }
 
     public function likes()

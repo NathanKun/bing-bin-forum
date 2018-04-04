@@ -6,9 +6,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
 
+use App\Exceptions\NoPermissionException;
+    
 abstract class BaseController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
@@ -22,14 +25,21 @@ abstract class BaseController extends Controller
      * @var array
      */
     protected $rules;
+    
+    protected $user;
 
     /**
      * Create a new API controller instance.
      *
      * @param  Request  $request
      */
-    public function __construct(Request $request)
-    {
+    public function __construct(Request $request) {
+        
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+        
         $this->validate($request, [
             'with'      => 'array',
             'append'    => 'array',
@@ -52,6 +62,28 @@ abstract class BaseController extends Controller
      */
     abstract protected function translationFile();
 
+    public function isAdmin() {
+        return !is_null($this->user) && $this->user->id === "adminId";
+    }
+    
+    public function checkPermission() {
+        if(!$this->isAdmin()) throw new NoPermissionException();
+    }
+    
+    public function errorResponse(string $error, int $statusCode) {
+        return response()->json(array(
+                        'valid' => false,
+                        'error' => $error
+            ), $statusCode);
+    }
+    
+    public function successResponse($data) {
+        return response()->json(array(
+                        'valid' => true,
+                        'data' => $data
+            ), 200);
+    }
+    
     /**
      * PATCH: Update a model.
      *
@@ -76,12 +108,12 @@ abstract class BaseController extends Controller
         $model = $this->model();
 
         $force = false;
-        if (method_exists($model, 'forceDelete')) {
+        /*if (method_exists($model, 'forceDelete')) {
             $this->validate($request, ['force' => ['boolean']]);
 
             $model = $model->withTrashed();
             $force = (bool) $request->input('force');
-        }
+        }*/
 
         return $this->deleteModel($model->find($id), 'delete', $force);
     }
@@ -180,7 +212,7 @@ abstract class BaseController extends Controller
             return $this->notFoundResponse();
         }
 
-        $this->parseAuthorization($model, $authorize);
+        /*$this->parseAuthorization($model, $authorize);*/
 
         $model->update($attributes);
 
@@ -201,7 +233,11 @@ abstract class BaseController extends Controller
             return $this->notFoundResponse();
         }
 
-        $this->parseAuthorization($model, $authorize);
+        if($model->author_id !== $this->user->id && $this->user->id !== "adminId") {
+            return $this->errorResponse("No Permission", 403);
+        }
+        
+        /*$this->parseAuthorization($model, $authorize);*/
 
         if ($force) {
             $model->forceDelete();
@@ -272,7 +308,9 @@ abstract class BaseController extends Controller
     protected function response($data, $message = "", $code = 200)
     {
         $message = empty($message) ? [] : compact('message');
-
+        
+        $data = array('valid' => true, 'data' => $data);
+        
         return (request()->ajax() || request()->wantsJson())
             ? new JsonResponse($message + compact('data'), $code)
             : new Response($data, $code);
@@ -285,11 +323,9 @@ abstract class BaseController extends Controller
      */
     protected function notFoundResponse()
     {
-        $content = ['error' => "Resource not found."];
+        $content = ['valid' => false, 'error' => "Resource not found."];
 
-        return (request()->ajax() || request()->wantsJson())
-            ? new JsonResponse($content, 404)
-            : new Response($content, 404);
+        return new JsonResponse($content, 404);
     }
 
     /**
@@ -302,6 +338,7 @@ abstract class BaseController extends Controller
     protected function buildFailedValidationResponse(Request $request, $errors)
     {
         $content = [
+            'valid'             => false,
             'error'             => "The submitted data did not pass validation.",
             'validation_errors' => (array) $errors
         ];

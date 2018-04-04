@@ -14,6 +14,7 @@ class CreateForumTableFavoriteThreads extends Migration
     {
         Schema::create('forum_favorite_threads', function (Blueprint $table)
         {
+            $table->increments('id');
             $table->integer('thread_id')->unsigned();
             $table->string('user_id', 50);
             $table->timestamps();

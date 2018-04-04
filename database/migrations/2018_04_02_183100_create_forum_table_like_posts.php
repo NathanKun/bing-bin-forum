@@ -14,6 +14,7 @@ class CreateForumTableLikePosts extends Migration
     {
         Schema::create('forum_like_posts', function (Blueprint $table)
         {
+            $table->increments('id');
             $table->integer('post_id')->unsigned();
             $table->string('user_id', 50);
             $table->timestamps();

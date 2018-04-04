@@ -45,7 +45,8 @@ class Thread extends BaseModel
     }
     
     public function favoriteCount() {
-        $this->belongsToMany('App\User')->count();
+        $this->belongsToMany('App\User', 'forum_favorite_threads')
+            ->count();
     }
     
     public function markPostsReadByOp() {
@@ -53,6 +54,21 @@ class Thread extends BaseModel
             $post->read_by_op = true;
             $post->save();
         });
+    }
+    
+    public function favorite($user_id) {
+        if($this->belongsToMany('App\User',  'forum_favorite_threads')
+            ->where('user_id', $user_id)
+            ->count() > 0)
+            return false;
+        $this->belongsToMany('App\User',  'forum_favorite_threads')
+            ->attach($user_id);
+        return true;
+    }
+    
+    public function unFavorite($user_id) {
+        $this->belongsToMany('App\User',  'forum_favorite_threads')
+            ->detach($user_id);
     }
 
     /**

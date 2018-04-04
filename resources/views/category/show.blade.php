@@ -46,7 +46,7 @@
 
         <div class="row">
             <div class="col-xs-4">
-                @if ($category->threadsEnabled)
+                @if (/*$category->threadsEnabled*/true)
                     @can ('createThreads', $category)
                         <a href="{{ Forum::route('thread.create', $category) }}" class="btn btn-primary">{{ trans('forum::threads.new_thread') }}</a>
                     @endcan
@@ -63,7 +63,7 @@
                 {!! method_field('delete') !!}
         @endcan
 
-        @if ($category->threadsEnabled)
+        @if (/*$category->threadsEnabled*/true)
             <table class="table table-thread">
                 <thead>
                     <tr>
@@ -141,7 +141,7 @@
 
         <div class="row">
             <div class="col-xs-4">
-                @if ($category->threadsEnabled)
+                @if (/*$category->threadsEnabled*/true)
                     @can ('createThreads', $category)
                         <a href="{{ Forum::route('thread.create', $category) }}" class="btn btn-primary">{{ trans('forum::threads.new_thread') }}</a>
                     @endcan

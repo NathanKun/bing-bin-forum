@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+
+use App\Exceptions\NoPermissionException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +50,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ValidationException) {
+            return response()->json(array(
+                        'valid' => false,
+                        'error' => $exception->errors()
+            ), 400);
+        } else if ($exception instanceof NoPermissionException) {
+            return response()->json(array(
+                        'valid' => false,
+                        'error' => 'No Permission'
+            ), 403);
+        } else if ($exception instanceof MethodNotAllowedHttpException) {
+            return response()->json(array(
+                        'valid' => false,
+                        'error' => 'Method not allow'
+            ), 405);
+        }
+        
         return parent::render($request, $exception);
     }
 }

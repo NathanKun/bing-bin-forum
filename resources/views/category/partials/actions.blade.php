@@ -13,7 +13,7 @@
                     @endcan
 
                     @can ('createCategories')
-                        @if ($category->threadsEnabled)
+                        @if (/*$category->threadsEnabled*/true)
                             <option value="disable-threads">{{ trans('forum::categories.disable_threads') }}</option>
                         @else
                             <option value="enable-threads">{{ trans('forum::categories.enable_threads') }}</option>

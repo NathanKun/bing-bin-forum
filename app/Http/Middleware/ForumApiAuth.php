@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use App\User;
 use App\BingBinToken;
 
@@ -22,8 +24,13 @@ class ForumApiAuth
         $internalUsageTokenHeader = 'Token token="' . config('forum.api.token') . '"';
         $externalUsageTokenHeaderStart = "BingBinToken ";
         
-        if (auth()->check() || $tokenHeader === $internalUsageTokenHeader) {
-            // user authed (session) or api internal usage
+        if (auth()->check()){
+            // user authed (session)
+            return $next($request);
+        } if ($tokenHeader === $internalUsageTokenHeader) {
+            // internal usage
+            $user = User::find(1);
+            Auth::login($user);
             return $next($request);
         } else if(substr( $tokenHeader, 0, 13 ) === $externalUsageTokenHeaderStart) {
             // external usage
@@ -33,21 +40,31 @@ class ForumApiAuth
             $bbt = BingBinToken::where('token_value', $token)->first();
             if($bbt) {
                 if($bbt->expire_date > time()) {
-                    $user = $bbt->user()->get();
+                    $user = $bbt->user()->first();
+                    Auth::login($user);
                     return $next($request);
                 } else {
                     // token expired
-                    return response()->json(['error' => "Authorization Failed, token expired"], 403);
+                    return response()->json([
+                        'valid' => false,
+                        'error' => "Authorization Failed, token expired"
+                    ], 403);
                 }
                 
             } else {
                 // token not exists
-                return response()->json(['error' => "Authorization Failed, token not exists"], 403);
+                return response()->json([
+                        'valid' => false,
+                        'error' => "Authorization Failed, token not exists"
+                ], 403);
             }
         }
         else {
             // Auth error
-            return response()->json(['error' => "Authorization Failed"], 403);
+            return response()->json([
+                        'valid' => false,
+                        'error' => "Authorization Failed"
+            ], 403);
         }
     }
 }
