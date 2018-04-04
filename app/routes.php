@@ -29,6 +29,7 @@ $r->group(
     {
         $r->get('/', ['as' => 'index', 'uses' => 'ThreadController@index']);
         $r->get('/not-read', ['as' => 'not-read', 'uses' => 'ThreadController@countNotReadThreadsOfUser']);
+        $r->get('/my-threads', ['as' => 'index', 'uses' => 'ThreadController@myThreads']);
         $r->get('/my-favorite', ['as' => 'index', 'uses' => 'ThreadController@myFavorite']);
         /*$r->get('new', ['as' => 'index-new', 'uses' => 'ThreadController@indexNew']);
         $r->patch('new', ['as' => 'mark-new', 'uses' => 'ThreadController@markNew']);*/

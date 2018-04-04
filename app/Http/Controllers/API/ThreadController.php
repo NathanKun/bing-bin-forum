@@ -3,9 +3,11 @@
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Thread;
+use App\User;
 
 class ThreadController extends BaseController
 {
@@ -29,6 +31,14 @@ class ThreadController extends BaseController
         return 'threads';
     }
     
+    /*
+     * PATCH: Mark all post of a thread read by it's op
+     * 
+     * @param int       $id         thread id
+     * @param Request   $request    request
+     * 
+     * @return JsonResponse
+     */
     public function markRead($id, Request $request) {
         
         $model = $this->model()->find($id);
@@ -46,14 +56,35 @@ class ThreadController extends BaseController
         return $this->response($model);
     }
     
+    /*
+     * PATCH: Mark favorite a thread by current user
+     * 
+     * @param int       $id         thread id
+     * @param Request   $request    request
+     * 
+     * @return JsonResponse
+     */
     public function favorite($id, Request $request) {
         return $this->doFavorite($id, $request, true);
     }
     
+    /*
+     * PATCH: Unmark favorite a thread by current user
+     * 
+     * @param int       $id         thread id
+     * @param Request   $request    request
+     * 
+     * @return JsonResponse
+     */
     public function unFavorite($id, Request $request) {
         return $this->doFavorite($id, $request, false);
     }
     
+    /*
+     * Internal functoin, mark/unmark favorite a thread by current user
+     *
+     * @return JsonResponse
+     */
     private function doFavorite($id, Request $request, bool $favorite) {
         
         $model = $this->model()->find($id);
@@ -72,6 +103,11 @@ class ThreadController extends BaseController
                                          ($favorite ? "favorited" : "unfavorited"), 400);
     }
     
+    /**
+     * GET: return number of threads written by current user that have new response
+     *
+     * @return JsonResponse
+     */
     public function countNotReadThreadsOfUser(Request $request) {
         $counter = 0;
         $threads = $this->user->threads()->with('posts')->get()->toArray();
@@ -87,17 +123,55 @@ class ThreadController extends BaseController
         return $this->response(array('not_read' => $counter));
     }
     
-    public function myFavorite(Request $request) {
+    /**
+     * GET: return all favorited threads of current user
+     *
+     * @return JsonResponse
+     */
+    public function myFavorite(Request $request)
+    {
+        $this->validate($request, ['page' => 'integer|min:1']);
+        
+        $page = $request->input('page') ? $request->input('page') : 1;
+        
         $threads = $this->model()
             ->withRequestScopes($request)
             ->join('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
             ->where('user_id', $this->user->id)
+            ->skip(BaseController::threadsByPage * ($page - 1))
+            ->take(BaseController::threadsByPage)
             ->get()
             ->toArray();
         
         // remove unwanted fields
         foreach($threads as &$t) {
             $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
+        }
+
+        return $this->response($threads);
+    }
+    
+    /**
+     * GET: return all threads written by current user
+     *
+     * @return JsonResponse
+     */
+    public function myThreads(Request $request)
+    {
+        $this->validate($request, ['page' => 'integer|min:1']);
+        
+        $page = $request->input('page') ? $request->input('page') : 1;
+        
+        $threads = User::find($this->user->id)
+            ->threads()
+            ->skip(BaseController::threadsByPage * ($page - 1))
+            ->take(BaseController::threadsByPage)
+            ->get()
+            ->toArray();
+        
+        // remove unwanted fields
+        foreach($threads as &$t) {
+            $t = array_except($t, ['pinned', 'locked']);
         }
 
         return $this->response($threads);
@@ -111,18 +185,28 @@ class ThreadController extends BaseController
      */
     public function index(Request $request)
     {
-        $this->validate($request, ['category_id' => ['required']]);
+        $this->validate($request, ['category_id' => ['required'], 'page' => 'integer|min:1']);
+        
+        $page = $request->input('page') ? $request->input('page') : 1;
 
         $threads = $this->model()
             ->withRequestScopes($request)
             ->where('category_id', $request->input('category_id'))
-            ->leftJoin('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
+            ->leftJoin(
+                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot`"), 
+                function($join) {
+                    $join->where('user_id', $this->user->id)
+                        ->on('pivot.thread_id', '=', 'forum_threads.id');
+            })
+            ->skip(BaseController::threadsByPage * ($page - 1))
+            ->take(BaseController::threadsByPage)
             ->get()
             ->toArray();
         
         // remove unwanted fields
         foreach($threads as &$t) {
-            $t['favorite'] = !is_null($t['user_id']);
+            $t['favorite'] = (!is_null($t['user_id']) && $t['user_id'] === $this->user->id);
+            
             $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
         }
 
