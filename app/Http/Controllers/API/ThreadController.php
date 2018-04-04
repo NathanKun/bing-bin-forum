@@ -63,11 +63,13 @@ class ThreadController extends BaseController
         }
         
         if($favorite) 
-            $model->favorite($this->user->id); 
+            $result = $model->markFavorite($this->user->id); 
         else 
-            $model->unFavorite($this->user->id);
+            $result = $model->unmarkFavorite($this->user->id);
         
-        return $this->response($model);
+        if($result) return $this->response($model);
+        else return $this->errorResponse("Thread had already been " . 
+                                         ($favorite ? "favorited" : "unfavorited"), 400);
     }
     
     public function countNotReadThreadsOfUser(Request $request) {
@@ -83,6 +85,22 @@ class ThreadController extends BaseController
         };
         
         return $this->response(array('not_read' => $counter));
+    }
+    
+    public function myFavorite(Request $request) {
+        $threads = $this->model()
+            ->withRequestScopes($request)
+            ->join('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
+            ->where('user_id', $this->user->id)
+            ->get()
+            ->toArray();
+        
+        // remove unwanted fields
+        foreach($threads as &$t) {
+            $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
+        }
+
+        return $this->response($threads);
     }
 
     /**

@@ -37,11 +37,13 @@ class User extends Authenticatable
 
     public function likes()
     {
-        return $this->belongsToMany('App\Models\Post', 'forum_like_posts', 'user_id', 'post_id');
+        return $this->belongsToMany('App\Models\Post', 'forum_like_posts', 'user_id', 'post_id')
+            ->withTimestamps();
     }
 
     public function favorites()
     {
-        return $this->belongsToMany('App\Models\Thread', 'forum_favorite_threads', 'user_id', 'thread_id');
+        return $this->belongsToMany('App\Models\Thread', 'forum_favorite_threads', 'user_id', 'thread_id')
+            ->withTimestamps();
     }
 }

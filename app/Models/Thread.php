@@ -44,8 +44,13 @@ class Thread extends BaseModel
         $this->perPage = config('forum.preferences.pagination.threads');
     }
     
+    public function favorite() {
+        return $this->belongsToMany('App\User', 'forum_favorite_threads')
+            ->withTimestamps();
+    }
+    
     public function favoriteCount() {
-        $this->belongsToMany('App\User', 'forum_favorite_threads')
+        return $this->favorite()
             ->count();
     }
     
@@ -56,19 +61,25 @@ class Thread extends BaseModel
         });
     }
     
-    public function favorite($user_id) {
-        if($this->belongsToMany('App\User',  'forum_favorite_threads')
+    public function markFavorite($user_id) {
+        if($this->favorite()
             ->where('user_id', $user_id)
             ->count() > 0)
             return false;
-        $this->belongsToMany('App\User',  'forum_favorite_threads')
+        $this->favorite()
             ->attach($user_id);
         return true;
     }
     
-    public function unFavorite($user_id) {
-        $this->belongsToMany('App\User',  'forum_favorite_threads')
+    public function unmarkFavorite($user_id) {
+        if($this->favorite()
+            ->where('user_id', $user_id)
+            ->count() === 0)
+            return false;
+        $this->favorite()
+            ->withTimestamps()
             ->detach($user_id);
+        return true;
     }
 
     /**
