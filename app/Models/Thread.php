@@ -49,13 +49,11 @@ class Thread extends BaseModel
     public static function boot()
     {
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
-            error_log("thread favorited");
             $model->favorite_count++;
             $model->save();
         });
 
         static::pivotDetached(function ($model, $relationName, $pivotIds) {
-            error_log("thread unfavorited");
             $model->favorite_count--;
             $model->save();
         });

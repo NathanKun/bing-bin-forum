@@ -18,7 +18,7 @@ class CategoryController extends BaseController
     {
         $categories = $this->api('category.index')
                            ->parameters(['where' => ['category_id' => 0], 'orderBy' => 'weight', 'orderDir' => 'asc', 'with' => ['categories', 'threads']])
-                           ->get();
+                           ->get()['data'];
 
         event(new UserViewingIndex);
         return view('forum::category.index', compact('categories'));
@@ -32,13 +32,13 @@ class CategoryController extends BaseController
      */
     public function show(Request $request)
     {
-        $category = $this->api('category.fetch', $request->route('category'))->get();
+        $category = $this->api('category.fetch', $request->route('category'))->get()['data'];
 
         event(new UserViewingCategory($category));
 
         $categories = [];
         if (Gate::allows('moveCategories')) {
-            $categories = $this->api('category.index')->parameters(['where' => ['category_id' => 0]])->get();
+            $categories = $this->api('category.index')->parameters(['where' => ['category_id' => 0]])->get()['data'];
         }
 
         $threads = $category->threadsPaginated;

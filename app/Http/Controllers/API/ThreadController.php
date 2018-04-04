@@ -230,7 +230,7 @@ class ThreadController extends BaseController
     public function fetch($id, Request $request)
     {
         $thread = $this->model();
-        $thread = $request->input('include_deleted') ? $thread->withTrashed()->find($id) : $thread->find($id);
+        $thread = /*$request->input('include_deleted') ? $thread->withTrashed()->find($id) : */$thread->find($id);
 
         if (is_null($thread) || !$thread->exists) {
             return $this->notFoundResponse();

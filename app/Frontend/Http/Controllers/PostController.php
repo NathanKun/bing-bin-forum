@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Frontend\Events\UserCreatingPost;
 use App\Frontend\Events\UserEditingPost;
 use App\Frontend\Events\UserViewingPost;
+use App\Models\Post;
 
 class PostController extends BaseController
 {
@@ -16,8 +17,9 @@ class PostController extends BaseController
      */
     public function show(Request $request)
     {
-        $post = $this->api('post.fetch', $request->route('post'))->parameters(['with' => ['thread', 'thread.category', 'parent']])->get();
-
+        $post = $this->api('post.fetch', $request->route('post'))->parameters(['with' => ['thread', 'thread.category', 'parent']])->get()['data'];
+        $post = Post::find($post['id']);
+        
         event(new UserViewingPost($post));
 
         $thread = $post->thread;
@@ -34,7 +36,7 @@ class PostController extends BaseController
      */
     public function create(Request $request)
     {
-        $thread = $this->api('thread.fetch', $request->route('thread'))->parameters(['with' => ['posts']])->get();
+        $thread = $this->api('thread.fetch', $request->route('thread'))->parameters(['with' => ['posts']])->get()['data'];
 
         /*$this->authorize('reply', $thread);*/
 
@@ -87,7 +89,7 @@ class PostController extends BaseController
      */
     public function edit(Request $request)
     {
-        $post = $this->api('post.fetch', $request->route('post'))->get();
+        $post = $this->api('post.fetch', $request->route('post'))->get()['data'];
 
         event(new UserEditingPost($post));
 

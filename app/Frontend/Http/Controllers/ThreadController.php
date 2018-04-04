@@ -8,6 +8,7 @@ use App\Frontend\Events\UserCreatingThread;
 use App\Frontend\Events\UserMarkingNew;
 use App\Frontend\Events\UserViewingNew;
 use App\Frontend\Events\UserViewingThread;
+use App\Models\Thread;
 
 class ThreadController extends BaseController
 {
@@ -28,7 +29,7 @@ class ThreadController extends BaseController
      */
     public function indexNew()
     {
-        $threads = $this->api('thread.index-new')->get();
+        $threads = $this->api('thread.index-new')->get()['data'];
 
         event(new UserViewingNew($threads));
 
@@ -48,7 +49,7 @@ class ThreadController extends BaseController
         event(new UserMarkingNew);
 
         if ($request->has('category_id')) {
-            $category = $this->api('category.fetch', $request->input('category_id'))->get();
+            $category = $this->api('category.fetch', $request->input('category_id'))->get()['data'];
 
             if ($category) {
                 Forum::alert('success', 'categories.marked_read', 0, ['category' => $category->title]);
@@ -70,15 +71,16 @@ class ThreadController extends BaseController
     {
         $thread = $this->api('thread.fetch', $request->route('thread'))
                        ->parameters(['include_deleted' => auth()->check()])
-                       ->get();
-
+                       ->get()['data'];
+        $thread = Thread::find($thread['id']);
+        
         event(new UserViewingThread($thread));
 
         $category = $thread->category;
 
         $categories = [];
         if (Gate::allows('moveThreadsFrom', $category)) {
-            $categories = $this->api('category.index')->parameters(['where' => ['category_id' => 0]], ['where' => ['enable_threads' => 1]])->get();
+            $categories = $this->api('category.index')->parameters(['where' => ['category_id' => 0]], ['where' => ['enable_threads' => 1]])->get()['data'];
         }
 
         $posts = $thread->postsPaginated;
@@ -94,7 +96,7 @@ class ThreadController extends BaseController
      */
     public function create(Request $request)
     {
-        $category = $this->api('category.fetch', $request->route('category'))->get();
+        $category = $this->api('category.fetch', $request->route('category'))->get()['data'];
 
         if (!$category->threadsEnabled) {
             Forum::alert('warning', 'categories.threads_disabled');
@@ -115,7 +117,7 @@ class ThreadController extends BaseController
      */
     public function store(Request $request)
     {
-        $category = $this->api('category.fetch', $request->route('category'))->get();
+        $category = $this->api('category.fetch', $request->route('category'))->get()['data'];
 
         if (!$category->threadsEnabled) {
             Forum::alert('warning', 'categories.threads_disabled');

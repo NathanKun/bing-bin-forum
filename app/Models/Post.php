@@ -37,7 +37,6 @@ class Post extends BaseModel
     public static function boot()
     {
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
-            error_log("post liked");
             $model->like_count++;
             $model->save();
             
@@ -49,7 +48,6 @@ class Post extends BaseModel
         });
 
         static::pivotDetached(function ($model, $relationName, $pivotIds) {
-            error_log("post unliked");
             $model->like_count--;
             $model->save();
             
