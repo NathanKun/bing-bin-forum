@@ -1,0 +1,71 @@
+
+
+<ion-content padding id = 'bbcercle'>
+  <br>
+  <ion-row>
+    <ion-col col-1>
+      <ion-icon class='arrow'name="arrow-back" (click) = "openPublicationPage()"></ion-icon>
+    </ion-col>
+
+    <ion-col col-10>
+        <h1 text-center text-sm-ceter text-md-center text-lg-center>BB CERCLE</h1>
+    </ion-col>
+
+    <ion-col col-1>
+      <ion-icon class='arrow'name="arrow-forward" (click)="openCollectionPage()"></ion-icon>
+    </ion-col>
+  </ion-row>
+
+<ion-card >
+
+ <ion-card-content class='card-head'>
+   <ion-img class='etiquette'src="assets/imgs/etiquette-green-full.png"></ion-img>
+    <ion-row class='head'>
+      <ion-col col-2>
+        <ion-img width ="20" height ="10" src="assets/imgs/avatar.png"></ion-img>
+      </ion-col>
+      <ion-col col-9 text-left>
+       <h2>Lily Jin</h2>
+       <b>Compiègne</b>
+      </ion-col>
+      <ion-col col-1>
+        <ion-icon name="more" (click)="presentPopover($event)" color="dark"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+
+ <ion-card-content class='card-content'(click)="openPostPage()">
+    <h3>Compost appartement</h3>
+    <p>Comment faire des composts dans un appartement? </p>
+</ion-card-content>
+
+  <img src="assets/imgs/compost.jpg" class='post-image'>
+
+  <ion-row class='foot'>
+    <ion-col col-6 text-left>
+        <ion-icon name="star-outline" color="backgroundWhite"></ion-icon>
+        <b class='time'>Il y a 3 heure(s)</b>
+    </ion-col>
+    <ion-col col-6 text-right>
+      <ion-icon [name]="visible1? 'star' : 'star-outline'" (click)="toggleCollection()" class = 'collection'></ion-icon>
+        <b>16</b>
+        <ion-icon [name]="visible2? 'heart' : 'heart-outline'" (click)="toggleLike()" class = 'like' ></ion-icon>
+          <b>16</b>
+        <ion-icon [name]="visible3? 'square' : 'square-outline'" (click)="toggleComment()" class = 'comment'></ion-icon>
+    </ion-col>
+  </ion-row>
+
+</ion-card>
+
+
+
+
+  <ion-fab right bottom #fab>
+    <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color = "backgroundWhite" (click)="openSearchPage()"><ion-icon name="search" color = "primary"></ion-icon></button>
+      <button ion-fab color = "backgroundWhite" (click)="openNewPostPage()"><ion-icon name="add"  color = "primary"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
+</ion-content>

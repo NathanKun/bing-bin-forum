@@ -33,26 +33,50 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
-$colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
-);
 
+$colors: (
+  primary:         #219372,
+  backgroundGreen: #18664E,
+  backgroundWhite: #F6EEDC,
+  light:           #F6EEDC,
+  red:             #F07176,
+  dark:            #464646,
+  yellow:          #FCB957,
+  blue:            #25A8C4,
+  grey:            #95989a,
+);
+$toolbar-background:color($colors,backgroundWhite);
+$popover-md-width: 140px;
+$searchbar-md-input-background-color:transparent;
+$text-color:#fff;
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
-
+$card-ios-title-font-size: 1.8rem;
+$card-ios-text-color:#4d4d4d;
+$card-ios-border-radius: 10px;
+$button-ios-border-radius: 4px;
+$card-ios-background-color:color($colors,backgroundWhite);
+$popover-ios-width: 130px;
+$popover-ios-border-radius: 6px;
+$searchbar-ios-input-background-color:#F6EEDC;
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$card-md-title-font-size: 1.8rem;
+$card-md-text-color:#4d4d4d;
+$card-md-padding-left: 16px;
+$card-md-margin-left: 12px;
+$card-md-border-radius: 10px;
+$button-md-border-radius: 4px;
+$card-md-background-color:color($colors,backgroundWhite);
+$popover-md-width: 130px;
+$popover-md-border-radius: 6px;
+$searchbar-md-input-box-shadow:0;
 
 
 
@@ -84,5 +108,62 @@ $colors: (
 // Fonts
 // --------------------------------------------------
 
-@import "roboto";
-@import "noto-sans";
+@font-face{
+  font-family: 'Futura';
+  font-style: Light;
+  font-weight: 400;
+  src:url('..assets/fonts/Futura Book font_0.ttf');
+}
+
+@font-face{
+  font-family: 'Futura';
+  font-style: medium;
+  font-weight: 600;
+  src:url('..assets/fonts/futura medium bt_0.ttf');
+}
+
+@font-face{
+  font-family: 'Futura';
+  font-style: Bold;
+  font-weight: 700;
+  src:url('..assets/fonts/Futura Bold font_0.ttf');
+}
+
+@font-face{
+  font-family: 'Futura';
+  font-style: Heavy;
+  font-weight: 900;
+  src:url('..assets/fonts/Futura Heavy.ttf');
+}
+
+$font-family-base:"Futura";
+
+div{
+  font-family: "Futura" !important;
+  font-weight: 400 !important;
+}
+h1{
+  font-family: "Futura" !important;
+  font-weight: 600 !important;
+}
+p{
+  color:#fff;
+}
+
+h3,h2,button{
+  font-family: "Futura" !important;
+  font-weight: 500 !important;
+  //color: color($colors,primary);
+}
+ion-item{
+  border-radius: 10px;
+}
+ion-title{
+  color:color($colors,dark);
+}
+ion-img{
+  background: transparent;
+}
+ion-input{
+  color:color($colors,dark);
+}

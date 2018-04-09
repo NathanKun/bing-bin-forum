@@ -1,0 +1,64 @@
+page-new-post {
+  #new-post{
+    background-color: color($colors,backgroundGreen);
+  }
+
+h1{
+    color: color($colors,backgroundWhite);
+    font-size: 24px;
+    margin-bottom: 1em;
+  }
+  
+ion-item{
+    border-radius: 10px;
+    padding: 5em;
+    width: 10px;
+}
+ion-item.content{
+  height: 15em;
+}
+ion-icon{
+    color:color($colors,backgroundWhite);
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+p.button{
+   color: color($colors,primary);
+  }
+p.indication{
+   color: color($colors,backgroundWhite);
+   font-size: 15px;
+   margin-left: 1rem;
+  }
+ion-icon.image{
+  margin-top: 1rem;
+   margin-left: 2rem;
+  }
+ion-icon.pin{
+    margin-top: 1rem;
+     margin-left: 1.5rem;
+    }
+ion-content.etiquette{
+  height: 4em;
+  border-radius: 8px;
+  color:color($colors,backgroundWhite);
+}
+ion-row{
+  margin-left: -.3em;
+}
+ion-img{
+  margin-top: .6em;
+  margin-bottom: -.4em;
+  margin-left: 1em;
+  background: transparent;
+}
+
+ion-input{
+  color: color($colors,dark);
+  font-size: 15px;
+}
+
+
+
+}

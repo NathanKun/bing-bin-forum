@@ -1,0 +1,42 @@
+
+
+<ion-content padding id = 'new-post'>
+  <br>
+  <ion-row>
+    <ion-col col-1>
+      <ion-icon name="arrow-back" navPop></ion-icon>
+    </ion-col>
+
+    <ion-col col-11>
+        <h1 text-left >Nouvelle publication</h1>
+    </ion-col>
+  </ion-row>
+    <ion-item  color="backgroundWhite">
+      <ion-input placeholder="Titre" type="text" value=""></ion-input>
+    </ion-item>
+  <br>
+  <ion-row col-center>
+    <ion-col col-7 col-center>
+      <ion-item color="backgroundWhite">
+         <ion-input  class='input' text-left placeholder="{{txt}}" type="text" value=""></ion-input>
+       </ion-item>
+    </ion-col>
+    <ion-col col-5 col-center>
+           <ion-img [src]="picToViewG" (click)="changeViewG()"></ion-img>
+           <ion-img [src]="picToViewR" (click)="changeViewR()" ></ion-img>
+           <ion-img [src]="picToViewB" (click)="changeViewB()"></ion-img>
+    </ion-col>
+  </ion-row>
+
+    <br>
+    <ion-item color="backgroundWhite" class='content' >
+      <ion-textarea placeholder="Contenu" type="text"></ion-textarea>
+    </ion-item>
+    <ion-row>
+    <ion-icon class='image'name="image" ></ion-icon>
+    <ion-icon class='pin' name="pin" ></ion-icon><p class='indication'>Localisation</p>
+  </ion-row>
+    <br>
+     <button ion-button (click)="openBbcerclePage()" float-right color="backgroundWhite"><p class='button'>Envoyer</p></button>
+
+  </ion-content>

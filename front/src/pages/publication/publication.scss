@@ -1,0 +1,63 @@
+page-publication {
+  #publication{
+    background-color: color($colors,backgroundGreen);
+  }
+
+  .card-title {
+     position: absolute;
+     top: 36%;
+     font-size: 2.0em;
+     width: 100%;
+     font-weight: bold;
+     color: #fff;
+   }
+
+  h1{
+    color: color($colors,backgroundWhite);
+    font-size: 24px;
+  }
+
+  h3{
+    color: color($colors,dark);
+    padding-top: 0px !important;
+    margin-left: -1em;
+  }
+  .card{
+    cursor: pointer;
+  }
+  .bg-image{
+    height:238px;
+  }
+  ion-note{
+    padding-left: 1em;
+  }
+  ion-icon{
+    color:color($colors,backgroundWhite);
+    font-size: 24px;
+    cursor: pointer;
+    margin-top: -.2em;
+  }
+  ion-row{
+    margin-top:.6em;
+    margin-left: .6em;
+    margin-right: .6em;
+  }
+  .title{
+    padding-bottom: 13em;
+  }
+  img.post-image {
+    position: absolute;
+    clip: rect(0px, 55px, 190px, 0px);
+  }
+  ion-card{
+    height: 5.5em;
+  }
+  .more{
+    font-size: 17px;
+  }
+  ion-row{
+    margin-bottom: -1em;
+  }
+
+
+}

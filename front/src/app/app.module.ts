@@ -5,12 +5,36 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { EventPage } from '../pages/event/event';
+import { EventOpenPage } from'../pages/event-open/event-open';
+
+import { BbcerclePage } from'../pages/bbcercle/bbcercle';
+import { PublicationPage } from '../pages/publication/publication';
+import { CollectionPage } from '../pages/collection/collection';
+import { PostOpenPage } from '../pages/post-open/post-open';
+import { NewPostPage } from '../pages/new-post/new-post';
+import { CommentPage } from '../pages/comment/comment';
+import { SearchPage } from '../pages/search/search';
+
+import { PopoverComponent } from '../components/popover/popover';
+import { PopSearchComponent } from '../components/popsearch/popsearch';
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    //HomePage,
+    EventPage,
+    EventOpenPage,
+    BbcerclePage,
+    PublicationPage,
+    CollectionPage,
+    PostOpenPage,
+    NewPostPage,
+    CommentPage,
+    SearchPage,
+    PopoverComponent,
+    PopSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +43,18 @@ import { HomePage } from '../pages/home/home';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    //HomePage,
+    EventPage,
+    EventOpenPage,
+    BbcerclePage,
+    PublicationPage,
+    CollectionPage,
+    PostOpenPage,
+    NewPostPage,
+    CommentPage,
+    SearchPage,
+    PopoverComponent,
+    PopSearchComponent
   ],
   providers: [
     StatusBar,

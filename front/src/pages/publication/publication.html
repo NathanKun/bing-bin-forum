@@ -1,0 +1,97 @@
+<ion-content class="background" scroll="true">
+    <img class = 'bg-image'src="assets/imgs/publicationbg.jpg">
+</ion-content>
+
+<ion-content padding id = 'publication'>
+  <br>
+  <ion-row class='title'>
+    <ion-col col-1>
+    </ion-col>
+
+    <ion-col col-10>
+        <h1 text-center >PUBLICATION</h1>
+    </ion-col>
+
+    <ion-col col-1>
+      <ion-icon name="arrow-forward" (click)="goback()"></ion-icon>
+    </ion-col>
+  </ion-row>
+
+<ion-card>
+  <ion-grid>
+  <ion-row>
+  <ion-col col-1 float-right>
+     <ion-img height="16" width="8" src="assets/imgs/avatar.png"></ion-img>
+  </ion-col>
+  <ion-col col-9>
+     <ion-input placeholder="Dis moi quelque chose..." type="text" value=""></ion-input>
+  </ion-col>
+  <ion-col col-2>
+     <button ion-button small float-right (click)="openNewPostPage()">Ok</button>
+  </ion-col>
+</ion-row>
+</ion-grid>
+</ion-card>
+
+<ion-card >
+  <ion-row>
+    <ion-col col-3 >
+      <h3>11 Mars</h3>
+    </ion-col>
+
+    <ion-col col-4 (click)="openPostPage()">
+      <img class='post-image'src="assets/imgs/compost.jpg" width="568">
+    </ion-col>
+
+    <ion-col col-4 float-right (click)="openPostPage()">
+       <h3>Compost</h3>
+    </ion-col>
+
+    <ion-col col-1>
+        <ion-icon class='more' name="more" color="dark" (click)="presentPopover($event)"></ion-icon>
+    </ion-col>
+  </ion-row>
+</ion-card>
+
+<ion-card >
+  <ion-row>
+    <ion-col col-3 >
+      <h3>11 Mars</h3>
+    </ion-col>
+
+    <ion-col col-4 (click)="openPostPage()">
+      <img class='post-image'src="assets/imgs/compost.jpg" width="568">
+    </ion-col>
+
+    <ion-col col-4 float-right (click)="openPostPage()">
+       <h3>Compost</h3>
+    </ion-col>
+
+    <ion-col col-1>
+        <ion-icon class='more' name="more" color="dark" (click)="presentPopover($event)"></ion-icon>
+    </ion-col>
+  </ion-row>
+</ion-card>
+
+<ion-card >
+  <ion-row>
+    <ion-col col-3 >
+      <h3>11 Mars</h3>
+    </ion-col>
+
+    <ion-col col-4 (click)="openPostPage()">
+      <img class='post-image'src="assets/imgs/compost.jpg" width="568">
+    </ion-col>
+
+    <ion-col col-4 float-right (click)="openPostPage()">
+       <h3>Compost</h3>
+    </ion-col>
+
+    <ion-col col-1>
+        <ion-icon class='more' name="more" color="dark" (click)="presentPopover($event)"></ion-icon>
+    </ion-col>
+  </ion-row>
+</ion-card>
+
+
+  </ion-content>

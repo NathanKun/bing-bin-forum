@@ -1,0 +1,16 @@
+page-event {
+#event{
+  background-color: color($colors,backgroundGreen);
+}
+
+h1.title{
+  margin:1em;
+  color: color($colors,backgroundWhite);
+  font-size: 24px;
+}
+
+ion-card{
+  cursor: pointer;
+}
+
+}

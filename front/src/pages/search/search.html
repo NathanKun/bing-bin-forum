@@ -1,0 +1,54 @@
+<!--
+  Generated template for the SearchPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+<ion-navbar>
+    <ion-searchbar backgroundWhitecolor="backgroundWhite" placeholder="{{txt}}">
+    </ion-searchbar>
+</ion-navbar>
+</ion-header>
+
+<ion-content id="search" >
+  <ion-row class='etiquette'>
+    <ion-col col-3>
+      <img [src]="picToViewG" (click)="changeViewG()">
+    </ion-col>
+    <ion-col col-3>
+      <img [src]="picToViewR" (click)="changeViewR()">
+    </ion-col>
+    <ion-col col-6>
+      <img [src]="picToViewB" (click)="changeViewB()">
+    </ion-col>
+    </ion-row>
+
+<ion-list>
+    <ion-item class='results'>
+        <h2 class='title' text-wrap>Comment faire des composts dans un appartement?</h2>
+      <ion-row>
+      <ion-col col-3>
+        <img class='post-image'src="assets/imgs/compost.jpg">
+      </ion-col>
+      <ion-col col-9>
+        <p text-wrap>We will only display the first few sentences of the articles generated for demo purpose</p>
+      </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item class='results'>
+        <h2 class='title' text-wrap>Comment faire des composts dans un appartement?</h2>
+      <ion-row>
+      <ion-col col-3>
+        <img class='post-image'src="assets/imgs/compost.jpg">
+      </ion-col>
+      <ion-col col-9>
+        <p text-wrap>We will only display the first few sentences of the articles generated for demo purpose</p>
+      </ion-col>
+      </ion-row>
+    </ion-item>
+
+  </ion-list>
+
+
+</ion-content>

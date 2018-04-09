@@ -1,0 +1,31 @@
+page-search {
+  #search{
+    background-color: color($colors,backgroundWhite);
+  }
+ ion-navbar{
+   background-color: transparent;
+ }
+ ion-searchbar{
+   margin-left: -1em;
+ }
+ ion-row.etiquette{
+   margin-left: 7em;
+   margin-top: 1em;
+   margin-bottom: 1em;
+   background-color: color($colors,backgroundWhite);
+ }
+ img.post-image {
+   position: absolute;
+   clip: rect(0px, 50px, 190px, 0px);
+ }
+ ion-item.results{
+   background-color: color($colors,backgroundWhite);
+   border-radius: 0px;
+ }
+ .title{
+   color: color($colors,dark);
+   font-weight: 400;
+   font-size: 15px;
+ }
+
+}

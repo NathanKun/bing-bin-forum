@@ -1,0 +1,86 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title >Compost appartement</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding id = 'postOpen'>
+  <h4 class='title'>Compost appartement</h4>
+  <ion-row>
+    <ion-col col-1>
+    <ion-img width ="20" height ="10" src="assets/imgs/avatar.png"></ion-img>
+    </ion-col>
+  <ion-col col-7 text-left>
+  <h2>Lily Jin</h2>
+  <b class='location'>Compiègne</b>
+  </ion-col>
+
+  <ion-col col-4>
+  <ion-note color="grey">Il y a 3 heure(s)</ion-note>
+  </ion-col>
+  </ion-row>
+
+
+
+  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
+Tous ensemble, on rend la musique plus durable~
+ </p>
+  <img src="assets/imgs/compost.jpg"  >
+  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
+Tous ensemble, on rend la musique plus durable~
+ </p>
+  <img src="assets/imgs/compost.jpg"  >
+  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
+Tous ensemble, on rend la musique plus durable~
+ </p>
+  <img src="assets/imgs/compost.jpg" >
+<br>
+<br>
+  <ion-row>
+    <ion-col col-2 >
+       <ion-img height="14" width="7" src="assets/imgs/avatar.png"></ion-img>
+    </ion-col>
+    <ion-col col-9>
+       <ion-input placeholder="Ajouter un commentaire" type="text" value=""></ion-input>
+    </ion-col>
+    <ion-col col-1>
+       <button ion-button small float-right>Ok</button>
+    </ion-col>
+  </ion-row>
+
+  <ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-2 >
+         <ion-img height="14" width="7" src="assets/imgs/avatar.png"></ion-img>
+       </ion-col>
+       <ion-col col-9 text-wrap>
+         <h5>Name</h5>
+         <b class='input'>Tu peux le mettre sur le balcon!fwrfubububuqwdbqkbdiqbeiufbeufbuiebfibwf </b>
+       </ion-col>
+      <ion-col col-1>
+        <ion-icon [name]="visible? 'heart' : 'heart-outline'" (click)="toggle()" color="red" small></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+    <ion-col col-4>
+      <ion-icon [name]="visible1? 'star' : 'star-outline'" (click)="toggleCollection()" class = 'collection'></ion-icon>
+    </ion-col>
+    <ion-col col-8 text-right>
+      <b class= 'number'>15</b>
+      <ion-icon [name]="visible2? 'heart' : 'heart-outline'" (click)="toggleLike()" class = 'like'></ion-icon>
+      <b class= 'number'>16</b>
+      <ion-icon [name]="visible3? 'square' : 'square-outline'" (click)="toggleComment()"(click)="openCommentPage()" class='comment'></ion-icon>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+</ion-footer>

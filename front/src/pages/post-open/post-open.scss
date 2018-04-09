@@ -1,0 +1,71 @@
+page-post-open {
+  #postOpen{
+    background-color: color($colors,backgroundWhite);
+  }
+  h4{
+    color: color($colors,dark);
+    font-size: 24px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  h2{
+    font-size: 15px;
+    font-weight: 400;
+    color: color($colors,grey);
+    padding-left: 1.4rem;
+    margin-bottom: .3em;
+  }
+
+  b.location, .number{
+    color: color($colors,grey);
+    font-size: 15px;
+    font-weight: 400;
+    padding-left: .8em;
+  }
+
+
+  b.input{
+    color: color($colors,dark);
+    font-size: 15px;
+    font-weight: 400;
+  }
+  p{
+    color: color($colors,dark);
+    font-size: 15px;
+ }
+  ion-icon.collection{
+    font-size: 26px;
+    color:color($colors,yellow);
+    padding-left: 2rem;
+  }
+  ion-icon.like{
+    font-size: 20px;
+    color:color($colors,red);
+    padding-top: 5px;
+  }
+  ion-icon.comment{
+    font-size: 20px;
+    color:color($colors,primary);
+    padding-right: 2rem;
+  }
+  ion-input{
+    background-color: color($colors,backgroundWhite);
+    color: color($colors,dark);
+    font-size: 15px;
+  }
+.comment{
+  cursor: pointer;
+}
+h5{
+  color:color($colors,primary);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+ion-row{
+  margin-top: -.5em;
+  margin-bottom: -.5em;
+}
+
+}
