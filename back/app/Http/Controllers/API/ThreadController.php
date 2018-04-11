@@ -205,6 +205,7 @@ class ThreadController extends BaseController
                 function($join) {
                     $join->on('pivot2.thread_id', '=', 'forum_threads.id');
             })*/
+            ->latest()
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
             ->get()
