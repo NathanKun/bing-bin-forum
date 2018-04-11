@@ -316,7 +316,7 @@ abstract class BaseController extends Controller
         $data = array('valid' => true, 'data' => $data);
         
         return (request()->ajax() || request()->wantsJson())
-            ? new JsonResponse($message + compact('data'), $code)
+            ? new JsonResponse($data, $code)
             : new Response($data, $code);
     }
 
