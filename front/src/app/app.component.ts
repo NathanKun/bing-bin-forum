@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-//import { HomePage} from '../pages/home/home';
-import { EventPage } from '../pages/event/event';
+import { LoginPage } from '../pages/login/login';
+//import { HomePage } from '../pages/home/home';
+//import { EventPage } from '../pages/event/event';
 //import { BbcerclePage } from '../pages/bbcercle/bbcercle';
 //import { PublicationPage } from '../pages/publication/publication';
 //import { NewPostPage } from '../pages/new-post/new-post';
@@ -13,7 +14,7 @@ import { EventPage } from '../pages/event/event';
 })
 export class MyApp {
 
-  rootPage:any = EventPage;
+  rootPage: any = LoginPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {

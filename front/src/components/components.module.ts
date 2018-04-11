@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { IonicModule } from 'ionic-angular';
 import { PopoverCardComponent } from './popover-card/popover-card';
 import { PopoverComponent } from './popover/popover';
 import { PopSearchComponent } from './popsearch/popsearch';
@@ -6,7 +7,7 @@ import { PopSearchComponent } from './popsearch/popsearch';
 	declarations: [PopoverCardComponent,
     PopoverComponent,
     PopSearchComponent],
-	imports: [],
+	imports: [IonicModule],
 	exports: [PopoverCardComponent,
     PopoverComponent,
     PopSearchComponent]

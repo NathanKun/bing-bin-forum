@@ -1,6 +1,5 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
-
 // Font path is used to include ionicons,
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
@@ -21,10 +20,6 @@ $app-direction: ltr;
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
-
-
-
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -32,20 +27,17 @@ $app-direction: ltr;
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
-
-
-$colors: (
-  primary:         #219372,
-  backgroundGreen: #18664E,
-  backgroundWhite: #F6EEDC,
-  light:           #F6EEDC,
-  red:             #F07176,
-  dark:            #464646,
-  yellow:          #FCB957,
-  blue:            #25A8C4,
-  grey:            #95989a,
+$colors: ( primary : #219372,
+backgroundGreen: #18664E,
+backgroundWhite: #F6EEDC,
+light : #F6EEDC,
+red : #F07176,
+dark : #464646,
+yellow : #FCB957,
+blue : #25A8C4,
+grey : #95989a,
 );
-$toolbar-background:color($colors,backgroundWhite);
+$toolbar-background:color($colors, backgroundWhite);
 $popover-md-width: 140px;
 $searchbar-md-input-background-color:transparent;
 $text-color:#fff;
@@ -53,12 +45,11 @@ $text-color:#fff;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
 $card-ios-title-font-size: 1.8rem;
 $card-ios-text-color:#4d4d4d;
 $card-ios-border-radius: 10px;
 $button-ios-border-radius: 4px;
-$card-ios-background-color:color($colors,backgroundWhite);
+$card-ios-background-color:color($colors, backgroundWhite);
 $popover-ios-width: 130px;
 $popover-ios-border-radius: 6px;
 $searchbar-ios-input-background-color:#F6EEDC;
@@ -66,14 +57,13 @@ $searchbar-ios-input-background-color:#F6EEDC;
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
 $card-md-title-font-size: 1.8rem;
 $card-md-text-color:#4d4d4d;
 $card-md-padding-left: 16px;
 $card-md-margin-left: 12px;
 $card-md-border-radius: 10px;
 $button-md-border-radius: 4px;
-$card-md-background-color:color($colors,backgroundWhite);
+$card-md-background-color:color($colors, backgroundWhite);
 $popover-md-width: 130px;
 $popover-md-border-radius: 6px;
 $searchbar-md-input-box-shadow:0;
@@ -83,17 +73,12 @@ $searchbar-md-input-box-shadow:0;
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
-
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can
 // then be future customized. This import comes last
 // so that the above variables are used and Ionic's
 // default are overridden.
-
 @import "ionic.theme.default";
 
 
@@ -101,69 +86,74 @@ $searchbar-md-input-box-shadow:0;
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/ionicons/
-
 @import "ionic.ionicons";
 
 
 // Fonts
 // --------------------------------------------------
-
-@font-face{
-  font-family: 'Futura';
-  font-style: Light;
-  font-weight: 400;
-  src:url('..assets/fonts/Futura Book font_0.ttf');
+@font-face {
+    font-family: 'Futura';
+    font-style: Light;
+    font-weight: 400;
+    src: url('../assets/fonts/Futura Book font_0.ttf');
 }
 
-@font-face{
-  font-family: 'Futura';
-  font-style: medium;
-  font-weight: 600;
-  src:url('..assets/fonts/futura medium bt_0.ttf');
+@font-face {
+    font-family: 'Futura';
+    font-style: medium;
+    font-weight: 600;
+    src: url('../assets/fonts/futura medium bt_0.ttf');
 }
 
-@font-face{
-  font-family: 'Futura';
-  font-style: Bold;
-  font-weight: 700;
-  src:url('..assets/fonts/Futura Bold font_0.ttf');
+@font-face {
+    font-family: 'Futura';
+    font-style: Bold;
+    font-weight: 700;
+    src: url('../assets/fonts/Futura Bold font_0.ttf');
 }
 
-@font-face{
-  font-family: 'Futura';
-  font-style: Heavy;
-  font-weight: 900;
-  src:url('..assets/fonts/Futura Heavy.ttf');
+@font-face {
+    font-family: 'Futura';
+    font-style: Heavy;
+    font-weight: 900;
+    src: url('../assets/fonts/Futura Heavy.ttf');
 }
 
 $font-family-base:"Futura";
 
-div{
-  font-family: "Futura" !important;
-  font-weight: 400 !important;
-}
-h1{
-  font-family: "Futura" !important;
-  font-weight: 600 !important;
-}
-p{
-  color:#fff;
+div {
+    font-family: "Futura" !important;
+    font-weight: 400 !important;
 }
 
-h3,h2,button{
-  font-family: "Futura" !important;
-  font-weight: 500 !important;
-  //color: color($colors,primary);
+h1 {
+    font-family: "Futura" !important;
+    font-weight: 600 !important;
 }
-ion-item{
-  border-radius: 10px;
+
+p {
+    color: #fff;
 }
-ion-title{
-  color:color($colors,dark);
+
+h3,
+h2,
+button {
+    font-family: "Futura" !important;
+    font-weight: 500 !important; //color: color($colors,primary);
 }
-ion-img{
-  background: transparent;
+
+ion-item {
+    border-radius: 10px;
 }
-ion-input{
-  color:color($colors,dark);
+
+ion-title {
+    color: color($colors, dark);
+}
+
+ion-img {
+    background: transparent;
+}
+
+ion-input {
+    color: color($colors, dark);
 }
