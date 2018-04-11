@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { EventOpenPage } from '../event-open/event-open';
 import { BbcerclePage } from  '../bbcercle/bbcercle';
 /**
@@ -9,7 +9,6 @@ import { BbcerclePage } from  '../bbcercle/bbcercle';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-event',
   templateUrl: 'event.html',

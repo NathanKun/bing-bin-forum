@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { BbcerclePage } from '../bbcercle/bbcercle';
 /**
  * Generated class for the NewPostPage page.
@@ -8,7 +8,6 @@ import { BbcerclePage } from '../bbcercle/bbcercle';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-new-post',
   templateUrl: 'new-post.html',

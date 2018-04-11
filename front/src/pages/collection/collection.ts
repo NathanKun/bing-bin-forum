@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import { PostOpenPage } from '../post-open/post-open';
 import { PopoverComponent } from '../../components/popover/popover';
@@ -11,7 +11,6 @@ import { PopoverComponent } from '../../components/popover/popover';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-collection',
   templateUrl: 'collection.html',

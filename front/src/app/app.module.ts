@@ -7,19 +7,17 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 
-import { LoginPageModule } from '../pages/login/login.module';
-import { EventPageModule } from '../pages/event/event.module';
-import { EventOpenPageModule } from'../pages/event-open/event-open.module';
-import { BbcerclePageModule } from'../pages/bbcercle/bbcercle.module';
-import { PublicationPageModule } from '../pages/publication/publication.module';
-import { CollectionPageModule } from '../pages/collection/collection.module';
-import { PostOpenPageModule } from '../pages/post-open/post-open.module';
-import { NewPostPageModule } from '../pages/new-post/new-post.module';
-import { CommentPageModule } from '../pages/comment/comment.module';
-import { SearchPageModule } from '../pages/search/search.module';
+import { LoginPage } from '../pages/login/login';
+import { EventPage } from '../pages/event/event';
+import { EventOpenPage } from'../pages/event-open/event-open';
+import { BbcerclePage } from'../pages/bbcercle/bbcercle';
+import { PublicationPage } from '../pages/publication/publication';
+import { CollectionPage } from '../pages/collection/collection';
+import { PostOpenPage } from '../pages/post-open/post-open';
+import { NewPostPage } from '../pages/new-post/new-post';
+import { CommentPage } from '../pages/comment/comment';
+import { SearchPage } from '../pages/search/search';
 
-//import { PopoverComponent } from '../components/popover/popover';
-//import { PopSearchComponent } from '../components/popsearch/popsearch';
 import { ComponentsModule } from '../components/components.module';
 import { CategoryProvider } from '../providers/category/category';
 import { ThreadProvider } from '../providers/thread/thread';
@@ -31,15 +29,36 @@ import { LogProvider } from '../providers/log/log';
 @NgModule({
   declarations: [
     MyApp,
+    LoginPage,
+    EventPage,
+    EventOpenPage,
+    BbcerclePage,
+    PublicationPage,
+    CollectionPage,
+    PostOpenPage,
+    NewPostPage,
+    CommentPage,
+    SearchPage,
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    ComponentsModule
+    HttpClientModule,
+    ComponentsModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
+    EventPage,
+    EventOpenPage,
+    BbcerclePage,
+    PublicationPage,
+    CollectionPage,
+    PostOpenPage,
+    NewPostPage,
+    CommentPage,
+    SearchPage,
   ],
   providers: [
     StatusBar,
