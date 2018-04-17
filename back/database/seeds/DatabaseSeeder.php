@@ -57,15 +57,15 @@ class DatabaseSeeder extends Seeder
                                   'thread_count' => 0, 'post_count' => 0]);
         
         Category::create(['category_id' => 0, 'title' => 'Recycle', 'description' => 'Recycle category, threads enabled', 
-                                  'weight' => 0, 'enable_threads' => false, 'private' => false, 
+                                  'weight' => 0, 'enable_threads' => true, 'private' => false, 
                                   'thread_count' => 0, 'post_count' => 0]);
         
         Category::create(['category_id' => 0, 'title' => 'Exchange', 'description' => 'Exchange category, threads enabled', 
-                                  'weight' => 0, 'enable_threads' => false, 'private' => false, 
+                                  'weight' => 0, 'enable_threads' => true, 'private' => false, 
                                   'thread_count' => 0, 'post_count' => 0]);
         
         Category::create(['category_id' => 0, 'title' => 'Blable', 'description' => 'Blable category, threads enabled', 
-                                  'weight' => 0, 'enable_threads' => false, 'private' => false, 
+                                  'weight' => 0, 'enable_threads' => true, 'private' => false, 
                                   'thread_count' => 0, 'post_count' => 0]);
     }
     
@@ -96,28 +96,36 @@ class DatabaseSeeder extends Seeder
                                            'emit_date' => '1500000000', 'expire_date' => '1600000000']);
         
         
-        Thread::create(['category_id' => 1, 'author_id' => 'adminId', 'title' => 'event lazi oqsdq sdfsdf ssdsfd  sdfsfdfsd', 
-                        'locked' => false, 'pinned' => false, 'reply_count' => 0]);
-        
-        Post::create(['thread_id' => 1, 'author_id' => 'adminId', 'post_id' => NULL, 'read_by_op' => false, 'sequence' => 1,
-                      'content' => 'event lazi oqsdq sdfsdf ssdsfd  sdfsfdfsd is coming']);
-        
-        Post::create(['thread_id' => 1, 'author_id' => 'adminId', 'post_id' => NULL, 'read_by_op' => false, 'sequence' => 2,
-                      'content' => 'in 8102/12/25']);
-        
-        Post::create(['thread_id' => 1, 'author_id' => '001', 'post_id' => 1, 'read_by_op' => false, 'sequence' => 3,
-                      'content' => 'lol']);
+        Thread::create(['category_id' => 1, 'author_id' => 'adminId', 'title' => 'Imaginarium Festival', 
+                        'locked' => false, 'pinned' => false, 'reply_count' => 0, 'summary' => 'Le Tigre,Margny 19/05/2018-20/05/2018']);
+
+        DB::statement("UPDATE forum_threads SET forum_threads.main_image = '{
+            \"original\": {
+                \"url\": \"assets/imgs/IF.png\",
+                \"height\": null,
+                \"width\": null
+            }
+        }' where forum_threads.id = 1");
         
         
         Thread::create(['category_id' => 1, 'author_id' => 'adminId', 'title' => 'event fq gqdf gfd',
-                        'locked' => false, 'pinned' => false, 'reply_count' => 0]);
+                        'locked' => false, 'pinned' => false, 'reply_count' => 0, 'summary' => 'event fq gqdf gfd 2022/12/25']);
         
         Post::create(['thread_id' => 2, 'author_id' => 'adminId', 'post_id' => NULL, 'read_by_op' => false, 'sequence' => 1,
                       'content' => 'event lazi oqsdq sdfsdf ssdsfd  sdfsfdfsd is coming']);
         
+        Post::create(['thread_id' => 2, 'author_id' => 'adminId', 'post_id' => NULL, 'read_by_op' => false, 'sequence' => 2,
+                      'content' => 'in 8102/12/25']);
+        
+        Post::create(['thread_id' => 2, 'author_id' => '001', 'post_id' => 1, 'read_by_op' => false, 'sequence' => 3,
+                      'content' => 'lol']);
+        
+        Post::create(['thread_id' => 2, 'author_id' => 'adminId', 'post_id' => NULL, 'read_by_op' => false, 'sequence' => 4,
+                      'content' => 'event lazi oqsdq sdfsdf ssdsfd  sdfsfdfsd is coming']);
+        
         
         Thread::create(['category_id' => 1, 'author_id' => 'adminId', 'title' => 'event zezeat sdfsq raezt', 
-                        'locked' => false, 'pinned' => false, 'reply_count' => 0]);
+                        'locked' => false, 'pinned' => false, 'reply_count' => 0, 'summary' => 'event zezeat sdfsq raezt 2032/12/25']);
         
         Post::create(['thread_id' => 3, 'author_id' => 'adminId', 'post_id' => NULL, 'read_by_op' => false, 'sequence' => 1,
                       'content' => 'event zezeat sdfsq raezt is coming']);

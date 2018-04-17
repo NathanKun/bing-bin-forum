@@ -249,7 +249,13 @@ class ThreadController extends BaseController
         
         $thread = $this->model()
             ->where('forum_threads.id', $id)
-            ->leftJoin('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
+            // simple leftJoin will cause timestamps null
+            ->leftJoin(
+                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"), 
+                function($join) {
+                    $join->where('user_id', $this->user->id)
+                        ->on('pivot1.thread_id', '=', 'forum_threads.id');
+            })
             ->first()
             ->toArray();
         
@@ -286,7 +292,18 @@ class ThreadController extends BaseController
 
         $thread = $this->model()->create(['category_id' => $request->category_id,
                                          'author_id' => $this->user->id, 
-                                         'title' => $request->title]);
+                                         'title' => $request->title,
+                                         'summary' => $request->summary,
+                                         'main_image' => $request->main_image,
+                                         'img1' => $request->img1,
+                                         'img2' => $request->img2,
+                                         'img3' => $request->img3,
+                                         'img4' => $request->img4,
+                                         'img5' => $request->img5,
+                                         'img6' => $request->img6,
+                                         'img7' => $request->img7,
+                                         'img8' => $request->img8,
+                                         'img9' => $request->img9]);
         Post::create(['thread_id' => $thread->id,
                      'author_id' => $this->user->id,
                      'content' => $request->content]);

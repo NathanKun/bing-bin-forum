@@ -2,5 +2,5 @@
 !public/
 !.gitignore
 !uploads/
-uploads/*
+uploads/user/
 !uploads/.gitkeep

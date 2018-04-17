@@ -7,10 +7,11 @@ use App\Models\Post;
 use App\Models\Traits\HasAuthor;
 use App\Support\Traits\CachesData;
 use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
+use SahusoftCom\EloquentImageMutator\EloquentImageMutatorTrait;
 
 class Thread extends BaseModel
 {
-    use SoftDeletes, HasAuthor, CachesData, PivotEventTrait;
+    use SoftDeletes, HasAuthor, CachesData, PivotEventTrait, EloquentImageMutatorTrait;
 
     /**
      * Eloquent attributes
@@ -18,11 +19,19 @@ class Thread extends BaseModel
     protected $table = 'forum_threads';
 
     /**
+     * The photo fields should be listed here.
+     *
+     * @var array
+     */
+    protected $image_fields = ['main_image', 'img1', 'img2', 'img3', 'img4', 'img5', 'img6', 'img7', 'img8', 'img9'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['category_id', 'author_id', 'title', 'locked', 'pinned', 'reply_count'];
+    protected $fillable = ['category_id', 'author_id', 'title', 'locked', 'pinned', 'reply_count', 'summary',
+                            'main_image', 'img1', 'img2', 'img3', 'img4', 'img5', 'img6', 'img7', 'img8', 'img9'];
 
     /**
      * @var string
