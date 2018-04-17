@@ -14,7 +14,7 @@
 
 <ion-content padding id='eventOpen'>
   <img class='img' *ngIf="thread.main_image" [src]="thread.main_image.original.url" [alt]="thread.title" />
-  <div [innerHtml]="thread.posts[0].content"></div>
+  <div *ngIf="thread.posts" [innerHtml]="thread.posts[0].content"></div>
   <br>
   <br>
   <br>
