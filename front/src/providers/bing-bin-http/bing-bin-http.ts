@@ -11,12 +11,12 @@ import { Observable } from 'rxjs/Rx'
 export class BingBinHttpProvider {
 
   private options;
-  
+
   constructor(private http: HttpClient) { }
-  
+
   public setToken(token: string) {
     this.options = {
-      headers: new HttpHeaders({'Authorization': 'BingBinToken ' + token})
+      headers: new HttpHeaders({ 'Authorization': 'BingBinToken ' + token })
     };
   }
 
@@ -30,7 +30,7 @@ export class BingBinHttpProvider {
         (error: any) => { return this.errorHandler(error) }
       );
   }
-  
+
   public httpPost(url: string, params: {}) {
     return this.http.post(
       url,
@@ -41,7 +41,7 @@ export class BingBinHttpProvider {
         (error: any) => { return this.errorHandler(error) }
       );
   }
-  
+
   public httpPatch(url: string, params: {}) {
     return this.http.patch(
       url,
@@ -52,7 +52,7 @@ export class BingBinHttpProvider {
         (error: any) => { return this.errorHandler(error) }
       );
   }
-  
+
   public httpDelete(url: string) {
     return this.http.delete(
       url,
@@ -64,7 +64,7 @@ export class BingBinHttpProvider {
   }
 
   private errorHandler(error: any): Observable<any> {
-    if(error.error.hasOwnProperty('error')) {
+    if (error.error.hasOwnProperty('error')) {
       return Observable.of(error.error);
     } else {
       console.log(error);

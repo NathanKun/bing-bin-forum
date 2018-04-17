@@ -14,36 +14,43 @@ export class ThreadProvider {
   private fetchUrl(id: number) {
     return this.base + id;
   }
-  
+
   private deleteUrl(id: number) {
     return this.base + id;
   }
-  
+
   private markReadUrl(id: number) {
     return this.base + id + '/mark-read';
   }
-  
+
   private favoriteUrl(id: number) {
     return this.base + id + '/favorite';
   }
-  
+
   private unfavoriteUrl(id: number) {
     return this.base + id + '/unfavorite';
   }
-  
 
-  constructor(private bbh: BingBinHttpProvider) {
-  }
-  
+
+  constructor(private bbh: BingBinHttpProvider) { }
+
 
   index(page: number): Observable<any> {
     return this.bbh.httpGet(this.base + '?page=' + page);
   }
 
+  myThreads(page: number): Observable<any> {
+    return this.bbh.httpGet(this.myThreadsUrl + '?page=' + page);
+  }
+
+  myFavorite(page: number): Observable<any> {
+    return this.bbh.httpGet(this.myFavoriteUrl + '?page=' + page);
+  }
+
   store(category_id: number, title: string, content: string): Observable<any> {
     return this.bbh.httpPost(this.base, { category_id: category_id, title: title, content: content });
   }
-  
+
   deleteThread(id: number): Observable<any> {
     return this.bbh.httpDelete(this.deleteUrl(id));
   }
@@ -56,22 +63,14 @@ export class ThreadProvider {
     return this.bbh.httpGet(this.countNotReadUrl);
   }
 
-  myThreads(): Observable<any> {
-    return this.bbh.httpGet(this.myThreadsUrl);
-  }
-
-  myFavorite(): Observable<any> {
-    return this.bbh.httpGet(this.myFavoriteUrl);
-  }
-  
-  marlRead(id): Observable<any> {
+  markRead(id): Observable<any> {
     return this.bbh.httpPatch(this.markReadUrl(id), {});
   }
-  
+
   favorite(id): Observable<any> {
     return this.bbh.httpPatch(this.favoriteUrl(id), {});
   }
-  
+
   unfavorite(id): Observable<any> {
     return this.bbh.httpPatch(this.unfavoriteUrl(id), {});
   }

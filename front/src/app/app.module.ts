@@ -24,6 +24,7 @@ import { ThreadProvider } from '../providers/thread/thread';
 import { PostProvider } from '../providers/post/post';
 import { BingBinHttpProvider } from '../providers/bing-bin-http/bing-bin-http';
 import { LogProvider } from '../providers/log/log';
+import { BasepageProvider } from '../providers/basepage/basepage';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import { LogProvider } from '../providers/log/log';
     ThreadProvider,
     PostProvider,
     BingBinHttpProvider,
-    LogProvider
+    LogProvider,
+    BasepageProvider
   ]
 })
 export class AppModule {}
