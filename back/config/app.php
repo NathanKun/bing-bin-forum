@@ -161,6 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ForumServiceProvider::class,
         App\Frontend\ForumFrontendServiceProvider::class,
+		SahusoftCom\EloquentImageMutator\EloquentImageMutatorProvider::class,
 
     ],
 

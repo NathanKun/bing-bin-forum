@@ -21,9 +21,7 @@ export class EventPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad EventPage');
   }
-  openCerclePage(){
-    this.navCtrl.push(BbcerclePage);
-  }
+  
   openCardPage(){
     this.navCtrl.push(EventOpenPage);
   }
