@@ -3,16 +3,16 @@
   <h1 text-center text-sm-ceter text-md-center text-lg-center class="title">EVENEMENT</h1>
 
 
-  <ion-card (click)="openCardPage()">
+  <ion-card *ngFor="let event of events" (click)="openCardPage(event.id)">
 
-    <img src="assets/imgs/IF.png">
+    <img *ngIf="event.main_image" [src]="event.main_image.original.url" [alt]="event.title" />
 
     <ion-card-content>
       <ion-card-title>
-        Imaginarium Festival
+        {{ event.title }}
       </ion-card-title>
       <p text-wrap>
-        Le Tigre,Margny 19/05/2018-20/05/2018
+        {{ event.summary }}
       </p>
     </ion-card-content>
 

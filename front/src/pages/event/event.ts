@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { EventOpenPage } from '../event-open/event-open';
-import { BbcerclePage } from  '../bbcercle/bbcercle';
+import { BbcerclePage } from '../bbcercle/bbcercle';
+
+import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
+import { ThreadProvider } from '../../providers/thread/thread';
+import { LogProvider } from '../../providers/log/log';
+import { BasepageProvider } from '../../providers/basepage/basepage';
 /**
  * Generated class for the EventPage page.
  *
@@ -13,17 +18,29 @@ import { BbcerclePage } from  '../bbcercle/bbcercle';
   selector: 'page-event',
   templateUrl: 'event.html',
 })
-export class EventPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventPage');
-  }
+export class EventPage extends BasepageProvider {
   
-  openCardPage(){
-    this.navCtrl.push(EventOpenPage);
+  events: any = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public l: LogProvider,
+    private bbh: BingBinHttpProvider, private threadProvider: ThreadProvider) {
+
+    super(l);
+    
+    this.threadProvider.index(1, 1).subscribe(
+      (res) => {
+        this.doSubscribe(res, () => {
+          this.events = res.data;
+        }, () => {
+          
+        }, () => {
+          
+        });
+      });
+  }
+
+  openCardPage(threadId: number) {
+    this.navCtrl.push(EventOpenPage, {threadId: threadId});
   }
 
 

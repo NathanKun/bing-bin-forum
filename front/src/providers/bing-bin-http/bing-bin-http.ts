@@ -21,7 +21,6 @@ export class BingBinHttpProvider {
   }
 
   public httpGet(url: string) {
-    console.log(this.options);
     return this.http.get(
       url,
       this.options

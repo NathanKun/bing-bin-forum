@@ -107,7 +107,28 @@ class DatabaseSeeder extends Seeder
             }
         }' where forum_threads.id = 1");
         
+        Post::create(['thread_id' => 1, 'author_id' => 'adminId', 'post_id' => NULL, 'read_by_op' => false, 'sequence' => 1,
+                      'content' => "  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
+Tous ensemble, on rend la musique plus durable~
+ </p>
+ <h2>
+   Badge IF
+ </h2>
+ <p text-wrap> En triant correctement, vous gagnez des badges spéciales de l’IF.
+ </p>
+ <h2>
+   Bière EcoGo
+ </h2>
+ <p text-wrap> Tu peux prendre avoir une bière gratuite si tes éco points dépassent 500.
+ </p>
+ <h2>
+   Top 20 trieurs
+ </h2>
+ <p text-wrap> Nous avons préparé les merveilleux cadeaux pour les 20 meilleurs tieurs. L'activité s'arrête à 16h Dimanche.
+    Viens chercher ton cadeau au stand OVD de 16h à 19h 20 mai.
+ </p>"]);
         
+
         Thread::create(['category_id' => 1, 'author_id' => 'adminId', 'title' => 'event fq gqdf gfd',
                         'locked' => false, 'pinned' => false, 'reply_count' => 0, 'summary' => 'event fq gqdf gfd 2022/12/25']);
         

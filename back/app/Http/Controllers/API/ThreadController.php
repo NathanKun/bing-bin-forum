@@ -249,6 +249,7 @@ class ThreadController extends BaseController
         
         $thread = $this->model()
             ->where('forum_threads.id', $id)
+            ->with('posts')
             // simple leftJoin will cause timestamps null
             ->leftJoin(
                 DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"), 

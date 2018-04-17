@@ -22,7 +22,7 @@ export class LoginPage extends BasepageProvider {
   constructor(public navCtrl: NavController, public navParams: NavParams, public l: LogProvider,
     private bbh: BingBinHttpProvider, private threadProvider: ThreadProvider) {
 
-    super(l)
+    super(l);
 
     const params = new URLSearchParams(window.location.search.slice(1));
     const token = params.get('bbt');
@@ -34,13 +34,13 @@ export class LoginPage extends BasepageProvider {
     if (token != null && toPage != null) {
       this.bbh.setToken(token);
 
-      this.threadProvider.myThreads().subscribe(
+      this.threadProvider.myThreads(1).subscribe(
         (res) => {
           this.doSubscribe(res, () => {
             if (toPage === "event") {
-              navCtrl.push(EventPage);
+              navCtrl.setRoot(EventPage);
             } else if (toPage === "forum") {
-              navCtrl.push(BbcerclePage);
+              navCtrl.setRoot(BbcerclePage);
             } else {
               this.hint = 'page incorrect';
             }

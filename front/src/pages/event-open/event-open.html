@@ -7,37 +7,15 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Imaginarium Festival</ion-title>
+    <ion-title>{{ thread.title }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content padding id = 'eventOpen'>
-  <img src="assets/imgs/IF.png" class='img' >
-
-
-  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
-Tous ensemble, on rend la musique plus durable~
- </p>
- <h2>
-   Badge IF
- </h2>
- <p text-wrap> En triant correctement, vous gagnez des badges spéciales de l’IF.
- </p>
- <h2>
-   Bière EcoGo
- </h2>
- <p text-wrap> Tu peux prendre avoir une bière gratuite si tes éco points dépassent 500.
- </p>
- <h2>
-   Top 20 trieurs
- </h2>
- <p text-wrap> Nous avons préparé les merveilleux cadeaux pour les 20 meilleurs tieurs. L'activité s'arrête à 16h Dimanche.
-    Viens chercher ton cadeau au stand OVD de 16h à 19h 20 mai.
- </p>
-
- <br>
- <button ion-button float-right> Allons y </button>
- <br>
- <br>
+<ion-content padding id='eventOpen'>
+  <img class='img' *ngIf="thread.main_image" [src]="thread.main_image.original.url" [alt]="thread.title" />
+  <div [innerHtml]="thread.posts[0].content"></div>
+  <br>
+  <br>
+  <br>
 </ion-content>

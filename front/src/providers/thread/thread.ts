@@ -35,8 +35,8 @@ export class ThreadProvider {
   constructor(private bbh: BingBinHttpProvider) { }
 
 
-  index(page: number): Observable<any> {
-    return this.bbh.httpGet(this.base + '?page=' + page);
+  index(category_id: number, page: number): Observable<any> {
+    return this.bbh.httpGet(this.base + '?page=' + page + '&category_id=' + category_id);
   }
 
   myThreads(page: number): Observable<any> {
