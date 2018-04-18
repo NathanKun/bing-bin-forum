@@ -18,6 +18,9 @@ import { NewPostPage } from '../pages/new-post/new-post';
 import { CommentPage } from '../pages/comment/comment';
 import { SearchPage } from '../pages/search/search';
 
+import { PopoverComponent } from '../components/popover/popover';
+import { PopSearchComponent } from '../components/popsearch/popsearch';
+
 import { ComponentsModule } from '../components/components.module';
 import { CategoryProvider } from '../providers/category/category';
 import { ThreadProvider } from '../providers/thread/thread';
@@ -25,6 +28,7 @@ import { PostProvider } from '../providers/post/post';
 import { BingBinHttpProvider } from '../providers/bing-bin-http/bing-bin-http';
 import { LogProvider } from '../providers/log/log';
 import { BasepageProvider } from '../providers/basepage/basepage';
+import { AvatarProvider } from '../providers/avatar/avatar';
 
 
 @NgModule({
@@ -60,6 +64,8 @@ import { BasepageProvider } from '../providers/basepage/basepage';
     NewPostPage,
     CommentPage,
     SearchPage,
+    PopoverComponent,
+    PopSearchComponent
   ],
   providers: [
     StatusBar,
@@ -71,7 +77,8 @@ import { BasepageProvider } from '../providers/basepage/basepage';
     PostProvider,
     BingBinHttpProvider,
     LogProvider,
-    BasepageProvider
+    BasepageProvider,
+    AvatarProvider
   ]
 })
 export class AppModule {}

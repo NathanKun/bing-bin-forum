@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChildren } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import { PostOpenPage } from '../post-open/post-open';
@@ -8,10 +8,11 @@ import { NewPostPage } from '../new-post/new-post';
 import { SearchPage } from '../search/search';
 
 import { PopoverComponent } from '../../components/popover/popover';
-
+import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
 import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
+import { AvatarProvider } from '../../providers/avatar/avatar';
 
 
 @Component({
@@ -19,10 +20,44 @@ import { BasepageProvider } from '../../providers/basepage/basepage';
   templateUrl: 'bbcercle.html',
 })
 
-export class BbcerclePage {
+export class BbcerclePage extends BasepageProvider {
+  @ViewChildren('threadcard') cardList;
+  threads: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public popoverCtrl: PopoverController,
-    public l: LogProvider, private threadProvider: ThreadProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private bbh: BingBinHttpProvider, private threadProvider: ThreadProvider,
+    private avatarProvider: AvatarProvider, public l: LogProvider,
+    public popoverCtrl: PopoverController
+  ) {
+
+    super(l);
+
+    this.threadProvider.indexForum(1).subscribe(
+      (res) => {
+        this.doSubscribe(res, () => {
+          this.threads = res.data;
+
+          // calculate post time
+          this.threads.forEach((t, index) => {
+            this.threads[index]['timeSince'] = this.timeSince(new Date(t.created_at));
+          });
+        }, () => {
+
+        }, () => {
+
+        });
+      });
+  }
+
+  ngAfterViewInit() {
+    this.cardList.changes.subscribe(
+      () => {
+        this.threads.forEach((t, index) => {
+          this.avatarProvider.draw(t.author.id_usagi, t.author.id_leaf,
+            <HTMLCanvasElement>document.getElementById("thread-canvas-" + t.id));
+        });
+      }
+    );
   }
 
   openPostPage() {
@@ -35,6 +70,7 @@ export class BbcerclePage {
       direction: 'back',
     });
   }
+
   openCollectionPage() {
     this.navCtrl.push(CollectionPage);
   }
@@ -57,7 +93,6 @@ export class BbcerclePage {
   visible1 = false;
   visible2 = false;
   visible3 = false;
-  
   toggleCollection() {
     this.visible1 = !this.visible1;
   }

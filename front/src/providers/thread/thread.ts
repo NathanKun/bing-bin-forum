@@ -39,7 +39,7 @@ export class ThreadProvider {
   index(category_id: number, page: number): Observable<any> {
     return this.bbh.httpGet(this.base + '?page=' + page + '&category_id=' + category_id);
   }
-  
+
   indexForum(page: number): Observable<any> {
     return this.bbh.httpGet(this.base + '?page=' + page + '&forum=true');
   }
