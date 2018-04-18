@@ -185,13 +185,27 @@ class ThreadController extends BaseController
      */
     public function index(Request $request)
     {
-        $this->validate($request, ['category_id' => ['required'], 'page' => 'integer|min:1']);
+        $this->validate($request, ['category_id' => 'integer', 
+        							'page' => 'integer|min:1',
+        							'forum' => 'boolean']);
         
+        $category_id = $request->input('category_id') ? $request->input('category_id') : 0;
         $page = $request->input('page') ? $request->input('page') : 1;
+        $forum = $request->input('forum') ? $request->input('forum') : false; // mix catg2, 3, 4
 
-        $threads = $this->model()
-            ->withRequestScopes($request)
-            ->where('category_id', $request->input('category_id'))
+        $builder = $this->model()->withRequestScopes($request);
+
+        if($category_id != 0) {
+        	$builder = $builder->where('category_id', $category_id);
+        } else if($forum) {
+        	$builder = $builder->where('category_id', 2)
+        						->orWhere('category_id', 3)
+        						->orWhere('category_id', 4);
+        } else {
+        	$builder = $builder->where('category_id', 1); // fallback to event category
+        }
+
+        $threads = $builder
             // is current user favorite
             ->leftJoin(
                 DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"), 

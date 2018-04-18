@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-//import { AlertController } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import { PostOpenPage } from '../post-open/post-open';
 import { PublicationPage } from '../publication/publication';
@@ -9,15 +8,11 @@ import { NewPostPage } from '../new-post/new-post';
 import { SearchPage } from '../search/search';
 
 import { PopoverComponent } from '../../components/popover/popover';
-//import { PopSearchComponent } from '../../components/popsearch/popsearch';
 
+import { ThreadProvider } from '../../providers/thread/thread';
+import { LogProvider } from '../../providers/log/log';
+import { BasepageProvider } from '../../providers/basepage/basepage';
 
-/**
- * Generated class for the BbcerclePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-bbcercle',
@@ -26,32 +21,29 @@ import { PopoverComponent } from '../../components/popover/popover';
 
 export class BbcerclePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public popoverCtrl: PopoverController){
+  constructor(public navCtrl: NavController, public navParams: NavParams, public popoverCtrl: PopoverController,
+    public l: LogProvider, private threadProvider: ThreadProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CommentPage');
-  }
-
-  openPostPage(){
+  openPostPage() {
     this.navCtrl.push(PostOpenPage);
   }
 
-  openPublicationPage(){
-    this.navCtrl.push(PublicationPage,{},{
+  openPublicationPage() {
+    this.navCtrl.push(PublicationPage, {}, {
       animate: true,
       direction: 'back',
     });
   }
-  openCollectionPage(){
+  openCollectionPage() {
     this.navCtrl.push(CollectionPage);
   }
 
-  openNewPostPage(){
+  openNewPostPage() {
     this.navCtrl.push(NewPostPage);
   }
 
-  openSearchPage(){
+  openSearchPage() {
     this.navCtrl.push(SearchPage);
   }
 
@@ -65,14 +57,15 @@ export class BbcerclePage {
   visible1 = false;
   visible2 = false;
   visible3 = false;
-    toggleCollection() {
-     this.visible1 = !this.visible1;
-    }
-    toggleLike() {
-     this.visible2 = !this.visible2;
-    }
-    toggleComment() {
-     this.visible3 = !this.visible3;
-    }
+  
+  toggleCollection() {
+    this.visible1 = !this.visible1;
+  }
+  toggleLike() {
+    this.visible2 = !this.visible2;
+  }
+  toggleComment() {
+    this.visible3 = !this.visible3;
+  }
 
 }

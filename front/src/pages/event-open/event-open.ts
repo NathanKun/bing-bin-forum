@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
 import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
@@ -16,7 +15,7 @@ export class EventOpenPage extends BasepageProvider {
   thread: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, 
-               public l: LogProvider, private bbh: BingBinHttpProvider, private threadProvider: ThreadProvider) {
+               public l: LogProvider, private threadProvider: ThreadProvider) {
     
     super(l);
     

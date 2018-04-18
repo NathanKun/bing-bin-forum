@@ -6,7 +6,8 @@ import { BingBinHttpProvider } from '../bing-bin-http/bing-bin-http';
 @Injectable()
 export class ThreadProvider {
 
-  private base: string = 'https://api.bingbin.io/api/thread/';
+  //private base: string = 'https://api.bingbin.io/api/thread/';
+  private base: string = 'http://localhost:8000/api/thread/';
   private countNotReadUrl: string = this.base + 'not-read';
   private myThreadsUrl: string = this.base + 'my-threads';
   private myFavoriteUrl: string = this.base + 'my-favorite';
@@ -37,6 +38,10 @@ export class ThreadProvider {
 
   index(category_id: number, page: number): Observable<any> {
     return this.bbh.httpGet(this.base + '?page=' + page + '&category_id=' + category_id);
+  }
+  
+  indexForum(page: number): Observable<any> {
+    return this.bbh.httpGet(this.base + '?page=' + page + '&forum=true');
   }
 
   myThreads(page: number): Observable<any> {

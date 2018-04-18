@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { EventOpenPage } from '../event-open/event-open';
-import { BbcerclePage } from '../bbcercle/bbcercle';
 
-import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
 import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
@@ -23,7 +21,7 @@ export class EventPage extends BasepageProvider {
   events: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public l: LogProvider,
-    private bbh: BingBinHttpProvider, private threadProvider: ThreadProvider) {
+    private threadProvider: ThreadProvider) {
 
     super(l);
     
