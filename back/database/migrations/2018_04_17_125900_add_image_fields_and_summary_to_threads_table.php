@@ -13,17 +13,17 @@ class AddImageFieldsAndSummaryToThreadsTable extends Migration
     public function up()
     {
         Schema::table('forum_threads', function (Blueprint $table) {
-            $table->string('main_image')->nullable(true);
-            $table->string('img1')->nullable(true);
-            $table->string('img2')->nullable(true);
-            $table->string('img3')->nullable(true);
-            $table->string('img4')->nullable(true);
-            $table->string('img5')->nullable(true);
-            $table->string('img6')->nullable(true);
-            $table->string('img7')->nullable(true);
-            $table->string('img8')->nullable(true);
-            $table->string('img9')->nullable(true);
-            $table->string('summary')->nullable(true);
+            $table->string('main_image', '1000')->nullable(true);
+            $table->string('img1', '1000')->nullable(true);
+            $table->string('img2', '1000')->nullable(true);
+            $table->string('img3', '1000')->nullable(true);
+            $table->string('img4', '1000')->nullable(true);
+            $table->string('img5', '1000')->nullable(true);
+            $table->string('img6', '1000')->nullable(true);
+            $table->string('img7', '1000')->nullable(true);
+            $table->string('img8', '1000')->nullable(true);
+            $table->string('img9', '1000')->nullable(true);
+            $table->string('summary', '1000')->nullable(true);
         });
     }
 

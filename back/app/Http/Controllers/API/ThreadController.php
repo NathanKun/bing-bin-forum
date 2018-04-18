@@ -30,99 +30,106 @@ class ThreadController extends BaseController
     {
         return 'threads';
     }
-    
+
     /*
      * PATCH: Mark all post of a thread read by it's op
-     * 
+     *
      * @param int       $id         thread id
      * @param Request   $request    request
-     * 
+     *
      * @return JsonResponse
      */
-    public function markRead($id, Request $request) {
-        
+    public function markRead($id, Request $request)
+    {
         $model = $this->model()->find($id);
-        
+
         if (is_null($model) || !$model->exists) {
             return $this->notFoundResponse();
         }
-        
-        if($model->author_id !== $this->user->id && $this->user->id !== "adminId") {
+
+        if ($model->author_id !== $this->user->id && $this->user->id !== "adminId") {
             return $this->errorResponse("No Permission", 403);
         }
-        
+
         $model->markPostsReadByOp();
-        
+
         return $this->response($model);
     }
-    
+
     /*
      * PATCH: Mark favorite a thread by current user
-     * 
+     *
      * @param int       $id         thread id
      * @param Request   $request    request
-     * 
+     *
      * @return JsonResponse
      */
-    public function favorite($id, Request $request) {
+    public function favorite($id, Request $request)
+    {
         return $this->doFavorite($id, $request, true);
     }
-    
+
     /*
      * PATCH: Unmark favorite a thread by current user
-     * 
+     *
      * @param int       $id         thread id
      * @param Request   $request    request
-     * 
+     *
      * @return JsonResponse
      */
-    public function unFavorite($id, Request $request) {
+    public function unFavorite($id, Request $request)
+    {
         return $this->doFavorite($id, $request, false);
     }
-    
+
     /*
      * Internal functoin, mark/unmark favorite a thread by current user
      *
      * @return JsonResponse
      */
-    private function doFavorite($id, Request $request, bool $favorite) {
-        
+    private function doFavorite($id, Request $request, bool $favorite)
+    {
         $model = $this->model()->find($id);
-        
+
         if (is_null($model) || !$model->exists) {
             return $this->notFoundResponse();
         }
-        
-        if($favorite) 
-            $result = $model->markFavorite($this->user->id); 
-        else 
+
+        if ($favorite) {
+            $result = $model->markFavorite($this->user->id);
+        } else {
             $result = $model->unmarkFavorite($this->user->id);
-        
-        if($result) return $this->response($model);
-        else return $this->errorResponse("Thread had already been " . 
+        }
+
+        if ($result) {
+            return $this->response($model);
+        } else {
+            return $this->errorResponse("Thread had already been " .
                                          ($favorite ? "favorited" : "unfavorited"), 400);
+        }
     }
-    
+
     /**
      * GET: return number of threads written by current user that have new response
      *
      * @return JsonResponse
      */
-    public function countNotReadThreadsOfUser(Request $request) {
+    public function countNotReadThreadsOfUser(Request $request)
+    {
         $counter = 0;
         $threads = $this->user->threads()->with('posts')->get()->toArray();
-        foreach($threads as $t) {
-            foreach($t['posts'] as $p) {
-                if($p['read_by_op'] === 0) {
+        foreach ($threads as $t) {
+            foreach ($t['posts'] as $p) {
+                if ($p['read_by_op'] === 0) {
                     $counter++;
                     break;
                 }
             }
         };
-        
+
         return $this->response(array('not_read' => $counter));
     }
-    
+
     /**
      * GET: return all favorited threads of current user
      *
@@ -131,26 +138,28 @@ class ThreadController extends BaseController
     public function myFavorite(Request $request)
     {
         $this->validate($request, ['page' => 'integer|min:1']);
-        
+
         $page = $request->input('page') ? $request->input('page') : 1;
-        
+
         $threads = $this->model()
             ->withRequestScopes($request)
+            ->with('posts')
+            ->with('author')
             ->join('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
             ->where('user_id', $this->user->id)
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
             ->get()
             ->toArray();
-        
+
         // remove unwanted fields
-        foreach($threads as &$t) {
-            $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
+        foreach ($threads as &$t) {
+            $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id', 'posts']);
         }
 
         return $this->response($threads);
     }
-    
+
     /**
      * GET: return all threads written by current user
      *
@@ -159,19 +168,21 @@ class ThreadController extends BaseController
     public function myThreads(Request $request)
     {
         $this->validate($request, ['page' => 'integer|min:1']);
-        
+
         $page = $request->input('page') ? $request->input('page') : 1;
-        
+
         $threads = User::find($this->user->id)
             ->threads()
+            ->with('posts')
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
             ->get()
             ->toArray();
-        
+
         // remove unwanted fields
-        foreach($threads as &$t) {
-            $t = array_except($t, ['pinned', 'locked']);
+        foreach ($threads as &$t) {
+            $t['content'] = $t['posts'][0]['content'];
+            $t = array_except($t, ['pinned', 'locked', 'posts']);
         }
 
         return $this->response($threads);
@@ -185,37 +196,40 @@ class ThreadController extends BaseController
      */
     public function index(Request $request)
     {
-        $this->validate($request, ['category_id' => 'integer', 
-        							'page' => 'integer|min:1',
-        							'forum' => 'boolean']);
-        
+        $this->validate($request, ['category_id' => 'integer',
+                                    'page' => 'integer|min:1',
+                                    'forum' => 'boolean']);
+
         $category_id = $request->input('category_id') ? $request->input('category_id') : 0;
         $page = $request->input('page') ? $request->input('page') : 1;
         $forum = $request->input('forum') ? $request->input('forum') : false; // mix catg2, 3, 4
 
-        $builder = $this->model()->withRequestScopes($request);
+        $builder = $this->model()
+            ->with('posts')
+            ->with('author');
 
-        if($category_id != 0) {
-        	$builder = $builder->where('category_id', $category_id);
-        } else if($forum) {
-        	$builder = $builder->where('category_id', 2)
-        						->orWhere('category_id', 3)
-        						->orWhere('category_id', 4);
+        if ($category_id != 0) {
+            $builder = $builder->where('category_id', $category_id);
+        } elseif ($forum) {
+            $builder = $builder->where('category_id', 2)
+                                ->orWhere('category_id', 3)
+                                ->orWhere('category_id', 4);
         } else {
-        	$builder = $builder->where('category_id', 1); // fallback to event category
+            $builder = $builder->where('category_id', 1); // fallback to event category
         }
 
         $threads = $builder
             // is current user favorite
             ->leftJoin(
-                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"), 
-                function($join) {
+                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"),
+                function ($join) {
                     $join->where('user_id', $this->user->id)
                         ->on('pivot1.thread_id', '=', 'forum_threads.id');
-            })
+                }
+            )
             // favorite count
             /*->leftJoin(
-                DB::raw("(SELECT thread_id, count(user_id) AS `favorite_count` FROM forum_favorite_threads GROUP BY thread_id) as `pivot2`"), 
+                DB::raw("(SELECT thread_id, count(user_id) AS `favorite_count` FROM forum_favorite_threads GROUP BY thread_id) as `pivot2`"),
                 function($join) {
                     $join->on('pivot2.thread_id', '=', 'forum_threads.id');
             })*/
@@ -224,12 +238,12 @@ class ThreadController extends BaseController
             ->take(BaseController::threadsByPage)
             ->get()
             ->toArray();
-        
+
         // remove unwanted fields
-        foreach($threads as &$t) {
+        foreach ($threads as &$t) {
             $t['favorite'] = (!is_null($t['user_id']) && $t['user_id'] === $this->user->id);
-            
-            $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
+            $t['content'] = $t['posts'][0]['content'];
+            $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id', 'posts']);
         }
 
         return $this->response($threads);
@@ -260,20 +274,22 @@ class ThreadController extends BaseController
             $this->authorize('view', $thread->category);
             $this->checkPermission();
         }*/
-        
+
         $thread = $this->model()
             ->where('forum_threads.id', $id)
             ->with('posts')
+            ->with('author')
             // simple leftJoin will cause timestamps null
             ->leftJoin(
-                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"), 
-                function($join) {
+                DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"),
+                function ($join) {
                     $join->where('user_id', $this->user->id)
                         ->on('pivot1.thread_id', '=', 'forum_threads.id');
-            })
+                }
+            )
             ->first()
             ->toArray();
-        
+
         $thread['favorite'] = !is_null($thread['user_id']);
         $thread = array_except($thread, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
 
@@ -287,7 +303,7 @@ class ThreadController extends BaseController
      * @return JsonResponse|Response
      */
     public function store(Request $request)
-    {        
+    {
         $this->validate($request, [
             //'author_id' => ['required', 'string'],
             'title'     => ['required'],
@@ -295,7 +311,7 @@ class ThreadController extends BaseController
         ]);
 
         $category = Category::find($request->input('category_id'));
-        if(is_null($category)) {
+        if (is_null($category)) {
             return $this->errorResponse("Category id not exists", 404);
         }
 
@@ -306,7 +322,7 @@ class ThreadController extends BaseController
         }
 
         $thread = $this->model()->create(['category_id' => $request->category_id,
-                                         'author_id' => $this->user->id, 
+                                         'author_id' => $this->user->id,
                                          'title' => $request->title,
                                          'summary' => $request->summary,
                                          'main_image' => $request->main_image,
@@ -336,7 +352,7 @@ class ThreadController extends BaseController
     public function restore($id, Request $request)
     {
         $this->checkPermission();
-        
+
         $thread = $this->model()->withTrashed()->find($id);
 
         /*$this->authorize('deleteThreads', $thread->category);*/
@@ -364,15 +380,13 @@ class ThreadController extends BaseController
 
         // If the user is logged in, filter the threads according to read status
         if (auth()->check()) {
-            $threads = $threads->filter(function ($thread)
-            {
+            $threads = $threads->filter(function ($thread) {
                 return $thread->userReadStatus;
             });
         }
 
         // Filter the threads according to the user's permissions
-        $threads = $threads->filter(function ($thread)
-        {
+        $threads = $threads->filter(function ($thread) {
             return (!$thread->category->private || Gate::allows('view', $thread->category));
         });
 
@@ -394,8 +408,7 @@ class ThreadController extends BaseController
         $primaryKey = auth()->user()->getKeyName();
         $userID = auth()->user()->{$primaryKey};
 
-        $threads->transform(function ($thread) use ($userID)
-        {
+        $threads->transform(function ($thread) use ($userID) {
             return $thread->markAsRead($userID);
         });
 
@@ -434,7 +447,7 @@ class ThreadController extends BaseController
     public function lock($id, Request $request)
     {
         $this->checkPermission();
-        
+
         $thread = $this->model()->where('locked', 0)->find($id);
 
         $category = !is_null($thread) ? $thread->category : [];
@@ -452,7 +465,7 @@ class ThreadController extends BaseController
     public function unlock($id, Request $request)
     {
         $this->checkPermission();
-        
+
         $thread = $this->model()->where('locked', 1)->find($id);
 
         $category = !is_null($thread) ? $thread->category : [];
@@ -470,7 +483,7 @@ class ThreadController extends BaseController
     public function pin($id, Request $request)
     {
         $this->checkPermission();
-        
+
         $thread = $this->model()->where('pinned', 0)->find($id);
 
         $category = !is_null($thread) ? $thread->category : [];
@@ -488,7 +501,7 @@ class ThreadController extends BaseController
     public function unpin($id, Request $request)
     {
         $this->checkPermission();
-        
+
         $thread = $this->model()->where('pinned', 1)->find($id);
 
         $category = ($thread) ? $thread->category : [];
@@ -506,7 +519,7 @@ class ThreadController extends BaseController
     public function rename($id, Request $request)
     {
         $this->checkPermission();
-        
+
         $this->validate($request, ['title' => ['required']]);
 
         $thread = $this->model()->find($id);
