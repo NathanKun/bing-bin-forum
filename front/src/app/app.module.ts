@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
+import { LimitToDirective } from './limit-to-directive';
 
 import { LoginPage } from '../pages/login/login';
 import { EventPage } from '../pages/event/event';
@@ -34,6 +35,7 @@ import { AvatarProvider } from '../providers/avatar/avatar';
 @NgModule({
   declarations: [
     MyApp,
+    LimitToDirective,
     LoginPage,
     EventPage,
     EventOpenPage,

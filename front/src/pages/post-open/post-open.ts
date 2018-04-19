@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChildren } from '@angular/core';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { CommentPage } from '../comment/comment';
+
+import { ThreadProvider } from '../../providers/thread/thread';
+import { PostProvider } from '../../providers/post/post';
+import { LogProvider } from '../../providers/log/log';
+import { BasepageProvider } from '../../providers/basepage/basepage';
+import { AvatarProvider } from '../../providers/avatar/avatar';
 
 /**
  * Generated class for the PostOpenPage page.
@@ -13,15 +19,68 @@ import { CommentPage } from '../comment/comment';
   selector: 'page-post-open',
   templateUrl: 'post-open.html',
 })
-export class PostOpenPage {
+export class PostOpenPage extends BasepageProvider {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  @ViewChildren('commentrow') commentrows;
+  loading: any;
+  thread: any;
+  commentInput: string = '';
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public l: LogProvider, private threadProvider: ThreadProvider,
+    private avatarProvider: AvatarProvider, private postProvider: PostProvider,
+    public loadingCtrl: LoadingController, private alertCtrl: AlertController
+  ) {
+
+    super(l);
+
+    this.loadPage();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PostOpenPage');
+  private loadPage() {
+
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
+    this.loading.present();
+
+    this.threadProvider.getThread(this.navParams.get('postId')).subscribe((res) => {
+      this.doSubscribe(res,
+        () => {
+          this.loading.dismiss();
+          this.thread = res.data;
+          this.thread['timeSince'] = this.timeSince(new Date(this.thread.created_at));
+        }, () => {
+
+        }, () => {
+
+        });
+    });
   }
-  openCommentPage(){
+
+  ngAfterViewInit() {
+    this.commentrows.changes.subscribe(
+      () => {
+        // author avatars
+        this.avatarProvider.draw(this.thread.author.id_usagi, this.thread.author.id_leaf,
+          <HTMLCanvasElement>document.getElementById("canvas-author"));
+
+        // leave comment avatar
+        this.avatarProvider.draw(
+          this.avatarProvider.userRabbitId, this.avatarProvider.userLeafId,
+          <HTMLCanvasElement>document.getElementById("canvas-user"));
+
+        // comment avatars
+        this.thread.posts.forEach((p, index) => {
+          if (index === 0) return;
+          this.avatarProvider.draw(p.author.id_usagi, p.author.id_leaf,
+            <HTMLCanvasElement>document.getElementById("canvas-comment-" + p.id));
+        });
+      }
+    );
+  }
+
+  openCommentPage() {
     this.navCtrl.push(CommentPage);
   }
 
@@ -30,19 +89,59 @@ export class PostOpenPage {
   visible2 = false;
   visible3 = false;
 
-  toggle() {
-   this.visible = !this.visible;
+  doComment() {
+    // limit-to directive not working perfectly, check long again
+    if (this.commentInput.length > 255) {
+      console.log('too long');
+      let alert = this.alertCtrl.create({
+        title: 'Oops',
+        subTitle: 'Votre commentaire est trop long',
+        buttons: ['OK']
+      });
+      alert.present();
+    } else {
+      let loading = this.loadingCtrl.create();
+      loading.present();
+      this.postProvider.store(this.thread.id, this.commentInput, 0,
+        this.avatarProvider.userId).subscribe((res) => {
+          loading.dismiss();
+          this.doSubscribe(res, () => {
+            this.commentInput = '';
+            this.loadPage();
+          }, () => {
+
+          }, () => {
+
+          })
+        });
+    }
   }
-    toggleCollection() {
-     this.visible1 = !this.visible1;
-    }
-    toggleLike() {
-     this.visible2 = !this.visible2;
-    }
-    toggleComment() {
-     this.visible3 = !this.visible3;
-    }
 
+  // like thread = like first post
+  // so like thread and like post use the same method
+  // if is like/unlike a thread, need to pass the thread object in
+  // for changing the like counter
+  togglePostLike(post: any, thread?: any) {
+    if (post.is_current_user_like) {
+      this.postProvider.unlikePost(post.id).subscribe();
+      if(thread) thread.like_count--;
 
+    } else {
+      this.postProvider.likePost(post.id).subscribe();
+      if(thread) thread.like_count++;
+    }
+    post.is_current_user_like = !post.is_current_user_like;
+  }
+
+  toggleThreadFavorite(thread: any) {
+    if (thread.favorite) {
+      this.threadProvider.unfavorite(thread.id).subscribe();
+      thread.favorite_count--;
+    } else {
+      this.threadProvider.favorite(thread.id).subscribe();
+      thread.favorite_count++;
+    }
+    thread.favorite = !thread.favorite;
+  }
 
 }

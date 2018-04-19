@@ -1,7 +1,17 @@
 page-post-open {
+
+ion-row + ion-row {
+  margin-top: 20px;
+}
+
   #postOpen{
     background-color: color($colors,backgroundWhite);
   }
+
+  #leave-comment-row {
+    margin-bottom: 10px;
+  }
+
   h4{
     color: color($colors,dark);
     font-size: 24px;
@@ -37,7 +47,6 @@ page-post-open {
   ion-icon.collection{
     font-size: 26px;
     color:color($colors,yellow);
-    padding-left: 2rem;
   }
   ion-icon.like{
     font-size: 20px;

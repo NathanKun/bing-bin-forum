@@ -6,7 +6,7 @@ import { BingBinHttpProvider } from '../bing-bin-http/bing-bin-http';
 @Injectable()
 export class PostProvider {
 
-  private base: string = 'https://api.bingbin.io/api/category/';
+  private base: string = 'https://api.bingbin.io/api/post/';
 
   private fetchUrl(id: number) {
     return this.base + id;
@@ -36,8 +36,8 @@ export class PostProvider {
     return this.bbh.httpGet(this.base);
   }
 
-  store(thread_id: string, content: string, post_id: number, author_id: boolean,
-    isPrivate: boolean, category_id: number): Observable<any> {
+  store(thread_id: string, content: string, post_id: number, author_id: string)
+    : Observable<any> {
     var params = { thread_id: thread_id, content: content, author_id: author_id }
     if (post_id != 0) {
       params['post_id'] = post_id;

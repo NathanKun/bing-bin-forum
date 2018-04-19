@@ -1,86 +1,81 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title >Compost appartement</ion-title>
+    <ion-title *ngIf='thread'>{{ thread.title }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content padding id = 'postOpen'>
-  <h4 class='title'>Compost appartement</h4>
-  <ion-row>
-    <ion-col col-1>
-    <ion-img width ="20" height ="10" src="assets/imgs/avatar.png"></ion-img>
-    </ion-col>
-  <ion-col col-7 text-left>
-  <h2>Lily Jin</h2>
-  <b class='location'>Compiègne</b>
-  </ion-col>
+<ion-content padding id='postOpen'>
+  <div *ngIf='thread'>
 
-  <ion-col col-4>
-  <ion-note color="grey">Il y a 3 heure(s)</ion-note>
-  </ion-col>
-  </ion-row>
-
-
-
-  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
-Tous ensemble, on rend la musique plus durable~
- </p>
-  <img src="assets/imgs/compost.jpg"  >
-  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
-Tous ensemble, on rend la musique plus durable~
- </p>
-  <img src="assets/imgs/compost.jpg"  >
-  <p text-wrap> Bing Bin assisste l’équipe imaginarium et participe au festival avec vous. Je reconnais tes déchets et te propose la solution appropriée.
-Tous ensemble, on rend la musique plus durable~
- </p>
-  <img src="assets/imgs/compost.jpg" >
-<br>
-<br>
-  <ion-row>
-    <ion-col col-2 >
-       <ion-img height="14" width="7" src="assets/imgs/avatar.png"></ion-img>
-    </ion-col>
-    <ion-col col-9>
-       <ion-input placeholder="Ajouter un commentaire" type="text" value=""></ion-input>
-    </ion-col>
-    <ion-col col-1>
-       <button ion-button small float-right>Ok</button>
-    </ion-col>
-  </ion-row>
-
-  <ion-item>
-  <ion-grid>
+    <!-- content section -->
+    <h4 class='title'>{{ thread.title }}</h4>
     <ion-row>
-      <ion-col col-2 >
-         <ion-img height="14" width="7" src="assets/imgs/avatar.png"></ion-img>
-       </ion-col>
-       <ion-col col-9 text-wrap>
-         <h5>Name</h5>
-         <b class='input'>Tu peux le mettre sur le balcon!fwrfubububuqwdbqkbdiqbeiufbeufbuiebfibwf </b>
-       </ion-col>
       <ion-col col-1>
-        <ion-icon [name]="visible? 'heart' : 'heart-outline'" (click)="toggle()" color="red" small></ion-icon>
+        <canvas id="canvas-author"></canvas>
+      </ion-col>
+      <ion-col col-7 text-left>
+        <h2>{{ thread.author.firstname }}</h2>
+        <b class='location'>{{ thread.location }}</b>
+      </ion-col>
+
+      <ion-col col-4>
+        <ion-note color="grey">{{ thread.timeSince }}</ion-note>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  </ion-item>
+    <p>{{ thread.posts[0].content }}</p>
+    <img [src]="thread.main_image.original.url">
+    <br>
+    <br>
 
+    <!-- leave comment section -->
+    <ion-row id="leave-comment-row">
+      <ion-col col-2>
+        <canvas id="canvas-user"></canvas>
+      </ion-col>
+      <ion-col col-9>
+        <ion-input limit-to="255" [(ngModel)]="commentInput" placeholder="Ajouter un commentaire" type="text"></ion-input>
+      </ion-col>
+      <ion-col col-1>
+        <button ion-button small float-right (click)="doComment()">Ok</button>
+      </ion-col>
+    </ion-row>
+
+    <!-- comments section -->
+    <ion-item *ngIf="thread.posts.length > 1">
+      <!-- First post is the content of thread -->
+      <ion-grid>
+        <ion-row #commentrow *ngFor="let post of thread.posts | slice:1">
+          <ion-col col-2>
+            <canvas [id]="'canvas-comment-' + post.id"></canvas>
+          </ion-col>
+          <ion-col col-9 text-wrap>
+            <h5>{{ post.author.firstname }}</h5>
+            <b class='input'>{{ post.content }}</b>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon [name]="post.is_current_user_like ? 'heart' : 'heart-outline'" (click)="togglePostLike(post)" color="red" small></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-row>
-    <ion-col col-4>
-      <ion-icon [name]="visible1? 'star' : 'star-outline'" (click)="toggleCollection()" class = 'collection'></ion-icon>
-    </ion-col>
-    <ion-col col-8 text-right>
-      <b class= 'number'>15</b>
-      <ion-icon [name]="visible2? 'heart' : 'heart-outline'" (click)="toggleLike()" class = 'like'></ion-icon>
-      <b class= 'number'>16</b>
-      <ion-icon [name]="visible3? 'square' : 'square-outline'" (click)="toggleComment()"(click)="openCommentPage()" class='comment'></ion-icon>
-    </ion-col>
-  </ion-row>
-</ion-toolbar>
+      <ion-col *ngIf='thread' col-4>
+        <b class='number'>{{ thread.favorite_count }}</b>
+        <ion-icon [name]="thread.favorite ? 'star' : 'star-outline'" (click)="toggleThreadFavorite(thread)" class='collection'></ion-icon>
+      </ion-col>
+      <ion-col *ngIf='thread' col-8 text-right>
+        <b class='number'>{{ thread.like_count }}</b>
+        <ion-icon [name]="thread.posts[0].is_current_user_like ? 'heart' : 'heart-outline'" (click)="togglePostLike(thread.posts[0], thread)" class='like'></ion-icon>
+        <b class='number'>{{ thread.reply_count }}</b>
+        <ion-icon [name]="'square-outline'" (click)="openCommentPage(thread.id)" class='comment'></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-footer>
