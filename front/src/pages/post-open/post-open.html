@@ -11,11 +11,11 @@
 
     <!-- content section -->
     <h4 class='title'>{{ thread.title }}</h4>
-    <ion-row>
+    <ion-row class="head">
       <ion-col col-2>
         <canvas id="canvas-author"></canvas>
       </ion-col>
-      <ion-col col-7 text-left>
+      <ion-col col-6 text-left>
         <h2>{{ thread.author.firstname }}</h2>
         <b class='location'>{{ thread.location }}</b>
       </ion-col>
@@ -35,7 +35,7 @@
         <canvas id="canvas-user"></canvas>
       </ion-col>
       <ion-col col-9>
-        <ion-input limit-to="255" [(ngModel)]="commentInput" placeholder="Ajouter un commentaire" type="text"></ion-input>
+        <ion-input id='leave-comment-input' limit-to="255" [(ngModel)]="commentInput" placeholder="Ajouter un commentaire" type="text"></ion-input>
       </ion-col>
       <ion-col col-1>
         <button ion-button small float-right (click)="doComment()">Ok</button>
@@ -46,7 +46,7 @@
     <ion-item *ngIf="thread.posts.length > 1">
       <!-- First post is the content of thread -->
       <ion-grid>
-        <ion-row #commentrow *ngFor="let post of thread.posts | slice:1">
+        <ion-row #commentrow class='commentrow' *ngFor="let post of thread.posts | slice:1">
           <ion-col col-2>
             <canvas [id]="'canvas-comment-' + post.id"></canvas>
           </ion-col>

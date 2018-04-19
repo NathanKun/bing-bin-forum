@@ -1,80 +1,103 @@
 page-post-open {
+  canvas {
+    width: 7vh !important;
+    height: 7vh !important;
+  }
 
-ion-row + ion-row {
-  margin-top: 20px;
-}
+  ion-row + ion-row {
+    margin-top: 20px;
+  }
 
-  #postOpen{
+  #leave-comment-input {
+    padding-right: 20px;
+  }
+
+  .commentrow {
+    min-height: 8vh;
+  }
+
+  ion-row.head {
+    height: 8vh;
+  }
+
+  #postOpen {
     background-color: color($colors,backgroundWhite);
   }
 
   #leave-comment-row {
     margin-bottom: 10px;
+    height: 8vh;
   }
 
-  h4{
+  h4 {
     color: color($colors,dark);
     font-size: 24px;
     margin-top: 1em;
     margin-bottom: 1em;
   }
 
-  h2{
+  h2 {
     font-size: 15px;
     font-weight: 400;
     color: color($colors,grey);
     padding-left: 1.4rem;
-    margin-bottom: .3em;
+    margin-bottom: 0.3em;
   }
 
-  b.location, .number{
+  .number,
+  b.location {
     color: color($colors,grey);
     font-size: 15px;
     font-weight: 400;
-    padding-left: .8em;
+    padding-left: 0.8em;
   }
 
-
-  b.input{
+  b.input {
     color: color($colors,dark);
     font-size: 15px;
     font-weight: 400;
   }
-  p{
+
+  p {
     color: color($colors,dark);
     font-size: 15px;
- }
-  ion-icon.collection{
-    font-size: 26px;
-    color:color($colors,yellow);
   }
-  ion-icon.like{
+
+  ion-icon.collection {
+    font-size: 26px;
+    color: color($colors,yellow);
+  }
+
+  ion-icon.like {
     font-size: 20px;
-    color:color($colors,red);
+    color: color($colors,red);
     padding-top: 5px;
   }
-  ion-icon.comment{
+
+  ion-icon.comment {
     font-size: 20px;
-    color:color($colors,primary);
+    color: color($colors,primary);
     padding-right: 2rem;
   }
-  ion-input{
+
+  ion-input {
     background-color: color($colors,backgroundWhite);
     color: color($colors,dark);
     font-size: 15px;
   }
-.comment{
-  cursor: pointer;
-}
-h5{
-  color:color($colors,primary);
-  font-size: 15px;
-  font-weight: 400;
-}
 
-ion-row{
-  margin-top: -.5em;
-  margin-bottom: -.5em;
-}
+  .comment {
+    cursor: pointer;
+  }
 
+  h5 {
+    color: color($colors,primary);
+    font-size: 15px;
+    font-weight: 400;
+  }
+
+  ion-row {
+    margin-top: -.5em;
+    margin-bottom: -.5em;
+  }
 }

@@ -2,7 +2,12 @@ page-bbcercle {
   #bbcercle {
     background-color: color($colors, backgroundGreen);
   }
-  
+
+  canvas {
+    width: 7vh !important;
+    height: 7vh !important;
+  }
+
   canvas {
     width: 5em;
     height: auto;
@@ -109,6 +114,7 @@ page-bbcercle {
   ion-row.head {
     align-items: stretch;
     margin-top: -1.5em;
+    height: 8vh;
   }
 
   ion-row.foot {
