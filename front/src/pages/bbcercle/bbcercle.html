@@ -27,19 +27,19 @@
         </ion-col>
         <ion-col col-9 text-left>
           <h2>{{ thread.author.firstname }}</h2>
-          <b>Compiègne</b>
+          <b>{{ thread.location }}</b>
         </ion-col>
         <ion-col col-1>
-          <ion-icon name="more" (click)="presentPopover($event)" color="dark"></ion-icon>
+          <!-- <ion-icon name="more" (click)="presentPopover($event)" color="dark"></ion-icon> -->
         </ion-col>
       </ion-row>
     </ion-card-content>
 
-    <ion-card-content class='card-content' (click)="openPostPage()">
-      <p>{{ thread.content }}</p>
+    <ion-card-content class='card-content' (click)="openPostPage(thread.id)">
+      <p>{{ thread.content.length < 255 ? thread.content : (thread.content.substring(0, 255) + '...')}}</p>
     </ion-card-content>
 
-    <img *ngIf="thread.main_image" [src]="thread.main_image.original.url" class='post-image' (click)="openPostPage()" />
+    <img *ngIf="thread.main_image" [src]="thread.main_image.original.url" class='post-image' (click)="openPostPage(thread.id)" />
 
     <ion-row class='foot'>
       <ion-col col-6 text-left>
@@ -47,11 +47,11 @@
         <b class='time'>{{ thread.timeSince }}</b>
       </ion-col>
       <ion-col col-6 text-right>
-        <ion-icon [name]="visible1? 'star' : 'star-outline'" (click)="toggleCollection()" class='collection'></ion-icon>
+        <ion-icon [name]="thread.favorite ? 'star' : 'star-outline'" (click)="toggleCollection(thread)" class='collection'></ion-icon>
         <b>{{ thread.favorite_count }}</b>
-        <ion-icon [name]="visible2? 'heart' : 'heart-outline'" (click)="toggleLike()" class='like'></ion-icon>
+        <ion-icon [name]="thread.like ? 'heart' : 'heart-outline'" (click)="toggleLike(thread)" class='like'></ion-icon>
         <b>{{ thread.like_count }}</b>
-        <ion-icon [name]="visible3? 'square' : 'square-outline'" (click)="toggleComment()" class='comment'></ion-icon>
+        <ion-icon [name]="'square-outline'" (click)="openPostPage(thread.id)" class='comment'></ion-icon>
       </ion-col>
     </ion-row>
 

@@ -10,6 +10,7 @@ import { SearchPage } from '../search/search';
 import { PopoverComponent } from '../../components/popover/popover';
 import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
 import { ThreadProvider } from '../../providers/thread/thread';
+import { PostProvider } from '../../providers/post/post';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
 import { AvatarProvider } from '../../providers/avatar/avatar';
@@ -26,8 +27,8 @@ export class BbcerclePage extends BasepageProvider {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private bbh: BingBinHttpProvider, private threadProvider: ThreadProvider,
-    private avatarProvider: AvatarProvider, public l: LogProvider,
-    public popoverCtrl: PopoverController
+    private avatarProvider: AvatarProvider, private postProvider: PostProvider,
+    public l: LogProvider, public popoverCtrl: PopoverController
   ) {
 
     super(l);
@@ -60,8 +61,8 @@ export class BbcerclePage extends BasepageProvider {
     );
   }
 
-  openPostPage() {
-    this.navCtrl.push(PostOpenPage);
+  openPostPage(postId: number) {
+    this.navCtrl.push(PostOpenPage, {postId: postId});
   }
 
   openPublicationPage() {
@@ -90,17 +91,25 @@ export class BbcerclePage extends BasepageProvider {
     });
   }
 
-  visible1 = false;
-  visible2 = false;
-  visible3 = false;
-  toggleCollection() {
-    this.visible1 = !this.visible1;
+  toggleCollection(thread: any) {
+    if (thread.favorite) {
+      this.threadProvider.unfavorite(thread.id).subscribe();
+      thread.favorite_count--;
+    } else {
+      this.threadProvider.favorite(thread.id).subscribe();
+      thread.favorite_count++;
+    }
+    thread.favorite = !thread.favorite;
   }
-  toggleLike() {
-    this.visible2 = !this.visible2;
-  }
-  toggleComment() {
-    this.visible3 = !this.visible3;
+  toggleLike(thread: any) {
+    if (thread.like) {
+      this.postProvider.unlikePost(thread.post_id).subscribe();
+      thread.like_count--;
+    } else {
+      this.postProvider.likePost(thread.post_id).subscribe();
+      thread.like_count++;
+    }
+    thread.like = !thread.like;
   }
 
 }
