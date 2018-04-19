@@ -16,7 +16,7 @@ return [
         'author_id'         => ['string'],
         'enable_threads'    => ['boolean'],
         'category_id'       => ['integer'],
-        'content'           => ['min:5'],
+        'content'           => ['min:3'],
         'locked'            => ['boolean'],
         'pinned'            => ['boolean'],
         'private'           => ['boolean'],
