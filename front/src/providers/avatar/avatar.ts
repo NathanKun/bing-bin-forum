@@ -1,16 +1,17 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ResponseContentType } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-/*
-  Generated class for the AvatarProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class AvatarProvider {
+
+  public userId: string;
+  public userFirstname: number;
+  public userEcoPoint: number;
+  public userSunPoint: number;
+  public userRabbitId: number;
+  public userLeafId: number;
 
   constructor(public http: HttpClient) {
   }
