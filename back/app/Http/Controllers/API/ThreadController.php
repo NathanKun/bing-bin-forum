@@ -144,17 +144,18 @@ class ThreadController extends BaseController
         $threads = $this->model()
             ->withRequestScopes($request)
             ->with(['author' => function ($query) {
-              $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
+                $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
             }])
             ->with(['posts' => function ($query) {
-              $query->where("forum_posts.sequence", "1")
+                $query->where("forum_posts.sequence", "1")
               ->select(DB::raw('id, thread_id, content, (CASE WHEN pivotpost.user_id IS NOT NULL THEN 1 ELSE 0 END) AS is_current_user_like'))
               ->leftJoin(
                   DB::raw("(SELECT post_id, user_id FROM forum_like_posts) as `pivotpost`"),
                   function ($join) {
                       $join->where('user_id', $this->user->id)
                           ->on('pivotpost.post_id', '=', 'forum_posts.id');
-                  });
+                  }
+              );
             }])
             ->join('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
             ->where('user_id', $this->user->id)
@@ -220,17 +221,18 @@ class ThreadController extends BaseController
 
         $builder = $this->model()
         ->with(['author' => function ($query) {
-          $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
+            $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
         }])
         ->with(['posts' => function ($query) {
-          $query->where("forum_posts.sequence", "1")
+            $query->where("forum_posts.sequence", "1")
           ->select(DB::raw('id, thread_id, content, (CASE WHEN pivotpost.user_id IS NOT NULL THEN 1 ELSE 0 END) AS is_current_user_like'))
           ->leftJoin(
               DB::raw("(SELECT post_id, user_id FROM forum_like_posts) as `pivotpost`"),
               function ($join) {
                   $join->where('user_id', $this->user->id)
                       ->on('pivotpost.post_id', '=', 'forum_posts.id');
-              });
+              }
+          );
         }]);
 
         if ($category_id != 0) {
@@ -264,7 +266,7 @@ class ThreadController extends BaseController
             $t['like'] = $t['posts'][0]['is_current_user_like'] === 1;
             $t['content'] = $t['posts'][0]['content'];
             $t['post_id'] = $t['posts'][0]['id'];
-          $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id', 'posts']);
+            $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id', 'posts']);
         }
 
         return $this->response($threads);
@@ -298,8 +300,22 @@ class ThreadController extends BaseController
 
         $thread = $this->model()
             ->where('forum_threads.id', $id)
-            ->with('posts')
-            ->with('author')
+            ->with(['author' => function ($query) {
+                $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
+            }])
+            ->with(['posts' => function ($query) {
+                $query->select(DB::raw('id, author_id, thread_id, content, (CASE WHEN pivotpost.user_id IS NOT NULL THEN 1 ELSE 0 END) AS is_current_user_like'))
+              ->leftJoin(
+                  DB::raw("(SELECT post_id, user_id FROM forum_like_posts) as `pivotpost`"),
+                  function ($join) {
+                      $join->where('user_id', $this->user->id)
+                          ->on('pivotpost.post_id', '=', 'forum_posts.id');
+                  }
+              )
+              ->with(['author' => function ($query) {
+                  $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
+              }]);
+            }])
             // simple leftJoin will cause timestamps null
             ->leftJoin(
                 DB::raw("(SELECT thread_id, user_id FROM forum_favorite_threads) as `pivot1`"),
