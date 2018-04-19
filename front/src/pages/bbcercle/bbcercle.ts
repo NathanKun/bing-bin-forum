@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChildren } from '@angular/core';
+import { Component, ViewChildren } from '@angular/core';
 import {
   NavController, NavParams, LoadingController,
   PopoverController, Refresher
@@ -64,14 +64,14 @@ export class BbcerclePage extends BasepageProvider {
       });
   }
 
-  private doRefresh(refresher: Refresher) {
+  doRefresh(refresher: Refresher) {
     {
       this.l.log('doRefresh');
       this.loadPage(() => refresher.complete());
     }
   }
 
-  private doInfinite(infiniteScroll) {
+  doInfinite(infiniteScroll) {
     this.l.log('doInfinite');
 
     this.threadProvider.indexForum(this.page + 1).subscribe((res) => {

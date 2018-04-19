@@ -4,7 +4,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx'
 
 import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
-import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
 import { AvatarProvider } from '../../providers/avatar/avatar';
@@ -23,7 +22,7 @@ export class LoginPage extends BasepageProvider {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private bbh: BingBinHttpProvider,
-    private threadProvider: ThreadProvider, private avatarProvider: AvatarProvider) {
+    private avatarProvider: AvatarProvider) {
 
         super(l);
 
@@ -68,7 +67,7 @@ export class LoginPage extends BasepageProvider {
   }
 
   private loginCheck(): Observable<any>{
-    return this.bbh.httpGet('http://localhost:8000/api/user/logincheck');
+    return this.bbh.httpGet('https://api.bingbin.io/api/user/logincheck');
   }
 
 }
