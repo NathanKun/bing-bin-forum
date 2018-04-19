@@ -40,9 +40,13 @@ export class AvatarProvider {
             canvas.height = canvas.offsetHeight;
 
             const x1 = canvas.width;
-            const y1 = canvas.height;
+            let y1 = canvas.height;
             const x2 = rabbitImg.width;
             const y2 = rabbitImg.height;
+
+            if(x1 / y1 < 1) { // if avatar 'thinner' than rabbit image
+              y1 = x1;
+            }
 
             const posX = (x1 * y2 - x2 * y1) / 2 / y2;
             const posY = 0;
@@ -52,9 +56,13 @@ export class AvatarProvider {
           }
           leafImg.onload = function() {
             const x1 = canvas.width;
-            const y1 = canvas.height;
+            let y1 = canvas.height;
             const x2 = leafImg.width;
             const y2 = leafImg.height;
+
+            if(x1 / y1 < 1) { // if avatar 'thinner' than rabbit image
+              y1 = x1;
+            }
 
             const drawHeight = y1 / 2.3;
             const drawWitdh = drawHeight * x2 / y2;

@@ -92,10 +92,16 @@ export class PostOpenPage extends BasepageProvider {
   doComment() {
     // limit-to directive not working perfectly, check long again
     if (this.commentInput.length > 255) {
-      console.log('too long');
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'Votre commentaire est trop long',
+        buttons: ['OK']
+      });
+      alert.present();
+    } else if (this.commentInput.length < 3) {
+      let alert = this.alertCtrl.create({
+        title: 'Oops',
+        subTitle: 'Votre commentaire est trop court',
         buttons: ['OK']
       });
       alert.present();
