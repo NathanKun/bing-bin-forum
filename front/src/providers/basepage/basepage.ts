@@ -13,7 +13,6 @@ export class BasepageProvider {
   constructor(public l: LogProvider) {
   }
 
-
   public doSubscribe(res, doValid: Function, doError: Function, doRequestError: Function): void {
     this.l.log(res);
     if (res.valid) {

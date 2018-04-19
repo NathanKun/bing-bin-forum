@@ -14,8 +14,16 @@
     </ion-col>
   </ion-row>
 
-  <ion-card #threadcard *ngFor="let thread of threads">
+  <!-- pull to refresh -->
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingText="Tirez pour rafraîchir..."
+      refreshingText="Chargement en cours...">
+    </ion-refresher-content>
+  </ion-refresher>
 
+  <!-- main content -->
+  <ion-card #threadcard *ngFor="let thread of threads">
     <ion-card-content class='card-head'>
       <img *ngIf="thread.category_id==2" class='etiquette' alt="flag" src="assets/imgs/etiquette-green-full.png" />
       <img *ngIf="thread.category_id==3" class='etiquette' alt="flag" src="assets/imgs/etiquette-red-full.png" />
@@ -36,7 +44,8 @@
     </ion-card-content>
 
     <ion-card-content class='card-content' (click)="openPostPage(thread.id)">
-      <p>{{ thread.content.length < 255 ? thread.content : (thread.content.substring(0, 255) + '...')}}</p>
+      <p>{{ thread.content.length
+        < 255 ? thread.content : (thread.content.substring(0, 255) + '...')}}</p>
     </ion-card-content>
 
     <img *ngIf="thread.main_image" [src]="thread.main_image.original.url" class='post-image' (click)="openPostPage(thread.id)" />
@@ -57,8 +66,12 @@
 
   </ion-card>
 
-
-
+<!-- reach bottom to load more-->
+<ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="100px">
+  <ion-infinite-scroll-content
+      loadingText="Chargement en cours...">
+    </ion-infinite-scroll-content>
+</ion-infinite-scroll>
 
   <ion-fab right bottom #fab>
     <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>

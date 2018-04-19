@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, ViewChildren } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { PopoverController } from 'ionic-angular';
+import {
+  NavController, NavParams, LoadingController,
+  PopoverController, Refresher
+} from 'ionic-angular';
 import { PostOpenPage } from '../post-open/post-open';
 import { PublicationPage } from '../publication/publication';
 import { CollectionPage } from '../collection/collection';
@@ -8,7 +10,6 @@ import { NewPostPage } from '../new-post/new-post';
 import { SearchPage } from '../search/search';
 
 import { PopoverComponent } from '../../components/popover/popover';
-import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
 import { ThreadProvider } from '../../providers/thread/thread';
 import { PostProvider } from '../../providers/post/post';
 import { LogProvider } from '../../providers/log/log';
@@ -22,16 +23,27 @@ import { AvatarProvider } from '../../providers/avatar/avatar';
 })
 
 export class BbcerclePage extends BasepageProvider {
+
+  loading: any;
   @ViewChildren('threadcard') cardList;
   threads: any = [];
+  page: number = 1;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private bbh: BingBinHttpProvider, private threadProvider: ThreadProvider,
+    public l: LogProvider, private threadProvider: ThreadProvider,
     private avatarProvider: AvatarProvider, private postProvider: PostProvider,
-    public l: LogProvider, public popoverCtrl: PopoverController
+    public popoverCtrl: PopoverController, public loadingCtrl: LoadingController
   ) {
 
     super(l);
+
+    this.loading = this.loadingCtrl.create();
+    this.loading.present();
+
+    this.loadPage(() => this.loading.dismiss());
+  }
+
+  private loadPage(doAfter: Function) {
 
     this.threadProvider.indexForum(1).subscribe(
       (res) => {
@@ -42,12 +54,35 @@ export class BbcerclePage extends BasepageProvider {
           this.threads.forEach((t, index) => {
             this.threads[index]['timeSince'] = this.timeSince(new Date(t.created_at));
           });
+
+          doAfter();
         }, () => {
 
         }, () => {
 
         });
       });
+  }
+
+  private doRefresh(refresher: Refresher) {
+    {
+      this.l.log('doRefresh');
+      this.loadPage(() => refresher.complete());
+    }
+  }
+
+  private doInfinite(infiniteScroll) {
+    this.l.log('doInfinite');
+
+    this.threadProvider.indexForum(this.page + 1).subscribe((res) => {
+      this.doSubscribe(res, () => {
+        this.page++;
+        this.threads.concat(res.data);
+      }, () => { }, () => { }
+      );
+
+      infiniteScroll.complete();
+    });
   }
 
   ngAfterViewInit() {
@@ -62,7 +97,7 @@ export class BbcerclePage extends BasepageProvider {
   }
 
   openPostPage(postId: number) {
-    this.navCtrl.push(PostOpenPage, {postId: postId});
+    this.navCtrl.push(PostOpenPage, { postId: postId });
   }
 
   openPublicationPage() {
