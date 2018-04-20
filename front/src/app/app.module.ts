@@ -29,7 +29,7 @@ import { PostProvider } from '../providers/post/post';
 import { BingBinHttpProvider } from '../providers/bing-bin-http/bing-bin-http';
 import { LogProvider } from '../providers/log/log';
 import { BasepageProvider } from '../providers/basepage/basepage';
-import { AvatarProvider } from '../providers/avatar/avatar';
+import { CommonProvider } from '../providers/common/common';
 
 
 @NgModule({
@@ -80,7 +80,7 @@ import { AvatarProvider } from '../providers/avatar/avatar';
     BingBinHttpProvider,
     LogProvider,
     BasepageProvider,
-    AvatarProvider
+    CommonProvider
   ]
 })
 export class AppModule {}

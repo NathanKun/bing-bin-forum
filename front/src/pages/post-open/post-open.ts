@@ -6,7 +6,7 @@ import { ThreadProvider } from '../../providers/thread/thread';
 import { PostProvider } from '../../providers/post/post';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
-import { AvatarProvider } from '../../providers/avatar/avatar';
+import { CommonProvider } from '../../providers/common/common';
 
 /**
  * Generated class for the PostOpenPage page.
@@ -28,7 +28,7 @@ export class PostOpenPage extends BasepageProvider {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private threadProvider: ThreadProvider,
-    private avatarProvider: AvatarProvider, private postProvider: PostProvider,
+    private commonProvider: CommonProvider, private postProvider: PostProvider,
     public loadingCtrl: LoadingController, private alertCtrl: AlertController
   ) {
 
@@ -62,18 +62,18 @@ export class PostOpenPage extends BasepageProvider {
     this.commentrows.changes.subscribe(
       () => {
         // author avatars
-        this.avatarProvider.draw(this.thread.author.id_usagi, this.thread.author.id_leaf,
+        this.commonProvider.draw(this.thread.author.id_usagi, this.thread.author.id_leaf,
           <HTMLCanvasElement>document.getElementById("canvas-author"));
 
         // leave comment avatar
-        this.avatarProvider.draw(
-          this.avatarProvider.userRabbitId, this.avatarProvider.userLeafId,
+        this.commonProvider.draw(
+          this.commonProvider.userRabbitId, this.commonProvider.userLeafId,
           <HTMLCanvasElement>document.getElementById("canvas-user"));
 
         // comment avatars
         this.thread.posts.forEach((p, index) => {
           if (index === 0) return;
-          this.avatarProvider.draw(p.author.id_usagi, p.author.id_leaf,
+          this.commonProvider.draw(p.author.id_usagi, p.author.id_leaf,
             <HTMLCanvasElement>document.getElementById("canvas-comment-" + p.id));
         });
       }
@@ -109,7 +109,7 @@ export class PostOpenPage extends BasepageProvider {
       let loading = this.loadingCtrl.create();
       loading.present();
       this.postProvider.store(this.thread.id, this.commentInput, 0,
-        this.avatarProvider.userId).subscribe((res) => {
+        this.commonProvider.userId).subscribe((res) => {
           loading.dismiss();
           this.doSubscribe(res, () => {
             this.commentInput = '';

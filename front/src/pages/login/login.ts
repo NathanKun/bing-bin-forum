@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx'
 import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
-import { AvatarProvider } from '../../providers/avatar/avatar';
+import { CommonProvider } from '../../providers/common/common';
 
 import { EventPage } from '../event/event';
 import { BbcerclePage } from '../bbcercle/bbcercle';
@@ -22,52 +22,53 @@ export class LoginPage extends BasepageProvider {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private bbh: BingBinHttpProvider,
-    private avatarProvider: AvatarProvider) {
+    private commonProvider: CommonProvider) {
 
-        super(l);
+    super(l);
 
-        const params = new URLSearchParams(window.location.search.slice(1));
-        const token = params.get('bbt');
-        const toPage = params.get('toPage');
+    const params = new URLSearchParams(window.location.search.slice(1));
+    const token = params.get('bbt');
+    const toPage = params.get('toPage');
 
-        this.l.log("token: " + token);
-        this.l.log("toPage: " + toPage);
+    this.l.log("token: " + token);
+    this.l.log("toPage: " + toPage);
 
-        if (token != null && toPage != null) {
-          this.bbh.setToken(token);
+    if (token != null && toPage != null) {
+      this.bbh.setToken(token);
 
-          this.loginCheck().subscribe(
-            (res) => {
-              this.doSubscribe(res, () => {
-                const data = res.data;
-                this.avatarProvider.userId = data.id;
-                this.avatarProvider.userFirstname = data.firstname;
-                this.avatarProvider.userEcoPoint = data.eco_point;
-                this.avatarProvider.userSunPoint = data.sun_point;
-                this.avatarProvider.userRabbitId = data.id_usagi;
-                this.avatarProvider.userLeafId = data.id_leaf;
+      this.loginCheck().subscribe(
+        (res) => {
+          this.doSubscribe(res, () => {
+            const data = res.data;
+            this.commonProvider.userId = data.id;
+            this.commonProvider.userFirstname = data.firstname;
+            this.commonProvider.userEcoPoint = data.eco_point;
+            this.commonProvider.userSunPoint = data.sun_point;
+            this.commonProvider.userRabbitId = data.id_usagi;
+            this.commonProvider.userLeafId = data.id_leaf;
 
-                if (toPage === "event") {
-                  navCtrl.setRoot(EventPage);
-                } else if (toPage === "forum") {
-                  navCtrl.setRoot(BbcerclePage);
-                } else {
-                  this.hint = 'page incorrect';
-                }
-              }, () => {
-                this.hint = res.error;
-              }, () => {
-                this.hint = 'Server response error';
-              });
-            });
-        } else {
-          this.hint = 'Missing param';
-          this.l.log('Missing param');
-        }
+            if (toPage === "event") {
+              navCtrl.setRoot(EventPage);
+            } else if (toPage === "forum") {
+              navCtrl.setRoot(BbcerclePage);
+            } else {
+              this.hint = 'page incorrect';
+            }
+          }, () => {
+            this.hint = res.error;
+          }, () => {
+            this.hint = 'Server response error';
+          });
+        });
+    } else {
+      this.hint = 'Missing param';
+      this.l.log('Missing param');
+    }
   }
 
-  private loginCheck(): Observable<any>{
+  private loginCheck(): Observable<any> {
     return this.bbh.httpGet('https://api.bingbin.io/api/user/logincheck');
+    //return this.bbh.httpGet('http://localhost:8000/api/user/logincheck');
   }
 
 }

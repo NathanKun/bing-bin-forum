@@ -7,6 +7,7 @@ import { BingBinHttpProvider } from '../bing-bin-http/bing-bin-http';
 export class PostProvider {
 
   private base: string = 'https://api.bingbin.io/api/post/';
+  //private base: string = 'http://localhost:8000/api/post/';
 
   private fetchUrl(id: number) {
     return this.base + id;

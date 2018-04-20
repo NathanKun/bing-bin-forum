@@ -14,7 +14,7 @@ import { ThreadProvider } from '../../providers/thread/thread';
 import { PostProvider } from '../../providers/post/post';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
-import { AvatarProvider } from '../../providers/avatar/avatar';
+import { CommonProvider } from '../../providers/common/common';
 
 
 @Component({
@@ -31,7 +31,7 @@ export class BbcerclePage extends BasepageProvider {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private threadProvider: ThreadProvider,
-    private avatarProvider: AvatarProvider, private postProvider: PostProvider,
+    private commonProvider: CommonProvider, private postProvider: PostProvider,
     public popoverCtrl: PopoverController, public loadingCtrl: LoadingController
   ) {
 
@@ -89,7 +89,7 @@ export class BbcerclePage extends BasepageProvider {
     this.cardList.changes.subscribe(
       () => {
         this.threads.forEach((t, index) => {
-          this.avatarProvider.draw(t.author.id_usagi, t.author.id_leaf,
+          this.commonProvider.draw(t.author.id_usagi, t.author.id_leaf,
             <HTMLCanvasElement>document.getElementById("thread-canvas-" + t.id));
         });
       }
