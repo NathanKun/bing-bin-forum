@@ -12,6 +12,9 @@ export class BingBinHttpProvider {
 
   private options;
 
+  public baseUrl: string = 'https://api.bingbin.io/api/'
+  //public baseUrl: string = 'http://localhost:8000/api/'
+
   constructor(private http: HttpClient) { }
 
   public setToken(token: string) {

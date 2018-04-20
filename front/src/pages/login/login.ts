@@ -67,8 +67,7 @@ export class LoginPage extends BasepageProvider {
   }
 
   private loginCheck(): Observable<any> {
-    return this.bbh.httpGet('https://api.bingbin.io/api/user/logincheck');
-    //return this.bbh.httpGet('http://localhost:8000/api/user/logincheck');
+    return this.bbh.httpGet(this.bbh.baseUrl + 'user/logincheck');
   }
 
 }

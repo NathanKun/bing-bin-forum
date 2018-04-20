@@ -6,8 +6,7 @@ import { BingBinHttpProvider } from '../bing-bin-http/bing-bin-http';
 @Injectable()
 export class ThreadProvider {
 
-  private base: string = 'https://api.bingbin.io/api/thread/';
-  //private base: string = 'http://localhost:8000/api/thread/';
+  private base: string = this.bbh.baseUrl + 'thread/';
   private countNotReadUrl: string = this.base + 'not-read';
   private myThreadsUrl: string = this.base + 'my-threads';
   private myFavoriteUrl: string = this.base + 'my-favorite';

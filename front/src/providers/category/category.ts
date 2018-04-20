@@ -6,7 +6,7 @@ import { BingBinHttpProvider } from '../bing-bin-http/bing-bin-http';
 @Injectable()
 export class CategoryProvider {
 
-  private base: string = 'https://api.bingbin.io/api/category/';
+  private base: string = this.bbh.baseUrl + 'category/';
 
   private fetchUrl(id: number) {
     return this.base + id;
