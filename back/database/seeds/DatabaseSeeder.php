@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
                                   'weight' => 0, 'enable_threads' => true, 'private' => false,
                                   'thread_count' => 0, 'post_count' => 0]);
 
-        Category::create(['category_id' => 0, 'title' => 'Blable', 'description' => 'Blable category, threads enabled',
+        Category::create(['category_id' => 0, 'title' => 'Blabla', 'description' => 'Blable category, threads enabled',
                                   'weight' => 0, 'enable_threads' => true, 'private' => false,
                                   'thread_count' => 0, 'post_count' => 0]);
     }

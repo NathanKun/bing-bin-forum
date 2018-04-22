@@ -8,12 +8,12 @@ import { Injectable, isDevMode } from '@angular/core';
 */
 @Injectable()
 export class LogProvider {
-  
+
   constructor() {
     console.log(isDevMode() ? "Dev mode, logger enabled" : "Prod mode, logger disabled")
   }
-  
-  log(text: string) {
+
+  log(text: any) {
     if (isDevMode()) {
       console.log(text);
     }

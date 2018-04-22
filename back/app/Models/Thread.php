@@ -30,7 +30,7 @@ class Thread extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['category_id', 'author_id', 'title', 'locked', 'pinned', 'reply_count', 'summary',
+    protected $fillable = ['category_id', 'author_id', 'title', 'locked', 'pinned', 'reply_count', 'summary', 'location',
                             'main_image', 'img1', 'img2', 'img3', 'img4', 'img5', 'img6', 'img7', 'img8', 'img9'];
 
     /**
@@ -53,8 +53,8 @@ class Thread extends BaseModel
         parent::__construct($attributes);
         $this->perPage = config('forum.preferences.pagination.threads');
     }
-    
-    
+
+
     public static function boot()
     {
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
@@ -67,17 +67,17 @@ class Thread extends BaseModel
             $model->save();
         });
     }
-    
+
     public function favoritesBy() {
         return $this->belongsToMany('App\User', 'forum_favorite_threads')
             ->withTimestamps();
     }
-    
+
     public function favoriteCount() {
         return $this->favoritesBy()
             ->count();
     }
-    
+
     public function markFavorite($user_id) {
         if($this->favoritesBy()
             ->where('user_id', $user_id)
@@ -87,7 +87,7 @@ class Thread extends BaseModel
             ->attach($user_id);
         return true;
     }
-    
+
     public function unmarkFavorite($user_id) {
         if($this->favoritesBy()
             ->where('user_id', $user_id)
@@ -98,7 +98,7 @@ class Thread extends BaseModel
             ->detach($user_id);
         return true;
     }
-    
+
     public function markPostsReadByOp() {
         $this->posts()->each(function ($post) {
             $post->read_by_op = true;

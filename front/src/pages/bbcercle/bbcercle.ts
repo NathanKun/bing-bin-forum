@@ -29,22 +29,37 @@ export class BbcerclePage extends BasepageProvider {
   threads: any = [];
   page: number = 1;
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private postProvider: PostProvider,
     public popoverCtrl: PopoverController, public loadingCtrl: LoadingController
   ) {
-
     super(l);
+  }
 
+
+  ngAfterViewInit() {
+    this.cardList.changes.subscribe(
+      () => {
+        this.threads.forEach((t, index) => {
+          this.commonProvider.draw(t.author.id_usagi, t.author.id_leaf,
+            <HTMLCanvasElement>document.getElementById("thread-canvas-" + t.id));
+        });
+      }
+    );
+  }
+
+  // call each time before enter to this page
+  ionViewWillEnter() {
     this.loading = this.loadingCtrl.create();
     this.loading.present();
 
     this.loadPage(() => this.loading.dismiss());
   }
 
-  private loadPage(doAfter: Function) {
 
+  private loadPage(doAfter: Function) {
     this.threadProvider.indexForum(1).subscribe(
       (res) => {
         this.doSubscribe(res, () => {
@@ -66,14 +81,11 @@ export class BbcerclePage extends BasepageProvider {
 
   doRefresh(refresher: Refresher) {
     {
-      this.l.log('doRefresh');
       this.loadPage(() => refresher.complete());
     }
   }
 
   doInfinite(infiniteScroll) {
-    this.l.log('doInfinite');
-
     this.threadProvider.indexForum(this.page + 1).subscribe((res) => {
       this.doSubscribe(res, () => {
         this.page++;
@@ -83,17 +95,6 @@ export class BbcerclePage extends BasepageProvider {
 
       infiniteScroll.complete();
     });
-  }
-
-  ngAfterViewInit() {
-    this.cardList.changes.subscribe(
-      () => {
-        this.threads.forEach((t, index) => {
-          this.commonProvider.draw(t.author.id_usagi, t.author.id_leaf,
-            <HTMLCanvasElement>document.getElementById("thread-canvas-" + t.id));
-        });
-      }
-    );
   }
 
   openPostPage(postId: number) {

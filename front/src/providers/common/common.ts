@@ -20,7 +20,7 @@ export class CommonProvider {
     window['outsideSetLocation'] = this.outsideSetLocation.bind(this);
   }
 
-  private getLocation() {
+  public getLocation() {
     return this.location;
   }
 

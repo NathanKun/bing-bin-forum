@@ -51,8 +51,16 @@ export class ThreadProvider {
     return this.bbh.httpGet(this.myFavoriteUrl + '?page=' + page);
   }
 
-  store(category_id: number, title: string, content: string): Observable<any> {
-    return this.bbh.httpPost(this.base, { category_id: category_id, title: title, content: content });
+  store(category_id: number, title: string, content: string, main_image: File, location: string): Observable<any> {
+
+    const formData: FormData = new FormData();
+    formData.append('category_id', category_id.toString());
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('location', location);
+    formData.append('main_image', main_image, main_image.name);
+
+    return this.bbh.httpPost(this.base, formData);
   }
 
   deleteThread(id: number): Observable<any> {
