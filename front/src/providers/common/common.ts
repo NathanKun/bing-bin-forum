@@ -17,7 +17,10 @@ export class CommonProvider {
 
 
   constructor(public http: HttpClient, private ngZone: NgZone) {
-    window['outsideSetLocation'] = this.outsideSetLocation.bind(this);
+    window['outsideSetLocation'] = {component: this, zone: ngZone};
+
+    // call from outside
+    //window['outsideSetLocation'].zone.run(() => {window['outsideSetLocation'].component.outsideSetLocation('loc');})
   }
 
   public getLocation() {
