@@ -65,9 +65,14 @@ export class BbcerclePage extends BasepageProvider {
         this.doSubscribe(res, () => {
           this.threads = res.data;
 
-          // calculate post time
           this.threads.forEach((t, index) => {
+            // calculate post time
             this.threads[index]['timeSince'] = this.timeSince(new Date(t.created_at));
+
+            // complete image urls
+            if (t.main_image && !(t.main_image.original.url as string).startsWith('http')) {
+              this.threads[index].main_image.original.url = this.imgBaseUrl + t.main_image.original.url;
+            }
           });
 
           doAfter();

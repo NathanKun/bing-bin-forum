@@ -10,6 +10,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class BasepageProvider {
 
+  public imgBaseUrl = 'https://api.bingbin.io';
+
   constructor(public l: LogProvider) {
   }
 

@@ -49,7 +49,13 @@ export class PostOpenPage extends BasepageProvider {
         () => {
           this.loading.dismiss();
           this.thread = res.data;
+
+          // calculate time since
           this.thread['timeSince'] = this.timeSince(new Date(this.thread.created_at));
+          // complete image urls
+          if (this.thread.main_image && !(this.thread.main_image.original.url as string).startsWith('http')) {
+            this.thread.main_image.original.url = this.imgBaseUrl + this.thread.main_image.original.url;
+          }
         }, () => {
 
         }, () => {
