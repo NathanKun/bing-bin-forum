@@ -28,12 +28,12 @@ export class CommonProvider {
     this.location = loc;
   }
 
-  public outsideSetLocation(loc: string) {
+  public outsideSetLocation(loc: string): string {
     this.ngZone.run(() => this.setLocation(loc));
+    return this.getLocation();
   }
 
   public draw(idRabbit: number, idLeaf: number, canvas: HTMLCanvasElement) {
-    console.log(this.getLocation())
     Observable
       .forkJoin(
         this.idToRabbit(idRabbit),
