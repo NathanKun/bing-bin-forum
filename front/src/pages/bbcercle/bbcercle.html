@@ -16,9 +16,7 @@
 
   <!-- pull to refresh -->
   <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-      pullingText="<p>Tirez pour rafraîchir...</p>"
-      refreshingText="<p>Chargement en cours...</p>">
+    <ion-refresher-content pullingText="<p>Tirez pour rafraîchir...</p>" refreshingText="<p>Chargement en cours...</p>">
     </ion-refresher-content>
   </ion-refresher>
 
@@ -34,8 +32,8 @@
           <canvas [id]="'thread-canvas-' + thread.id"></canvas>
         </ion-col>
         <ion-col col-9 text-left>
-          <h2>{{ thread.author.firstname }}</h2>
-          <b>{{ thread.location }}</b>
+          <h2 class='name-location'>{{ thread.author.firstname }}</h2>
+          <b class='name-location'>{{ thread.location }}</b>
         </ion-col>
         <ion-col col-1>
           <!-- <ion-icon name="more" (click)="presentPopover($event)" color="dark"></ion-icon> -->
@@ -66,12 +64,12 @@
 
   </ion-card>
 
-<!-- reach bottom to load more-->
-<ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="100px">
-  <ion-infinite-scroll-content
-      loadingText="<p>Chargement en cours...</p>">
+  <!-- reach bottom to load more-->
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="100px">
+    <ion-infinite-scroll-content *ngIf="page !== 0" loadingText="<p>Chargement en cours...</p>">
     </ion-infinite-scroll-content>
-</ion-infinite-scroll>
+  </ion-infinite-scroll>
+  <div *ngIf="page === 0">Plus de données disponibles.</div>
 
   <ion-fab right bottom #fab>
     <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>

@@ -3,14 +3,17 @@ page-bbcercle {
     background-color: color($colors, backgroundGreen);
   }
 
-  canvas {
-    width: 7vh !important;
-    height: 7vh !important;
+  .name-location{
+    margin: 0;
+    height: 50%;
+    padding: 0;
+    padding-top: 0.5vh;
+    vertical-align: middle;
   }
 
   canvas {
-    width: 5em;
-    height: auto;
+    width: 7vh !important;
+    height: 7vh !important;
   }
 
   .post-image {

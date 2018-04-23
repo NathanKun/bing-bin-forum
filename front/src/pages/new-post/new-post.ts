@@ -18,11 +18,10 @@ export class NewPostPage extends BasepageProvider {
   private mainImageInput: File;
   private previewUrl: string;
   private locationEnabled: boolean = true;
-
-  private picToViewG: string;
-  private picToViewR: string;
-  private picToViewB: string;
-  private txt: string = 'Etiquette';
+  private greenFlagImg: string;
+  private redFlagImg: string;
+  private brownFlagImg: string;
+  private hashTag: string;
   private selectedCategory: number;
 
 
@@ -129,26 +128,26 @@ export class NewPostPage extends BasepageProvider {
   changeFlag(color: string) {
     switch (color) {
       case 'green':
-        this.picToViewG = "assets/imgs/etiquette-green-full.png"
-        this.picToViewR = "assets/imgs/etiquette-red-clear.png"
-        this.picToViewB = "assets/imgs/etiquette-brown-clear.png"
-        this.txt = '#Recyclage'
+        this.greenFlagImg = "assets/imgs/etiquette-green-full.png"
+        this.redFlagImg = "assets/imgs/etiquette-red-clear.png"
+        this.brownFlagImg = "assets/imgs/etiquette-brown-clear.png"
+        this.hashTag = '#Recyclage'
         this.selectedCategory = 2;
         break;
 
       case 'red':
-        this.picToViewG = "assets/imgs/etiquette-green-clear.png"
-        this.picToViewR = "assets/imgs/etiquette-red-full.png"
-        this.picToViewB = "assets/imgs/etiquette-brown-clear.png"
-        this.txt = '#Échange'
+        this.greenFlagImg = "assets/imgs/etiquette-green-clear.png"
+        this.redFlagImg = "assets/imgs/etiquette-red-full.png"
+        this.brownFlagImg = "assets/imgs/etiquette-brown-clear.png"
+        this.hashTag = '#Échange'
         this.selectedCategory = 3;
         break;
 
       case 'brown':
-        this.picToViewG = "assets/imgs/etiquette-green-clear.png"
-        this.picToViewR = "assets/imgs/etiquette-red-clear.png"
-        this.picToViewB = "assets/imgs/etiquette-brown-full.png"
-        this.txt = '#Blabla'
+        this.greenFlagImg = "assets/imgs/etiquette-green-clear.png"
+        this.redFlagImg = "assets/imgs/etiquette-red-clear.png"
+        this.brownFlagImg = "assets/imgs/etiquette-brown-full.png"
+        this.hashTag = '#Blabla'
         this.selectedCategory = 4;
         break;
 

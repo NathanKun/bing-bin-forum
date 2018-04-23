@@ -91,15 +91,22 @@ export class BbcerclePage extends BasepageProvider {
   }
 
   doInfinite(infiniteScroll) {
-    this.threadProvider.indexForum(this.page + 1).subscribe((res) => {
-      this.doSubscribe(res, () => {
-        this.page++;
-        this.threads.concat(res.data);
-      }, () => { }, () => { }
-      );
+    if(this.page != 0) {
+      this.threadProvider.indexForum(this.page + 1).subscribe((res) => {
+        this.doSubscribe(res, () => {
+          if (res.data.length !== 0) {
+            this.page = 0;
+          }
+          this.threads = this.threads.concat(res.data);
+          console.log(this.threads);
+        }, () => { }, () => { }
+        );
 
-      infiniteScroll.complete();
-    });
+        setTimeout(() => infiniteScroll.complete(), 1000);
+      });
+    } else {
+
+    }
   }
 
   openPostPage(postId: number) {
