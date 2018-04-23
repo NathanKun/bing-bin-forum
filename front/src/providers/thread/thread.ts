@@ -58,7 +58,9 @@ export class ThreadProvider {
     formData.append('title', title);
     formData.append('content', content);
     formData.append('location', location);
-    formData.append('main_image', main_image, main_image.name);
+    if(main_image) {
+      formData.append('main_image', main_image, main_image.name);
+    }
 
     return this.bbh.httpPost(this.base, formData);
   }
