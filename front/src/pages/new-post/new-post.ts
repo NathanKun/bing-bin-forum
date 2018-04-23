@@ -37,6 +37,13 @@ export class NewPostPage extends BasepageProvider {
   }
 
 
+  // call each time before enter to this page
+  ionViewWillEnter() {
+    if (window.hasOwnProperty('android')) {
+      window['android'].getLocation();
+    }
+  }
+
   onFileChanged(event: any) {
     console.log(event);
     if (event.target.files && event.target.files[0]) {
