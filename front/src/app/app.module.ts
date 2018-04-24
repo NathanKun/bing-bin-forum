@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { CookieService } from 'ngx-cookie-service';
 
 import { MyApp } from './app.component';
 import { LimitToDirective } from './limit-to-directive';
@@ -74,6 +75,7 @@ import { CommonProvider } from '../providers/common/common';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     HttpClientModule,
+    CookieService,
     CategoryProvider,
     ThreadProvider,
     PostProvider,

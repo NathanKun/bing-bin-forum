@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx'
+import { CookieService } from 'ngx-cookie-service';
 
 import { BingBinHttpProvider } from '../../providers/bing-bin-http/bing-bin-http';
 import { LogProvider } from '../../providers/log/log';
@@ -22,9 +23,29 @@ export class LoginPage extends BasepageProvider {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private bbh: BingBinHttpProvider,
-    private commonProvider: CommonProvider) {
+    private commonProvider: CommonProvider, private cookieService: CookieService) {
 
     super(l);
+
+    // check front version
+    bbh.httpGetBasic('/assets/version.json').subscribe((res: any) => {
+      console.log('doSubscribe');
+      if ((!this.cookieService.check('version')) ||
+        (this.cookieService.check('version') && this.cookieService.get('version') != res.version)) {
+        this.l.log('version outdated, old version = ' + this.cookieService.get('version'));
+        if('android' in window) {
+          this.l.log("Cached site is out dated, calling window['android'].clearCache()");
+          this.cookieService.set('version', res.version, 7);
+          window['android'].clearCache();
+        } else {
+          this.l.log('Cached site is out dated, calling window.location.reload(true)');
+          this.cookieService.set('version', res.version, 7);
+          window.location.reload(true);
+        }
+      } else {
+        this.l.log('version up to date, version = ' + res.version);
+      }
+    });
 
     const params = new URLSearchParams(window.location.search.slice(1));
     const token = params.get('bbt');

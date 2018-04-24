@@ -23,6 +23,10 @@ export class BingBinHttpProvider {
     };
   }
 
+  public httpGetBasic(url: string) {
+    return this.http.get(url);
+  }
+
   public httpGet(url: string) {
     return this.http.get(
       url,
