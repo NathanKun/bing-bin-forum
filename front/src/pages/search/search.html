@@ -5,50 +5,50 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-<ion-navbar>
-    <ion-searchbar backgroundWhitecolor="backgroundWhite" placeholder="{{txt}}">
+  <ion-navbar>
+    <ion-searchbar [(ngModel)]="searchInput" (search)="doSearch($event)" backgroundWhitecolor="backgroundWhite" placeholder="Recherche">
     </ion-searchbar>
-</ion-navbar>
+  </ion-navbar>
 </ion-header>
 
-<ion-content id="search" >
+<ion-content id="search">
+
+  <!-- flags -->
   <ion-row class='etiquette'>
     <ion-col col-3>
-      <img [src]="picToViewG" (click)="changeViewG()">
+      <img [src]="greenFlagImg" (click)="changeFlag('green')">
     </ion-col>
     <ion-col col-3>
-      <img [src]="picToViewR" (click)="changeViewR()">
+      <img [src]="redFlagImg" (click)="changeFlag('red')">
     </ion-col>
     <ion-col col-6>
-      <img [src]="picToViewB" (click)="changeViewB()">
+      <img [src]="brownFlagImg" (click)="changeFlag('brown')">
     </ion-col>
-    </ion-row>
+  </ion-row>
 
-<ion-list>
-    <ion-item class='results'>
-        <h2 class='title' text-wrap>Comment faire des composts dans un appartement?</h2>
-      <ion-row>
-      <ion-col col-3>
-        <img class='post-image'src="assets/imgs/compost.jpg">
-      </ion-col>
-      <ion-col col-9>
-        <p text-wrap>We will only display the first few sentences of the articles generated for demo purpose</p>
-      </ion-col>
+  <!-- ngFor threads -->
+  <ion-list>
+    <ion-item class='results' *ngFor="let thread of threads" (click)='openPostPage(thread.id)'>
+      <h2 class='title' text-wrap>{{ thread.title }}</h2>
+      <ion-row class='row-thread-content'>
+        <ion-col col-3>
+          <img *ngIf="thread.main_image" class='post-image' [src]="thread.main_image.original.url">
+        </ion-col>
+        <ion-col col-9>
+          <p text-wrap>{{ thread.posts[0].content.length
+            < 127 ? thread.posts[0].content : (thread.posts[0].content.substring(0, 127) + '...') }}</p>
+        </ion-col>
       </ion-row>
     </ion-item>
-    <ion-item class='results'>
-        <h2 class='title' text-wrap>Comment faire des composts dans un appartement?</h2>
-      <ion-row>
-      <ion-col col-3>
-        <img class='post-image'src="assets/imgs/compost.jpg">
-      </ion-col>
-      <ion-col col-9>
-        <p text-wrap>We will only display the first few sentences of the articles generated for demo purpose</p>
-      </ion-col>
-      </ion-row>
-    </ion-item>
-
   </ion-list>
+
+  <!-- reach bottom to load more-->
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="100px">
+    <ion-infinite-scroll-content *ngIf="page !== 0" loadingText="<p>Chargement en cours...</p>">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <p id='hint-reach-bottom' *ngIf="page === 0">Plus de données disponibles.</p>
 
 
 </ion-content>

@@ -10,6 +10,7 @@ export class ThreadProvider {
   private countNotReadUrl: string = this.base + 'not-read';
   private myThreadsUrl: string = this.base + 'my-threads';
   private myFavoriteUrl: string = this.base + 'my-favorite';
+  private searchUrl: string = this.base + 'search';
 
   private fetchUrl(id: number) {
     return this.base + id;
@@ -58,7 +59,7 @@ export class ThreadProvider {
     formData.append('title', title);
     formData.append('content', content);
     formData.append('location', location);
-    if(main_image) {
+    if (main_image) {
       formData.append('main_image', main_image, main_image.name);
     }
 
@@ -77,16 +78,23 @@ export class ThreadProvider {
     return this.bbh.httpGet(this.countNotReadUrl);
   }
 
-  markRead(id): Observable<any> {
+  markRead(id: number): Observable<any> {
     return this.bbh.httpPatch(this.markReadUrl(id), {});
   }
 
-  favorite(id): Observable<any> {
+  favorite(id: number): Observable<any> {
     return this.bbh.httpPatch(this.favoriteUrl(id), {});
   }
 
-  unfavorite(id): Observable<any> {
+  unfavorite(id: number): Observable<any> {
     return this.bbh.httpPatch(this.unfavoriteUrl(id), {});
+  }
+
+  search(keyStr: string, page: number,
+    catg2: boolean, catg3: boolean, catg4: boolean): Observable<any> {
+    return this.bbh.httpPost(this.searchUrl,
+      { keystr: keyStr, page: page, catg2: catg2, catg3: catg3, catg4: catg4 }
+    );
   }
 
 }
