@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding id='postOpen'>
-  <div *ngIf='thread'>
+  <div tappable *ngIf='thread'>
 
     <!-- content section -->
     <h4 class='title'>{{ thread.title }}</h4>
@@ -24,8 +24,10 @@
         <ion-note color="grey">{{ thread.timeSince }}</ion-note>
       </ion-col>
     </ion-row>
-    <p>{{ thread.posts[0].content }}</p>
-    <img [src]="thread.main_image.original.url">
+    <ion-row>
+      <p>{{ thread.posts[0].content }}</p>
+    </ion-row>
+    <img *ngIf="thread.main_image" [src]="thread.main_image.original.url" alt="main image">
     <br>
     <br>
 

@@ -44,7 +44,7 @@ export class PostOpenPage extends BasepageProvider {
     });
     this.loading.present();
 
-    this.threadProvider.getThread(this.navParams.get('postId')).subscribe((res) => {
+    this.threadProvider.getThread(this.navParams.get('threadId')).subscribe((res) => {
       this.doSubscribe(res,
         () => {
           this.loading.dismiss();

@@ -18,11 +18,12 @@ export class NewPostPage extends BasepageProvider {
   private mainImageInput: File;
   private previewUrl: string;
   private locationEnabled: boolean = true;
-  private greenFlagImg: string;
-  private redFlagImg: string;
-  private brownFlagImg: string;
-  private hashTag: string;
   private selectedCategory: number;
+
+  greenFlagImg: string;
+  redFlagImg: string;
+  brownFlagImg: string;
+  hashTag: string;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -44,7 +45,6 @@ export class NewPostPage extends BasepageProvider {
   }
 
   onFileChanged(event: any) {
-    console.log(event);
     if (event.target.files && event.target.files[0]) {
       if (event.target.files[0].type.match('image.*')) {
 
@@ -75,9 +75,9 @@ export class NewPostPage extends BasepageProvider {
   }
 
   doPost() {
-    this.l.log(this.titleInput);
-    this.l.log(this.contentInput);
-    this.l.log(this.mainImageInput);
+    this.l.log("titleInput = " + this.titleInput);
+    this.l.log("contentInput = " + this.contentInput);
+    this.l.log("mainImageInput = " + this.mainImageInput);
     // limit-to directive not working perfectly, check long again
     if (this.titleInput.length > 255) {
       let alert = this.alertCtrl.create({
