@@ -101,6 +101,7 @@ class ThreadController extends BaseController
       }])
       ->whereIn('category_id', $catgs)
       ->whereIn('id', $ids)
+      ->latest()
       ->skip(BaseController::threadsByPage * ($page - 1))
       ->take(BaseController::threadsByPage)
       ->get()
