@@ -91,14 +91,24 @@ export class BbcerclePage extends BasepageProvider {
   }
 
   doInfinite(infiniteScroll) {
-    if(this.page != 0) {
-      this.threadProvider.indexForum(this.page + 1).subscribe((res) => {
+    if (this.page != 0) {
+      this.page++;
+      this.threadProvider.indexForum(this.page).subscribe((res) => {
         this.doSubscribe(res, () => {
-          if (res.data.length !== 0) {
+          if (res.data.length == 0) {
             this.page = 0;
+          } else {
+
+            res.data.forEach((t, index) => {
+              // complete image urls
+              if (t.main_image && !(t.main_image.original.url as string).startsWith('http')) {
+                res.data[index].main_image.original.url = this.imgBaseUrl + t.main_image.original.url;
+              }
+            });
+
+            this.threads = this.threads.concat(res.data);
+            this.l.log(this.threads);
           }
-          this.threads = this.threads.concat(res.data);
-          console.log(this.threads);
         }, () => { }, () => { }
         );
 
@@ -109,8 +119,8 @@ export class BbcerclePage extends BasepageProvider {
     }
   }
 
-  openPostPage(postId: number) {
-    this.navCtrl.push(PostOpenPage, { postId: postId });
+  openPostPage(threadId: number) {
+    this.navCtrl.push(PostOpenPage, { threadId: threadId });
   }
 
   openPublicationPage() {

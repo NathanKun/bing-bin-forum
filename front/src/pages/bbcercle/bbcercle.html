@@ -22,7 +22,7 @@
 
   <!-- main content -->
   <ion-card #threadcard *ngFor="let thread of threads">
-    <ion-card-content class='card-head'>
+    <ion-card-content class='card-head' (click)="openPostPage(thread.id)">
       <img *ngIf="thread.category_id==2" class='etiquette' alt="flag" src="assets/imgs/etiquette-green-full.png" />
       <img *ngIf="thread.category_id==3" class='etiquette' alt="flag" src="assets/imgs/etiquette-red-full.png" />
       <img *ngIf="thread.category_id==4" class='etiquette' alt="flag" src="assets/imgs/etiquette-brown-full.png" />
