@@ -31,6 +31,7 @@ $r->group(
         // Threads
         $r->group(['prefix' => 'thread', 'as' => 'thread.'], function ($r) {
             $r->get('/', ['as' => 'index', 'uses' => 'ThreadController@index']);
+            $r->post('/search', ['as' => 'search', 'uses' => 'ThreadController@searchThread']);
             $r->get('/not-read', ['as' => 'not-read', 'uses' => 'ThreadController@countNotReadThreadsOfUser']);
             $r->get('/my-threads', ['as' => 'my-threads', 'uses' => 'ThreadController@myThreads']);
             $r->get('/my-favorite', ['as' => 'my-favorite', 'uses' => 'ThreadController@myFavorite']);

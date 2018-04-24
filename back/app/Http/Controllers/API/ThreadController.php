@@ -32,6 +32,84 @@ class ThreadController extends BaseController
     }
 
     /*
+     * POST: Search threads which title or content contains some keywords
+     *
+     * @param Request   $request    request
+     *
+     * @return JsonResponse
+     */
+    public function searchThread(Request $request) {
+      $this->validate($request, ['page' => 'integer|min:1', 'keystr' => 'required|string']);
+
+      $keyStr = trim($request->keystr);
+      if($keyStr === '') {
+        $this->response(array());
+      }
+
+      $page = $request->input('page') ? $request->input('page') : 1;
+      $catg2 = $request->input('catg2') ? $request->input('catg2') : false;
+      $catg3 = $request->input('catg3') ? $request->input('catg3') : false;
+      $catg4 = $request->input('catg4') ? $request->input('catg4') : false;
+
+      $catgs = array();
+      if($catg2) array_push($catgs, 2);
+      if($catg3) array_push($catgs, 3);
+      if($catg4) array_push($catgs, 4);
+
+      // id of threads where content has keyword
+      $ids_1 = $this->model()
+        ->whereHas('posts', function ($query) use($keyStr) {
+            $query->where("forum_posts.sequence", "1")
+                  ->where('content', 'like', '%' . $keyStr . '%');
+        })
+        ->select(['id'])
+        ->get()
+        ->toArray();
+
+      // id of threads where title has keyword
+      $ids_2 = $this->model()
+        ->where('title', 'like', '%' . $keyStr . '%')
+        ->select(['id'])
+        ->get()
+        ->toArray();
+
+      $ids = array();
+      foreach ($ids_1 as $key => $value) {
+        array_push($ids, $value['id']);
+      }
+      foreach ($ids_2 as $key => $value) {
+        array_push($ids, $value['id']);
+      }
+
+      $ids = array_unique($ids);
+
+
+      $threads = $this->model()
+      ->with(['author' => function ($query) {
+          $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
+      }])
+      ->with(['posts' => function ($query) {
+          $query->where("forum_posts.sequence", "1")
+        ->select(DB::raw('id, thread_id, content, (CASE WHEN pivotpost.user_id IS NOT NULL THEN 1 ELSE 0 END) AS is_current_user_like'))
+        ->leftJoin(
+            DB::raw("(SELECT post_id, user_id FROM forum_like_posts) as `pivotpost`"),
+            function ($join) {
+                $join->where('user_id', $this->user->id)
+                    ->on('pivotpost.post_id', '=', 'forum_posts.id');
+            }
+        );
+      }])
+      ->whereIn('category_id', $catgs)
+      ->whereIn('id', $ids)
+      ->skip(BaseController::threadsByPage * ($page - 1))
+      ->take(BaseController::threadsByPage)
+      ->get()
+      ->toArray();
+
+      return $this->response($threads);
+    }
+
+    /*
      * PATCH: Mark all post of a thread read by it's op
      *
      * @param int       $id         thread id
