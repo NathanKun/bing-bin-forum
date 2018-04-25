@@ -15,7 +15,7 @@ export class BasepageProvider {
   public imgBaseUrl = 'https://api.bingbin.io';
 
   constructor(public platform: Platform, public app: App, public l: LogProvider) {
-
+/*
     let nav = app.getActiveNavs()[0];
 
     platform.registerBackButtonAction(() => {
@@ -26,7 +26,7 @@ export class BasepageProvider {
       } else {
         console.log("can not go back")
       }
-    });
+    });*/
   }
 
 

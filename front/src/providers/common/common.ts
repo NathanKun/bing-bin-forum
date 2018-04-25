@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
+import { App, NavControllerBase } from 'ionic-angular';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
 
@@ -13,14 +14,28 @@ export class CommonProvider {
   public userRabbitId: number;
   public userLeafId: number;
 
-  private location: string = ""
+  private location: string = "";
+  private nav: NavControllerBase;
+
+  private rabbits: { [key: number]: Blob } = {};
+  private leaves: { [key: number]: Blob } = {};
 
 
-  constructor(public http: HttpClient, private ngZone: NgZone) {
-    window['outsideSetLocation'] = {component: this, zone: ngZone};
+  constructor(public http: HttpClient, private ngZone: NgZone, public app: App) {
+    this.nav = app.getActiveNavs()[0];
+    window['common-provider'] = { component: this, zone: ngZone };
 
     // call from outside
     //window['outsideSetLocation'].zone.run(() => {window['outsideSetLocation'].component.outsideSetLocation('loc');})
+  }
+
+  public outsideBackPress() {
+    if (this.nav.canGoBack()) { //Can we go back?
+      this.nav.pop();
+      console.log("poped");
+    } else {
+      console.log("can not go back")
+    }
   }
 
   public getLocation() {
@@ -47,6 +62,15 @@ export class CommonProvider {
           let rabbit: Blob = values[0];
           let leaf: Blob = values[1];
 
+          // cache imgs
+          if (!(this.rabbits.hasOwnProperty(idRabbit))) {
+            this.rabbits[idRabbit] = rabbit;
+          }
+          if (!(this.leaves.hasOwnProperty(idLeaf))) {
+            this.leaves[idLeaf] = leaf;
+          }
+
+          // draw imgs
           var ctx = canvas.getContext('2d');
           var rabbitImg: any = new Image();
           var leafImg: any = new Image();
@@ -109,13 +133,21 @@ export class CommonProvider {
   }
 
   private idToRabbit(id: number): Observable<Blob> {
-    return this.http
-      .get('../../assets/imgs/avatar/rabbit_' + id + '.png', { responseType: 'blob' });
+    if (this.rabbits.hasOwnProperty(id)) {
+      return Observable.of(this.rabbits[id]);
+    } else {
+      return this.http
+        .get('../../assets/imgs/avatar/rabbit_' + id + '.png', { responseType: 'blob' });
+    }
   }
 
   private idToLeaf(id: number): Observable<Blob> {
-    return this.http
-      .get('../../assets/imgs/avatar/leaf_' + id + '.png', { responseType: 'blob' });
+    if (this.leaves.hasOwnProperty(id)) {
+      return Observable.of(this.leaves[id]);
+    } else {
+      return this.http
+        .get('../../assets/imgs/avatar/leaf_' + id + '.png', { responseType: 'blob' });
+    }
   }
 
 
