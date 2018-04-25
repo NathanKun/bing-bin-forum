@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import {
+  NavController, NavParams, LoadingController,
+  AlertController, App, Platform
+} from 'ionic-angular';
 
 import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
@@ -27,11 +30,12 @@ export class NewPostPage extends BasepageProvider {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
+    public app: App, public platform: Platform,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private alertCtrl: AlertController,
     public loadingCtrl: LoadingController) {
 
-    super(l);
+    super(platform, app, l);
 
     this.changeFlag('green');
   }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, App, Platform } from 'ionic-angular';
 import { EventOpenPage } from '../event-open/event-open';
 
 import { ThreadProvider } from '../../providers/thread/thread';
@@ -17,28 +17,29 @@ import { BasepageProvider } from '../../providers/basepage/basepage';
   templateUrl: 'event.html',
 })
 export class EventPage extends BasepageProvider {
-  
+
   events: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public l: LogProvider,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public app: App, public platform: Platform, public l: LogProvider,
     private threadProvider: ThreadProvider) {
 
-    super(l);
-    
+    super(platform, app, l);
+
     this.threadProvider.index(1, 1).subscribe(
       (res) => {
         this.doSubscribe(res, () => {
           this.events = res.data;
         }, () => {
-          
+
         }, () => {
-          
+
         });
       });
   }
 
   openCardPage(threadId: number) {
-    this.navCtrl.push(EventOpenPage, {threadId: threadId});
+    this.navCtrl.push(EventOpenPage, { threadId: threadId });
   }
 
 

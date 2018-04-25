@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, App, Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx'
 import { CookieService } from 'ngx-cookie-service';
 
@@ -22,17 +22,18 @@ export class LoginPage extends BasepageProvider {
   hint: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
+    public app: App, public platform: Platform,
     public l: LogProvider, private bbh: BingBinHttpProvider,
     private commonProvider: CommonProvider, private cookieService: CookieService) {
 
-    super(l);
+    super(platform, app, l);
 
     // check front version
     bbh.httpGetBasic('/assets/version.json').subscribe((res: any) => {
       if ((!this.cookieService.check('version')) ||
         (this.cookieService.check('version') && this.cookieService.get('version') != res.version)) {
         this.l.log('version outdated, old version = ' + this.cookieService.get('version'));
-        if('android' in window) {
+        if ('android' in window) {
           this.l.log("Cached site is out dated, calling window['android'].clearCache()");
           this.cookieService.set('version', res.version, 7);
           window['android'].clearCache();

@@ -1,5 +1,7 @@
-import { LogProvider } from '../../providers/log/log';
+import { App, Platform } from 'ionic-angular';
 import { Injectable } from '@angular/core';
+
+import { LogProvider } from '../../providers/log/log';
 
 /*
   Generated class for the BasepageProvider provider.
@@ -12,7 +14,19 @@ export class BasepageProvider {
 
   public imgBaseUrl = 'https://api.bingbin.io';
 
-  constructor(public l: LogProvider) {
+  constructor(public platform: Platform, public app: App, public l: LogProvider) {
+
+    let nav = app.getActiveNavs()[0];
+
+    platform.registerBackButtonAction(() => {
+      console.log("back pressed");
+      if (nav.canGoBack()) { //Can we go back?
+        nav.pop();
+        console.log("poped");
+      } else {
+        console.log("can not go back")
+      }
+    });
   }
 
 

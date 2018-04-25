@@ -1,5 +1,8 @@
 import { Component, ViewChildren } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import {
+  NavController, NavParams, LoadingController,
+  AlertController, App, Platform
+} from 'ionic-angular';
 import { CommentPage } from '../comment/comment';
 
 import { ThreadProvider } from '../../providers/thread/thread';
@@ -27,12 +30,13 @@ export class PostOpenPage extends BasepageProvider {
   commentInput: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
+    public app: App, public platform: Platform,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private postProvider: PostProvider,
     public loadingCtrl: LoadingController, private alertCtrl: AlertController
   ) {
 
-    super(l);
+    super(platform, app, l);
 
     this.loadPage();
   }
@@ -136,11 +140,11 @@ export class PostOpenPage extends BasepageProvider {
   togglePostLike(post: any, thread?: any) {
     if (post.is_current_user_like) {
       this.postProvider.unlikePost(post.id).subscribe();
-      if(thread) thread.like_count--;
+      if (thread) thread.like_count--;
 
     } else {
       this.postProvider.likePost(post.id).subscribe();
-      if(thread) thread.like_count++;
+      if (thread) thread.like_count++;
     }
     post.is_current_user_like = !post.is_current_user_like;
   }
