@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NavController, NavParams, App, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
@@ -15,10 +15,10 @@ export class EventOpenPage extends BasepageProvider {
   thread: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private sanitizer: DomSanitizer, public app: App, public platform: Platform,
-    public l: LogProvider, private threadProvider: ThreadProvider) {
+    private sanitizer: DomSanitizer, public l: LogProvider,
+    private threadProvider: ThreadProvider) {
 
-    super(platform, app, l);
+    super(l);
 
     const id = navParams.get('threadId');
 

@@ -24,11 +24,18 @@ export class CommonProvider {
   constructor(public http: HttpClient, private ngZone: NgZone, public app: App) {
     this.nav = app.getActiveNavs()[0];
     window['common-provider'] = { component: this, zone: ngZone };
-
-    // call from outside
-    //window['outsideSetLocation'].zone.run(() => {window['outsideSetLocation'].component.outsideSetLocation('loc');})
   }
 
+  
+  // call from outside
+  //window['common-provider'].zone.run(() => {window['common-provider'].component.outsideSetLocation('loc');})
+  public outsideSetLocation(loc: string): string {
+    this.ngZone.run(() => this.setLocation(loc));
+    return this.getLocation();
+  }
+
+  // call from outside
+  //window['common-provider'].zone.run(() => {window['common-provider'].component.outsideBackPress();})
   public outsideBackPress() {
     if (this.nav.canGoBack()) { //Can we go back?
       this.nav.pop();
@@ -44,11 +51,6 @@ export class CommonProvider {
 
   private setLocation(loc: string) {
     this.location = loc;
-  }
-
-  public outsideSetLocation(loc: string): string {
-    this.ngZone.run(() => this.setLocation(loc));
-    return this.getLocation();
   }
 
   public draw(idRabbit: number, idLeaf: number, canvas: HTMLCanvasElement) {

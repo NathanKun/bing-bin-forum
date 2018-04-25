@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, App, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { EventOpenPage } from '../event-open/event-open';
 
 import { ThreadProvider } from '../../providers/thread/thread';
@@ -21,10 +21,9 @@ export class EventPage extends BasepageProvider {
   events: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public app: App, public platform: Platform, public l: LogProvider,
-    private threadProvider: ThreadProvider) {
+    public l: LogProvider, private threadProvider: ThreadProvider) {
 
-    super(platform, app, l);
+    super(l);
 
     this.threadProvider.index(1, 1).subscribe(
       (res) => {

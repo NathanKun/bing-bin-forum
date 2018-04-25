@@ -1,8 +1,5 @@
 import { Component, ViewChildren } from '@angular/core';
-import {
-  NavController, NavParams, LoadingController,
-  AlertController, App, Platform
-} from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { CommentPage } from '../comment/comment';
 
 import { ThreadProvider } from '../../providers/thread/thread';
@@ -30,13 +27,12 @@ export class PostOpenPage extends BasepageProvider {
   commentInput: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public app: App, public platform: Platform,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private postProvider: PostProvider,
     public loadingCtrl: LoadingController, private alertCtrl: AlertController
   ) {
 
-    super(platform, app, l);
+    super(l);
 
     this.loadPage();
   }

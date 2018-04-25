@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { NavController, NavParams, App, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx'
 import { CookieService } from 'ngx-cookie-service';
 
@@ -22,11 +22,10 @@ export class LoginPage extends BasepageProvider {
   hint: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public app: App, public platform: Platform,
     public l: LogProvider, private bbh: BingBinHttpProvider,
     private commonProvider: CommonProvider, private cookieService: CookieService) {
 
-    super(platform, app, l);
+    super(l);
 
     // check front version
     bbh.httpGetBasic('/assets/version.json').subscribe((res: any) => {

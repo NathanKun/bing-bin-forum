@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {
-  NavController, NavParams, LoadingController,
-  AlertController, App, Platform
+  NavController, NavParams, LoadingController, AlertController
 } from 'ionic-angular';
 
 import { ThreadProvider } from '../../providers/thread/thread';
@@ -19,10 +18,10 @@ export class NewPostPage extends BasepageProvider {
   private titleInput: string = '';
   private contentInput: string = '';
   private mainImageInput: File;
-  private previewUrl: string;
   private locationEnabled: boolean = true;
   private selectedCategory: number;
 
+  previewUrl: string;
   greenFlagImg: string;
   redFlagImg: string;
   brownFlagImg: string;
@@ -30,12 +29,11 @@ export class NewPostPage extends BasepageProvider {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public app: App, public platform: Platform,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private alertCtrl: AlertController,
     public loadingCtrl: LoadingController) {
 
-    super(platform, app, l);
+    super(l);
 
     this.changeFlag('green');
   }

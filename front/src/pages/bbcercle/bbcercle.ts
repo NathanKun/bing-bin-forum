@@ -1,7 +1,7 @@
 import { Component, ViewChildren } from '@angular/core';
 import {
   NavController, NavParams, LoadingController,
-  PopoverController, Refresher, App, Platform
+  PopoverController, Refresher
 } from 'ionic-angular';
 import { PostOpenPage } from '../post-open/post-open';
 import { PublicationPage } from '../publication/publication';
@@ -31,13 +31,12 @@ export class BbcerclePage extends BasepageProvider {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public app: App, public platform: Platform,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private postProvider: PostProvider,
     public popoverCtrl: PopoverController, public loadingCtrl: LoadingController
   ) {
 
-    super(platform, app, l);
+    super(l);
 
   }
 

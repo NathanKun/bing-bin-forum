@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  NavController, NavParams, LoadingController,
-  AlertController, App, Platform
-} from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { PostOpenPage } from '../post-open/post-open';
 
@@ -36,11 +33,10 @@ export class SearchPage extends BasepageProvider {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public app: App, public platform: Platform,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private alertCtrl: AlertController, public loadingCtrl: LoadingController) {
 
-    super(platform, app, l);
+    super(l);
 
     this.changeFlag('green');
     this.changeFlag('red');

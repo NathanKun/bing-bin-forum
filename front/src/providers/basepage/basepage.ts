@@ -1,4 +1,3 @@
-import { App, Platform } from 'ionic-angular';
 import { Injectable } from '@angular/core';
 
 import { LogProvider } from '../../providers/log/log';
@@ -14,7 +13,7 @@ export class BasepageProvider {
 
   public imgBaseUrl = 'https://api.bingbin.io';
 
-  constructor(public platform: Platform, public app: App, public l: LogProvider) {
+  constructor(public l: LogProvider) {
 /*
     let nav = app.getActiveNavs()[0];
 
