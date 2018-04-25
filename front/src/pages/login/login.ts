@@ -29,7 +29,6 @@ export class LoginPage extends BasepageProvider {
 
     // check front version
     bbh.httpGetBasic('/assets/version.json').subscribe((res: any) => {
-      console.log('doSubscribe');
       if ((!this.cookieService.check('version')) ||
         (this.cookieService.check('version') && this.cookieService.get('version') != res.version)) {
         this.l.log('version outdated, old version = ' + this.cookieService.get('version'));
