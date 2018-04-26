@@ -98,7 +98,7 @@ export class CommonProvider {
 
           leafImg.onload = () => {
             ctx.drawImage(leafImg, (canvas.width - leafImg.width) / 2, canvas.height / 7);
-            const sevenVhToPx = document.documentElement.clientHeight * 0.07;
+            const sevenVhToPx = document.documentElement.clientHeight * 0.08;
             let HERMITE = new Hermite_class();
             HERMITE.resample(canvas, sevenVhToPx, sevenVhToPx, true, on_finish);
           }

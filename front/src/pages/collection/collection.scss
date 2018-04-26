@@ -3,13 +3,6 @@ page-collection {
     background-color: color($colors,backgroundGreen);
   }
 
-  .name-location {
-    margin: 0;
-    height: 50%;
-    padding: 0.5vh 0 0;
-    vertical-align: middle;
-  }
-
   .etiquette {
     background: transparent;
     margin-top: -1em;
@@ -134,6 +127,7 @@ page-collection {
   ion-row.head {
     align-items: stretch;
     margin-top: -1.5em;
+    height: 10vh;
   }
 
   ion-row.foot {

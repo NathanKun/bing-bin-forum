@@ -159,3 +159,14 @@ ion-img {
 ion-input {
     color: color($colors, dark);
 }
+
+.canvas-col {
+  padding: 0 !important;
+}
+
+.name-location {
+  margin: 0;
+  height: 50%;
+  padding: 0.5vh 0 0 0.8em;
+  vertical-align: middle;
+}
