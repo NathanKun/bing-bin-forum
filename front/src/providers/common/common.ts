@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { App, NavControllerBase } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-
+import Hermite_class from 'hermite-resize';
 
 @Injectable()
 export class CommonProvider {
@@ -20,13 +20,14 @@ export class CommonProvider {
   private rabbits: { [key: number]: Blob } = {};
   private leaves: { [key: number]: Blob } = {};
 
+  //private HERMITE = new Hermite_class();
 
   constructor(public http: HttpClient, private ngZone: NgZone, public app: App) {
     this.nav = app.getActiveNavs()[0];
     window['common-provider'] = { component: this, zone: ngZone };
   }
 
-  
+
   // call from outside
   //window['common-provider'].zone.run(() => {window['common-provider'].component.outsideSetLocation('loc');})
   public outsideSetLocation(loc: string): string {
@@ -77,55 +78,28 @@ export class CommonProvider {
           var rabbitImg: any = new Image();
           var leafImg: any = new Image();
 
-          var canvasWidth = 0;
-          var canvasHeight = 0;
-          var downScaleRatio = 1;
+          var on_finish = function() {
+            canvas.setAttribute('style', 'display: block;');
+          };
 
           rabbitImg.onload = () => {
             // Make it visually fill the positioned parent
-            canvas.style.width = '100%';
-            canvas.style.height = '100%';
+            /*canvas.style.width = '100%';
+            canvas.style.height = '100%';*/
             // ...then set the internal size to match
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-
-            const x1 = canvas.width;
-            let y1 = canvas.height;
-            let x2 = rabbitImg.width;
-            let y2 = rabbitImg.height;
-
-            if (x1 / y1 < x2 / y2) {
-              y1 = x1;
-            }
-            canvasWidth = x1;
-            canvasHeight = y1;
-
-            downScaleRatio = x1 / x2 > y1 / y2 ? x1 / x2 : y1 / y2;
-            rabbitImg = this.downScaleImage(rabbitImg, downScaleRatio);
+            canvas.width = rabbitImg.height;
+            canvas.height = rabbitImg.height;
 
 
-            const posX = (x1 * y2 - x2 * y1) / 2 / y2;
-            const posY = 0;
-            const drawWitdh = x2 * y1 / y2;
-
-            ctx.drawImage(rabbitImg, posX, posY, drawWitdh, y1);
+            ctx.drawImage(rabbitImg, (canvas.width - rabbitImg.width) / 2, 0);
             leafImg.src = URL.createObjectURL(leaf);
           }
 
           leafImg.onload = () => {
-            const x1 = canvasWidth;
-            const y1 = canvasHeight;
-            let x2 = leafImg.width;
-            let y2 = leafImg.height;
-
-            leafImg = this.downScaleImage(leafImg, downScaleRatio);
-
-            const drawHeight = y1 / 2.3;
-            const drawWitdh = drawHeight * x2 / y2;
-            const posX = (x1 - drawWitdh) / 2;
-            const posY = y1 / 7;
-
-            ctx.drawImage(leafImg, posX, posY, drawWitdh, drawHeight);
+            ctx.drawImage(leafImg, (canvas.width - leafImg.width) / 2, canvas.height / 7);
+            const sevenVhToPx = document.documentElement.clientHeight * 0.07;
+            let HERMITE = new Hermite_class();
+            HERMITE.resample(canvas, sevenVhToPx, sevenVhToPx, true, on_finish);
           }
 
           rabbitImg.src = URL.createObjectURL(rabbit);

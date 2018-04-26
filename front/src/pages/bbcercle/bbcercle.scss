@@ -3,17 +3,31 @@ page-bbcercle {
     background-color: color($colors, backgroundGreen);
   }
 
-  .name-location{
+  .name-location {
     margin: 0;
     height: 50%;
-    padding: 0;
-    padding-top: 0.5vh;
+    padding: 0.5vh 0 0;
     vertical-align: middle;
   }
-
-  canvas {
+  /*canvas {
     width: 7vh !important;
     height: 7vh !important;
+  }*/
+  canvas {
+    display: none;
+    /* disable antialiasing */
+    image-rendering: optimizeSpeed;
+    /* Older versions of FF          */
+    image-rendering: -moz-crisp-edges;
+    /* FF 6.0+                       */
+    image-rendering: -webkit-optimize-contrast;
+    /* Safari                        */
+    image-rendering: -o-crisp-edges;
+    /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;
+    /* Awesome future-browsers       */
+    -ms-interpolation-mode: nearest-neighbor;
+    /* IE                            */
   }
 
   .post-image {
