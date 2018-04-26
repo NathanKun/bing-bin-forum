@@ -76,7 +76,7 @@
         <b class='number'>{{ thread.like_count }}</b>
         <ion-icon [name]="thread.posts[0].is_current_user_like ? 'heart' : 'heart-outline'" (click)="togglePostLike(thread.posts[0], thread)" class='like'></ion-icon>
         <b class='number'>{{ thread.reply_count }}</b>
-        <ion-icon [name]="'square-outline'" (click)="openCommentPage(thread.id)" class='comment'></ion-icon>
+        <ion-icon [name]="'square-outline'" class='comment'></ion-icon> <!--(click)="openCommentPage(thread.id)"-->
       </ion-col>
     </ion-row>
   </ion-toolbar>
