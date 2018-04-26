@@ -1,31 +1,129 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { PopoverController } from 'ionic-angular';
+import { Component, ViewChildren } from '@angular/core';
+import {
+  NavController, NavParams, LoadingController,
+  PopoverController, Refresher
+} from 'ionic-angular';
+
 import { PostOpenPage } from '../post-open/post-open';
 import { PopoverComponent } from '../../components/popover/popover';
 
-/**
- * Generated class for the CollectionPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ThreadProvider } from '../../providers/thread/thread';
+import { PostProvider } from '../../providers/post/post';
+import { LogProvider } from '../../providers/log/log';
+import { BasepageProvider } from '../../providers/basepage/basepage';
+import { CommonProvider } from '../../providers/common/common';
+
 
 @Component({
   selector: 'page-collection',
   templateUrl: 'collection.html',
 })
-export class CollectionPage {
+export class CollectionPage extends BasepageProvider {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public popoverCtrl: PopoverController) {
+  loading: any;
+  @ViewChildren('threadcard') cardList;
+  threads: any = [];
+  page: number = 1;
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public l: LogProvider, private threadProvider: ThreadProvider,
+    private commonProvider: CommonProvider, private postProvider: PostProvider,
+    public popoverCtrl: PopoverController, public loadingCtrl: LoadingController
+  ) {
+
+    super(l);
+
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CollectionPage');
+
+  ngAfterViewInit() {
+    this.cardList.changes.subscribe(
+      () => {
+        this.threads.forEach((t, index) => {
+          if (index >= (10 * this.page - 10) && index < (10 * this.page)) {
+            this.commonProvider.draw(t.author.id_usagi, t.author.id_leaf,
+              <HTMLCanvasElement>document.getElementById("favorite-thread-canvas-" + t.id));
+          }
+        });
+      }
+    );
   }
 
-  openPostPage(){
-    this.navCtrl.push(PostOpenPage);
+  // call each time before enter to this page
+  ionViewWillEnter() {
+    if (this.page === 1) {
+      this.loading = this.loadingCtrl.create();
+      this.loading.present();
+
+      this.loadPage(() => this.loading.dismiss());
+    }
+  }
+
+
+  private loadPage(doAfter: Function) {
+    this.threadProvider.myFavorite(1).subscribe(
+      (res) => {
+        this.doSubscribe(res, () => {
+          this.page = 1;
+          this.threads = res.data;
+
+          this.threads.forEach((t, index) => {
+            // calculate post time
+            this.threads[index]['timeSince'] = this.timeSince(new Date(t.created_at));
+
+            // complete image urls
+            if (t.main_image && !(t.main_image.original.url as string).startsWith('http')) {
+              this.threads[index].main_image.original.url = this.imgBaseUrl + t.main_image.original.url;
+            }
+          });
+
+          doAfter();
+        }, () => {
+
+        }, () => {
+
+        });
+      });
+  }
+
+  doRefresh(refresher: Refresher) {
+    {
+      this.loadPage(() => refresher.complete());
+    }
+  }
+
+  doInfinite(infiniteScroll) {
+    if (this.page != 0) {
+      this.page++;
+      this.threadProvider.myFavorite(this.page).subscribe((res) => {
+        this.doSubscribe(res, () => {
+          if (res.data.length == 0) {
+            this.page = 0;
+          } else {
+
+            res.data.forEach((t, index) => {
+              // complete image urls
+              if (t.main_image && !(t.main_image.original.url as string).startsWith('http')) {
+                res.data[index].main_image.original.url = this.imgBaseUrl + t.main_image.original.url;
+              }
+            });
+
+            this.threads = this.threads.concat(res.data);
+            this.l.log(this.threads);
+          }
+        }, () => { }, () => { }
+        );
+
+        setTimeout(() => infiniteScroll.complete(), 1000);
+      });
+    } else {
+
+    }
+  }
+
+  openPostPage(threadId: number) {
+    this.navCtrl.push(PostOpenPage, { threadId: threadId });
   }
 
   presentPopover(myEvent) {
@@ -35,16 +133,28 @@ export class CollectionPage {
     });
   }
 
-  visible1 = false;
-  visible2 = false;
-  visible3 = false;
-    toggleCollection() {
-     this.visible1 = !this.visible1;
+  toggleCollection(thread: any) {
+    console.log(thread);
+    if (thread.favorite) {
+      this.threadProvider.unfavorite(thread.id).subscribe();
+      thread.favorite_count--;
+    } else {
+      this.threadProvider.favorite(thread.id).subscribe();
+      thread.favorite_count++;
     }
-    toggleLike() {
-     this.visible2 = !this.visible2;
+    thread.favorite = !thread.favorite;
+  }
+
+  toggleLike(thread: any) {
+    console.log(thread);
+    if (thread.like) {
+      this.postProvider.unlikePost(thread.post_id).subscribe();
+      thread.like_count--;
+    } else {
+      this.postProvider.likePost(thread.post_id).subscribe();
+      thread.like_count++;
     }
-    toggleComment() {
-     this.visible3 = !this.visible3;
-    }
+    thread.like = !thread.like;
+  }
+
 }

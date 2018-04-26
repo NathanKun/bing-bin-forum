@@ -1,28 +1,68 @@
 page-collection {
-  #collection{
+  #collection {
     background-color: color($colors,backgroundGreen);
   }
 
-  h1{
+  .name-location {
+    margin: 0;
+    height: 50%;
+    padding: 0.5vh 0 0;
+    vertical-align: middle;
+  }
+
+  .etiquette {
+    background: transparent;
+    margin-top: -1em;
+    margin-bottom: -.5em;
+    margin-left: 60vw;
+    width: 20px;
+    height: auto;
+  }
+
+  canvas {
+    display: none;
+    /* disable antialiasing */
+    image-rendering: optimizeSpeed;
+    /* Older versions of FF          */
+    image-rendering: -moz-crisp-edges;
+    /* FF 6.0+                       */
+    image-rendering: -webkit-optimize-contrast;
+    /* Safari                        */
+    image-rendering: -o-crisp-edges;
+    /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;
+    /* Awesome future-browsers       */
+    -ms-interpolation-mode: nearest-neighbor;
+    /* IE                            */
+  }
+
+  .post-image {
+    max-height: 40vh;
+    width: auto;
+    margin: 0 auto;
+  }
+
+  h1 {
     color: color($colors,backgroundWhite);
     font-size: 24px;
   }
 
-  ion-avatar{
+  ion-avatar {
     padding-top: 1em;
   }
 
-  h2{
+  h2 {
     color: color($colors,dark);
     font-size: 24px;
   }
-  h3{
+
+  h3 {
     color: color($colors,dark);
     font-size: 24px;
     font-weight: 500;
   }
 
-  b{
+  b {
     color: color($colors,grey);
     font-size: 15px;
     font-weight: 400;
@@ -30,75 +70,75 @@ page-collection {
     padding-bottom: 1em;
   }
 
-  b.time{
+  b.time {
     color: color($colors,grey);
     font-size: 12px;
     font-weight: 400;
   }
 
-.card-content{
+  .card-content {
     cursor: pointer;
   }
 
-.more{
+  .more {
     cursor: pointer;
   }
 
-  ion-card-content.card-head{
-      cursor:auto;
-    }
+  ion-card-content.card-head {
+    cursor: auto;
+  }
 
-  ion-icon.arrow{
-    color:color($colors,backgroundWhite);
+  ion-icon.arrow {
+    color: color($colors,backgroundWhite);
     font-size: 24px;
     cursor: pointer;
   }
 
-  ion-icon.collection{
+  ion-icon.collection {
     font-size: 23px;
-    color:color($colors,yellow);
-  }
-  ion-icon.like{
-    font-size: 20px;
-    color:color($colors,red);
+    color: color($colors,yellow);
   }
 
-  ion-icon.comment{
+  ion-icon.like {
     font-size: 20px;
-    color:color($colors,primary);
+    color: color($colors,red);
+  }
+
+  ion-icon.comment {
+    font-size: 20px;
+    color: color($colors,primary);
     padding-right: 2rem;
   }
 
-  ion-note.time{
+  ion-note.time {
     margin-top: 1em;
     padding-top: 6px;
     padding-left: 1em;
-    color:color($colors,grey);
+    color: color($colors,grey);
   }
 
-  .card-head{
+  .card-head {
     margin-bottom: -1em;
   }
 
-  ion-img{
+  ion-img {
     background: transparent;
   }
 
-  ion-img.etiquette{
+  ion-img.etiquette {
     margin-top: -2em;
     margin-bottom: -.5em;
     margin-left: 13.5em;
   }
 
-  ion-row.head{
-    align-items:stretch;
+  ion-row.head {
+    align-items: stretch;
     margin-top: -1.5em;
   }
 
-  ion-row.foot{
+  ion-row.foot {
     align-items: center;
-    padding-top: .2em;
-    padding-bottom: .5em;
+    padding-top: 0.2em;
+    padding-bottom: 0.5em;
   }
-
 }
