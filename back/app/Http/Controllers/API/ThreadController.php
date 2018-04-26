@@ -272,6 +272,7 @@ class ThreadController extends BaseController
             ->with('posts')
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
+            ->latest()
             ->get()
             ->toArray();
 
