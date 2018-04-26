@@ -238,7 +238,7 @@ class ThreadController extends BaseController
             }])
             ->join('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
             ->where('user_id', $this->user->id)
-            ->latest()
+            ->orderBy('forum_favorite_threads.created_at', 'DESC')
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
             ->get()
