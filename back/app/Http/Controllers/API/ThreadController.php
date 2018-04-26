@@ -248,6 +248,7 @@ class ThreadController extends BaseController
             $t['favorite'] = (!is_null($t['user_id']) && $t['user_id'] === $this->user->id);
             $t['like'] = $t['posts'][0]['is_current_user_like'] === 1;
             $t['content'] = $t['posts'][0]['content'];
+            $t['post_id'] = $t['posts'][0]['id'];
             $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id', 'posts']);
         }
 
