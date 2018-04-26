@@ -1,15 +1,28 @@
 page-post-open {
-  canvas {
-    width: 7vh !important;
-    height: 7vh !important;
-  }
+
+#leave-comment-input {
+  padding-right: 20px;
+}
+
+canvas {
+  display: none;
+  /* disable antialiasing */
+  image-rendering: optimizeSpeed;
+  /* Older versions of FF          */
+  image-rendering: -moz-crisp-edges;
+  /* FF 6.0+                       */
+  image-rendering: -webkit-optimize-contrast;
+  /* Safari                        */
+  image-rendering: -o-crisp-edges;
+  /* OS X & Windows Opera (12.02+) */
+  image-rendering: pixelated;
+  /* Awesome future-browsers       */
+  -ms-interpolation-mode: nearest-neighbor;
+  /* IE                            */
+}
 
   ion-row + ion-row {
     margin-top: 20px;
-  }
-
-  #leave-comment-input {
-    padding-right: 20px;
   }
 
   .commentrow {

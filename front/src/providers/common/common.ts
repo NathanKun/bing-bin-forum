@@ -87,9 +87,10 @@ export class CommonProvider {
             /*canvas.style.width = '100%';
             canvas.style.height = '100%';*/
             // ...then set the internal size to match
+
+            // set canvas size
             canvas.width = rabbitImg.height;
             canvas.height = rabbitImg.height;
-
 
             ctx.drawImage(rabbitImg, (canvas.width - rabbitImg.width) / 2, 0);
             leafImg.src = URL.createObjectURL(leaf);

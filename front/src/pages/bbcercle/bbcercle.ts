@@ -45,8 +45,10 @@ export class BbcerclePage extends BasepageProvider {
     this.cardList.changes.subscribe(
       () => {
         this.threads.forEach((t, index) => {
-          this.commonProvider.draw(t.author.id_usagi, t.author.id_leaf,
-            <HTMLCanvasElement>document.getElementById("thread-canvas-" + t.id));
+          if (index >= (10 * this.page - 10) && index < (10 * this.page)) {
+            this.commonProvider.draw(t.author.id_usagi, t.author.id_leaf,
+              <HTMLCanvasElement>document.getElementById("thread-canvas-" + t.id));
+          }
         });
       }
     );
@@ -54,10 +56,12 @@ export class BbcerclePage extends BasepageProvider {
 
   // call each time before enter to this page
   ionViewWillEnter() {
-    this.loading = this.loadingCtrl.create();
-    this.loading.present();
+    if (this.page === 1) {
+      this.loading = this.loadingCtrl.create();
+      this.loading.present();
 
-    this.loadPage(() => this.loading.dismiss());
+      this.loadPage(() => this.loading.dismiss());
+    }
   }
 
 
