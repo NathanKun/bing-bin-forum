@@ -46,27 +46,25 @@ export class BasepageProvider {
 
     var interval = Math.floor(seconds / 31536000);
 
-    let plural = interval === 1 ? "" : "s";
-
-    if (interval > 1) {
-      return "Il y a " + interval + " an" + plural;
+    if (interval >= 1) {
+      return "Il y a " + interval + " ans";
     }
     interval = Math.floor(seconds / 2592000);
-    if (interval > 1) {
+    if (interval >= 1) {
       return "Il y a " + interval + " mois";
     }
     interval = Math.floor(seconds / 86400);
-    if (interval > 1) {
-      return "Il y a " + interval + " jour" + plural;
+    if (interval >= 1) {
+      return "Il y a " + interval + " jours";
     }
     interval = Math.floor(seconds / 3600);
-    if (interval > 1) {
-      return "Il y a " + interval + " heure" + plural;
+    if (interval >= 1) {
+      return "Il y a " + interval + " heures";
     }
     interval = Math.floor(seconds / 60);
-    if (interval > 1) {
-      return "Il y a " + interval + " minuit" + plural;
+    if (interval >= 1) {
+      return "Il y a " + interval + " minuits";
     }
-    return "Il y a " + Math.floor(seconds) + " second" + plural;
+    return "Il y a " + Math.floor(seconds) + " seconds";
   }
 }

@@ -39,9 +39,7 @@ export class PostOpenPage extends BasepageProvider {
 
   private loadPage() {
 
-    this.loading = this.loadingCtrl.create({
-      content: 'Loading...'
-    });
+    this.loading = this.loadingCtrl.create();
     this.loading.present();
 
     this.threadProvider.getThread(this.navParams.get('threadId')).subscribe((res) => {
@@ -119,6 +117,13 @@ export class PostOpenPage extends BasepageProvider {
           loading.dismiss();
           this.doSubscribe(res, () => {
             this.commentInput = '';
+
+            // hide all canvas before relode page
+            var canvases = document.querySelectorAll("canvas");
+            for(let i = 0; i < canvases.length; i++) {
+              canvases.item(i).style.display = "none";
+            }
+
             this.loadPage();
           }, () => {
 

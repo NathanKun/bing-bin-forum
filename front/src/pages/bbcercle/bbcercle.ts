@@ -107,6 +107,9 @@ export class BbcerclePage extends BasepageProvider {
           } else {
 
             res.data.forEach((t, index) => {
+              // calculate post time
+              res.data[index]['timeSince'] = this.timeSince(new Date(t.created_at));
+
               // complete image urls
               if (t.main_image && !(t.main_image.original.url as string).startsWith('http')) {
                 res.data[index].main_image.original.url = this.imgBaseUrl + t.main_image.original.url;
