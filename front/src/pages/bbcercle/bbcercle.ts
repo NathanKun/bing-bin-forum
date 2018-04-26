@@ -65,6 +65,7 @@ export class BbcerclePage extends BasepageProvider {
     this.threadProvider.indexForum(1).subscribe(
       (res) => {
         this.doSubscribe(res, () => {
+          this.page = 1;
           this.threads = res.data;
 
           this.threads.forEach((t, index) => {

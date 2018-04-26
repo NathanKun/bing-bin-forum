@@ -10,7 +10,7 @@
     </ion-col>
   </ion-row>
   <ion-item color="backgroundWhite">
-    <ion-input limit-to="255" [(ngModel)]="titleInput" placeholder="Titre" type="text" value=""></ion-input>
+    <ion-input limit-to="128" [(ngModel)]="titleInput" placeholder="Titre" type="text" value=""></ion-input>
   </ion-item>
   <br>
   <ion-row col-center>
@@ -28,7 +28,7 @@
 
   <br>
   <ion-item color="backgroundWhite" class='content'>
-    <ion-textarea limit-to="255" [(ngModel)]="contentInput" placeholder="Contenu" type="text"></ion-textarea>
+    <ion-textarea limit-to="1024" [(ngModel)]="contentInput" placeholder="Contenu" type="text"></ion-textarea>
   </ion-item>
   <ion-row>
     <ion-col col-2>

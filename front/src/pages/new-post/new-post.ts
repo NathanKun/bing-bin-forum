@@ -81,7 +81,7 @@ export class NewPostPage extends BasepageProvider {
     this.l.log("contentInput = " + this.contentInput);
     this.l.log("mainImageInput = " + this.mainImageInput);
     // limit-to directive not working perfectly, check long again
-    if (this.titleInput.length > 255) {
+    if (this.titleInput.length > 128) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'La titre est trop long',
@@ -95,7 +95,7 @@ export class NewPostPage extends BasepageProvider {
         buttons: ['OK']
       });
       alert.present();
-    } else if (this.contentInput.length > 60000) {
+    } else if (this.contentInput.length > 1024) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'La contenu est trop longue',

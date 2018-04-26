@@ -24,6 +24,10 @@ page-new-post {
     height: 15em;
   }
 
+  ion-textarea > textarea {
+    height: 90%;
+  }
+
   ion-icon {
     color: color($colors,backgroundWhite);
     font-size: 24px;
