@@ -323,9 +323,11 @@ class ThreadController extends BaseController
         if ($category_id != 0) {
             $builder = $builder->where('category_id', $category_id);
         } elseif ($forum) {
-            $builder = $builder->where('category_id', 2)
-                                ->orWhere('category_id', 3)
-                                ->orWhere('category_id', 4);
+            $builder = $builder->where( function ($query) { // orWhere must use function to wrap
+              $query->where('category_id', 2)
+                    ->orWhere('category_id', 3)
+                    ->orWhere('category_id', 4);
+            });
         } else {
             $builder = $builder->where('category_id', 1); // fallback to event category
         }
@@ -339,7 +341,7 @@ class ThreadController extends BaseController
                         ->on('pivot1.thread_id', '=', 'forum_threads.id');
                 }
             )
-            ->whereNull('deleted_at')
+            //->whereNull('deleted_at')
             ->latest()
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
