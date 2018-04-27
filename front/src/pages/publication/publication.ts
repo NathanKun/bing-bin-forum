@@ -139,10 +139,8 @@ export class PublicationPage extends BasepageProvider {
     this.navCtrl.push(PostOpenPage, { threadId: threadId });
   }
 
-  presentPopover(myEvent) {
-    let popover = this.popoverCtrl.create(PopoverComponent);
-    popover.present({
-      ev: myEvent
-    });
+  presentPopover(myEvent, threadId: number) {
+    let popover = this.popoverCtrl.create(PopoverComponent, {threadId: threadId, threads: this.threads});
+    popover.present({ ev: myEvent });
   }
 }

@@ -36,32 +36,47 @@ export class PopoverComponent {
   }
 
   delete(event) {
-    console.log("delete on click");
-    console.log(event);
-    console.log(this.threadId);
-    this.close();
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Supprimer ?',
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          handler: () => { }
+        },
+        {
+          text: 'Supprimer',
+          handler: () => {
+            this.close();
 
-    let loading = this.loadingCtrl.create();
-    loading.present();
+            let loading = this.loadingCtrl.create();
+            loading.present();
 
-    this.threadProvider.deleteThread(this.threadId).subscribe((res) => {
-      if (res.valid) {
-        this.threads.forEach((t, index) => {
-          if(t.id === this.threadId) {
-            this.threads.splice(index, 1);
+            this.threadProvider.deleteThread(this.threadId).subscribe((res) => {
+              if (res.valid) {
+                this.threads.forEach((t, index) => {
+                  if (t.id === this.threadId) {
+                    this.threads.splice(index, 1);
+                  }
+                });
+
+                loading.dismiss();
+              } else {
+                let alert = this.alertCtrl.create({
+                  title: 'Oops',
+                  subTitle: res.error ? res.error : 'Erreur',
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+            })
           }
-        });
+        }
+      ]
+    });
+    alert.present();
 
-        loading.dismiss();
-      } else {
-        let alert = this.alertCtrl.create({
-          title: 'Oops',
-          subTitle: res.error ? res.error : 'Erreur',
-          buttons: ['OK']
-        });
-        alert.present();
-      }
-    })
 
   }
 }

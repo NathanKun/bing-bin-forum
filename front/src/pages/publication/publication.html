@@ -37,20 +37,20 @@
   <!-- main ngFor -->
   <ion-card class="thread-card" *ngFor="let thread of threads">
     <ion-row>
-      <ion-col col-3>
+      <ion-col col-3 (click)="openPostPage(thread.id)">
         <h3>{{ thread.localeDateString }}</h3>
       </ion-col>
 
-      <ion-col col-4 (click)="openPostPage()">
+      <ion-col col-4 (click)="openPostPage(thread.id)">
         <img class='post-image' *ngIf="thread.main_image" [src]="thread.main_image.original.url" width="568">
       </ion-col>
 
-      <ion-col col-4 float-right (click)="openPostPage()">
+      <ion-col col-4 float-right (click)="openPostPage(thread.id)">
         <h3>{{ thread.title.length < 32 ? thread.title : thread.title.substring(0, 32) + '...' }}</h3>
       </ion-col>
 
       <ion-col col-1>
-        <ion-icon class='more' name="more" color="dark" (click)="presentPopover($event)"></ion-icon>
+        <ion-icon class='more' name="more" color="dark" (click)="presentPopover($event, thread.id)"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-card>

@@ -133,7 +133,7 @@ export class CommonProvider {
   // author: gamealchemist
   // scales the image by (float) scale < 1
   // returns a canvas containing the scaled image.
-  private downScaleImage(img, scale): HTMLCanvasElement {
+  /*private downScaleImage(img, scale): HTMLCanvasElement {
     var imgCV = document.createElement('canvas');
     imgCV.width = img.width;
     imgCV.height = img.height;
@@ -268,5 +268,5 @@ export class CommonProvider {
     // writing result to canvas.
     resCtx.putImageData(imgRes, 0, 0);
     return resCV;
-  }
+  }*/
 }
