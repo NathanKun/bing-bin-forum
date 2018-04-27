@@ -339,6 +339,7 @@ class ThreadController extends BaseController
                         ->on('pivot1.thread_id', '=', 'forum_threads.id');
                 }
             )
+            ->whereNull('deleted_at')
             ->latest()
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
