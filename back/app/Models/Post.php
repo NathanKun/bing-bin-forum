@@ -33,13 +33,13 @@ class Post extends BaseModel
         parent::__construct($attributes);
         $this->setPerPage(config('forum.preferences.pagination.posts'));
     }
-    
+
     public static function boot()
     {
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
             $model->like_count++;
             $model->save();
-            
+
             if($model->sequence === 1) {
                 $t = $model->thread;
                 $t->like_count++;
@@ -50,7 +50,7 @@ class Post extends BaseModel
         static::pivotDetached(function ($model, $relationName, $pivotIds) {
             $model->like_count--;
             $model->save();
-            
+
             if($model->sequence === 1) {
                 $t = $model->thread;
                 $t->like_count--;
@@ -58,15 +58,15 @@ class Post extends BaseModel
             }
         });
     }
-    
+
     public function likesBy() {
         return $this->belongsToMany('App\User', 'forum_like_posts', 'post_id', 'user_id')->withTimestamps();
     }
-    
+
     public function likeCount() {
         return $this->likesBy()->count();
     }
-    
+
     public function markLike($user_id) {
         if($this->likesBy()
             ->where('user_id', $user_id)
@@ -76,7 +76,7 @@ class Post extends BaseModel
             ->attach($user_id);
         return true;
     }
-    
+
     public function unmarkLike($user_id) {
         if($this->likesBy()
             ->where('user_id', $user_id)
@@ -115,7 +115,7 @@ class Post extends BaseModel
      */
     public function children()
     {
-        return $this->hasMany(Post::class, 'post_id')->withTrashed();
+        return $this->hasMany(Post::class, 'post_id')/*->withTrashed()*/;
     }
 
     /**

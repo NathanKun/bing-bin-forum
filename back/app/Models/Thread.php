@@ -138,9 +138,10 @@ class Thread extends BaseModel
      */
     public function posts()
     {
-        $withTrashed = config('forum.preferences.display_trashed_posts') || Gate::allows('viewTrashedPosts');
+        //$withTrashed = config('forum.preferences.display_trashed_posts') || Gate::allows('viewTrashedPosts');
         $query = $this->hasMany(Post::class);
-        return $withTrashed ? $query->withTrashed() : $query;
+        //return $withTrashed ? $query->withTrashed() : $query;
+        return $query;
     }
 
     /**

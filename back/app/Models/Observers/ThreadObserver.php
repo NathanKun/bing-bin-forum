@@ -31,6 +31,8 @@ class ThreadObserver
 
     public function deleted($thread)
     {
+      // always soft delete
+      /*
         // Delete the thread's posts
         if ($thread->deleted_at->toDateTimeString() != Carbon::now()->toDateTimeString()) {
             // The thread was force-deleted, so the posts should be too
@@ -41,7 +43,11 @@ class ThreadObserver
         } else {
             // The thread was soft-deleted, so just soft-delete its posts
             $thread->posts()->delete();
-        }
+        }*/
+
+        foreach ($thread->posts()->get() as $post) {
+            $post->delete();
+         }
 
         Stats::updateCategory($thread->category);
     }
