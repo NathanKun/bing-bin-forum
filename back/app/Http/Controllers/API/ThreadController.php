@@ -238,6 +238,7 @@ class ThreadController extends BaseController
             }])
             ->join('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
             ->where('user_id', $this->user->id)
+            ->whereNull('deleted_at')
             ->orderBy('forum_favorite_threads.created_at', 'DESC')
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
@@ -272,6 +273,7 @@ class ThreadController extends BaseController
             ->with('posts')
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
+            ->whereNull('deleted_at')
             ->latest()
             ->get()
             ->toArray();
@@ -336,6 +338,7 @@ class ThreadController extends BaseController
                         ->on('pivot1.thread_id', '=', 'forum_threads.id');
                 }
             )
+            ->whereNull('deleted_at')
             ->latest()
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
@@ -408,6 +411,10 @@ class ThreadController extends BaseController
             )
             ->first()
             ->toArray();
+            
+        if($thread['deleted_at'] !== null && $this->user->id !== "adminId") {
+          return $this->notFoundResponse();
+        }
 
         $thread['favorite'] = !is_null($thread['user_id']);
         $thread = array_except($thread, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id']);
