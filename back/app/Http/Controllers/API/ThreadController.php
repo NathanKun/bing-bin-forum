@@ -222,6 +222,7 @@ class ThreadController extends BaseController
 
         $threads = $this->model()
             ->withRequestScopes($request)
+            ->whereNull('deleted_at')
             ->with(['author' => function ($query) {
                 $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
             }])
@@ -238,7 +239,6 @@ class ThreadController extends BaseController
             }])
             ->join('forum_favorite_threads', 'forum_threads.id', '=', 'forum_favorite_threads.thread_id')
             ->where('user_id', $this->user->id)
-            ->whereNull('deleted_at')
             ->orderBy('forum_favorite_threads.created_at', 'DESC')
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
@@ -304,6 +304,7 @@ class ThreadController extends BaseController
         $forum = $request->input('forum') ? $request->input('forum') : false; // mix catg2, 3, 4
 
         $builder = $this->model()
+        ->whereNull('deleted_at')
         ->with(['author' => function ($query) {
             $query->select(['id', 'firstname', 'id_usagi', 'id_leaf']);
         }])
@@ -338,7 +339,6 @@ class ThreadController extends BaseController
                         ->on('pivot1.thread_id', '=', 'forum_threads.id');
                 }
             )
-            ->whereNull('deleted_at')
             ->latest()
             ->skip(BaseController::threadsByPage * ($page - 1))
             ->take(BaseController::threadsByPage)
@@ -346,13 +346,13 @@ class ThreadController extends BaseController
             ->toArray();
 
         // remove unwanted fields
-        foreach ($threads as &$t) {
+        /*foreach ($threads as &$t) {
             $t['favorite'] = (!is_null($t['user_id']) && $t['user_id'] === $this->user->id);
             $t['like'] = $t['posts'][0]['is_current_user_like'] === 1;
             $t['content'] = $t['posts'][0]['content'];
             $t['post_id'] = $t['posts'][0]['id'];
             $t = array_except($t, ['pinned', 'locked', 'thread_id', 'deleted_at', 'user_id', 'posts']);
-        }
+        }*/
 
         return $this->response($threads);
     }
@@ -411,7 +411,7 @@ class ThreadController extends BaseController
             )
             ->first()
             ->toArray();
-            
+
         if($thread['deleted_at'] !== null && $this->user->id !== "adminId") {
           return $this->notFoundResponse();
         }
