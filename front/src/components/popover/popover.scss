@@ -1,19 +1,19 @@
 popover {
-  #popover{
+  #popover {
     background-color: color($colors,backgroundWhite);
-    padding:0px;
+    padding: 0;
   }
 
-ion-row{
-  color: color($colors,dark);
-  font-size: 15px;
-}
-ion-icon{
-  padding-right: 1em;
-}
+  ion-row {
+    color: color($colors,dark);
+    font-size: 15px;
+  }
 
-.custom-popover.popover-content {
-  width: 130px;
-}
+  ion-icon {
+    padding-right: 1em;
+  }
 
+  .custom-popover.popover-content {
+    width: 130px;
+  }
 }

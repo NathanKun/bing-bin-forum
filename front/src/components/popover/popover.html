@@ -1,10 +1,9 @@
-
 <ion-content padding id="popover">
-  <ion-row>
+  <ion-row (click)="share($event)">
     <ion-icon name="share"></ion-icon> Partager
   </ion-row>
   <br>
-<ion-row>
+  <ion-row (click)="delete($event)">
     <ion-icon name="close"></ion-icon> Supprimer
   </ion-row>
 </ion-content>
