@@ -15,7 +15,6 @@ export class PopoverCardComponent {
   text: string;
 
   constructor() {
-    console.log('Hello PopoverCardComponent Component');
     this.text = 'Hello World';
   }
 

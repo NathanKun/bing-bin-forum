@@ -29,9 +29,6 @@ export class PopoverComponent {
   }
 
   share(event) {
-    console.log("share on click");
-    console.log(event);
-    console.log(this.threadId);
     this.close();
   }
 

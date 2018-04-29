@@ -196,7 +196,14 @@ class ThreadController extends BaseController
     public function countNotReadThreadsOfUser(Request $request)
     {
         $counter = 0;
-        $threads = $this->user->threads()->with('posts')->get()->toArray();
+        $threads = User::find($this->user->id)
+            ->threads()
+            ->with('posts')
+            ->whereNull('deleted_at')
+            ->latest()
+            ->get()
+            ->toArray();
+            
         foreach ($threads as $t) {
             foreach ($t['posts'] as $p) {
                 if ($p['read_by_op'] === 0) {

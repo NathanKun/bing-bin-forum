@@ -184,12 +184,7 @@ export class PostOpenPage extends BasepageProvider {
     var elementTop = element.getBoundingClientRect().top;
     var elementBottom = elementTop + element.clientHeight;
 
-    console.log(pageTop);
-    console.log(elementTop);
-    console.log(pageBottom);
-    console.log(elementBottom);
     if (fullyInView === true) {
-      console.log();
       return ((pageTop < elementTop) && (pageBottom > elementBottom));
     } else {
       return ((elementTop <= pageBottom) && (elementBottom >= pageTop));

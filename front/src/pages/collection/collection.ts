@@ -134,7 +134,6 @@ export class CollectionPage extends BasepageProvider {
   }
 
   toggleCollection(thread: any) {
-    console.log(thread);
     if (thread.favorite) {
       this.threadProvider.unfavorite(thread.id).subscribe();
       thread.favorite_count--;
@@ -146,7 +145,6 @@ export class CollectionPage extends BasepageProvider {
   }
 
   toggleLike(thread: any) {
-    console.log(thread);
     if (thread.like) {
       this.postProvider.unlikePost(thread.post_id).subscribe();
       thread.like_count--;
