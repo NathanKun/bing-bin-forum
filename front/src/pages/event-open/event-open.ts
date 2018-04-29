@@ -29,7 +29,6 @@ export class EventOpenPage extends BasepageProvider {
           (this.thread.posts as any[]).forEach((post, index) => {
             this.thread.posts[index].content = this.sanitizer.bypassSecurityTrustHtml(post.content);
           });
-          console.log(this.thread);
         }, () => {
 
         }, () => {
@@ -38,10 +37,5 @@ export class EventOpenPage extends BasepageProvider {
       });
 
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventOpenPage');
-  }
-
 
 }

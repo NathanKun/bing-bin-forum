@@ -14,18 +14,6 @@ export class BasepageProvider {
   public imgBaseUrl = 'https://api.bingbin.io';
 
   constructor(public l: LogProvider) {
-/*
-    let nav = app.getActiveNavs()[0];
-
-    platform.registerBackButtonAction(() => {
-      console.log("back pressed");
-      if (nav.canGoBack()) { //Can we go back?
-        nav.pop();
-        console.log("poped");
-      } else {
-        console.log("can not go back")
-      }
-    });*/
   }
 
 

@@ -17,10 +17,6 @@ export class CommentPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CommentPage');
-  }
-
   visible = false;
     toggleLike() {
      this.visible = !this.visible;
