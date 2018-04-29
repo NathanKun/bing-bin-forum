@@ -37,7 +37,7 @@
         <canvas id="canvas-user"></canvas>
       </ion-col>
       <ion-col col-8>
-        <ion-input id='leave-comment-input' limit-to="255" [(ngModel)]="commentInput" placeholder="Ajouter un commentaire" type="text"></ion-input>
+        <ion-input id='leave-comment-input' (focus)="leaveCommentInputOnSelect()" limit-to="255" [(ngModel)]="commentInput" placeholder="Ajouter un commentaire" type="text"></ion-input>
       </ion-col>
       <ion-col col-2>
         <button ion-button small float-right (click)="doComment()">Ok</button>
@@ -65,7 +65,7 @@
   </div>
 </ion-content>
 
-<ion-footer>
+<ion-footer id="post-open-footer">
   <ion-toolbar>
     <ion-row>
       <ion-col *ngIf='thread' col-4>

@@ -39,10 +39,12 @@ export class CommonProvider {
   //window['common-provider'].zone.run(() => {window['common-provider'].component.outsideBackPress();})
   public outsideBackPress() {
     if (this.nav.canGoBack()) { //Can we go back?
-      this.nav.pop();
-      console.log("poped");
+      if (this.nav.getActive().name === "PublicationPage") { // PublicationPage should pop with direction forward, or page will be blank
+        this.nav.pop({ animate: true, direction: 'forward' });
+      } else {
+        this.nav.pop();
+      }
     } else {
-      console.log("can not go back")
     }
   }
 
@@ -78,7 +80,8 @@ export class CommonProvider {
           var rabbitImg: any = new Image();
           var leafImg: any = new Image();
 
-          var on_finish = function() {
+          var on_finish = () => {
+            this.cropImageFromCanvas(ctx, canvas); // chop empty pixels of two side
             canvas.setAttribute('style', 'display: block;');
           };
 
@@ -98,7 +101,7 @@ export class CommonProvider {
 
           leafImg.onload = () => {
             ctx.drawImage(leafImg, (canvas.width - leafImg.width) / 2, canvas.height / 7);
-            const sevenVhToPx = document.documentElement.clientHeight * 0.09;
+            const sevenVhToPx = document.documentElement.clientHeight * 0.08;
             let HERMITE = new Hermite_class();
             HERMITE.resample(canvas, sevenVhToPx, sevenVhToPx, true, on_finish);
           }
@@ -125,6 +128,41 @@ export class CommonProvider {
       return this.http
         .get('../../assets/imgs/avatar/leaf_' + id + '.png', { responseType: 'blob' });
     }
+  }
+
+  private cropImageFromCanvas(ctx, canvas) {
+
+    var w = canvas.width,
+      h = canvas.height,
+      pix = { x: [], y: [] },
+      imageData = ctx.getImageData(0, 0, canvas.width, canvas.height),
+      x, y, index;
+
+    for (y = 0; y < h; y++) {
+      for (x = 0; x < w; x++) {
+        index = (y * w + x) * 4;
+        if (imageData.data[index + 3] > 0) {
+
+          pix.x.push(x);
+          pix.y.push(y);
+
+        }
+      }
+    }
+    pix.x.sort(function(a, b) { return a - b });
+    pix.y.sort(function(a, b) { return a - b });
+    var n = pix.x.length - 1;
+
+    w = pix.x[n] - pix.x[0];
+    h = pix.y[n] - pix.y[0];
+    var cut = ctx.getImageData(pix.x[0], pix.y[0], w + 2, h + 2);
+
+    canvas.width = w + 2;
+    //canvas.height = h + 2;
+    
+    // keep original clientHeight
+    // but make chopped image vertical center
+    ctx.putImageData(cut, 0, (canvas.height - (h + 2)) / 2);
   }
 
 

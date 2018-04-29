@@ -3,6 +3,34 @@ page-publication {
     background-color: color($colors,backgroundGreen);
   }
 
+  #canvas-row-label {
+    margin: 0;
+    line-height: 8vh;
+  }
+
+  #canvas-row-button {
+    height: 4vh;
+    margin: 2vh;
+  }
+
+  .canvas-card {
+    height: 10vh;
+    padding: 0;
+  }
+
+  .canvas-card > ion-grid {
+    padding: 0;
+  }
+
+  .canvas-row {
+    margin: 0;
+  }
+
+  .canvas-col {
+    padding: 1vh !important;
+    line-height: 8vh;
+  }
+
   .thread-card {
     height: 15vh;
   }

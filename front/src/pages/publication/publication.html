@@ -18,17 +18,17 @@
   </ion-row>
 
   <!-- go to new post page -->
-  <ion-card>
+  <ion-card class="canvas-card">
     <ion-grid>
-      <ion-row>
+      <ion-row class="canvas-row">
         <ion-col col-2 float-right class="canvas-col">
           <canvas id='publication-avatar'></canvas>
         </ion-col>
         <ion-col col-8 (click)="openNewPostPage()">
-          <ion-label>Dis moi quelque chose...</ion-label>
+          <ion-label id='canvas-row-label'>Dis moi quelque chose...</ion-label>
         </ion-col>
         <ion-col col-2>
-          <button ion-button small float-right (click)="openNewPostPage()">Ok</button>
+          <button id='canvas-row-button' ion-button small float-right (click)="openNewPostPage()">Ok</button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -120,7 +120,7 @@ export class PostOpenPage extends BasepageProvider {
 
             // hide all canvas before relode page
             var canvases = document.querySelectorAll("canvas");
-            for(let i = 0; i < canvases.length; i++) {
+            for (let i = 0; i < canvases.length; i++) {
               canvases.item(i).style.display = "none";
             }
 
@@ -159,6 +159,41 @@ export class PostOpenPage extends BasepageProvider {
       thread.favorite_count++;
     }
     thread.favorite = !thread.favorite;
+  }
+
+  // scroll to input after 0.5s, check if still visible in 0.25s, if not, scroll to input again
+  leaveCommentInputOnSelect() {
+    let input = document.getElementById("leave-comment-input");
+    setTimeout(() => {
+      input.scrollIntoView();
+      setTimeout(() => {
+        if (!this.isElementInView(input, true)) {
+          setTimeout(() => {
+            input.scrollIntoView();
+          }, 250);
+        }
+      }, 250);
+    }, 500);
+  }
+
+  private isElementInView(element: Element, fullyInView) {
+    let footer: Element = document.getElementById('post-open-footer');
+    var pageTop = document.body.scrollTop;
+    // total height - footer height, because footer might cover the element
+    var pageBottom = pageTop + document.body.scrollHeight - footer.clientHeight;
+    var elementTop = element.getBoundingClientRect().top;
+    var elementBottom = elementTop + element.clientHeight;
+
+    console.log(pageTop);
+    console.log(elementTop);
+    console.log(pageBottom);
+    console.log(elementBottom);
+    if (fullyInView === true) {
+      console.log();
+      return ((pageTop < elementTop) && (pageBottom > elementBottom));
+    } else {
+      return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
+    }
   }
 
 }
