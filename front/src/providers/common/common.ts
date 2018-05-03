@@ -2,7 +2,10 @@ import { Injectable, NgZone } from '@angular/core';
 import { App, NavControllerBase } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
+
 import Hermite_class from 'hermite-resize';
+
+import { PublicationPage } from '../../pages/publication/publication'
 
 @Injectable()
 export class CommonProvider {
@@ -39,7 +42,7 @@ export class CommonProvider {
   //window['common-provider'].zone.run(() => {window['common-provider'].component.outsideBackPress();})
   public outsideBackPress() {
     if (this.nav.canGoBack()) { //Can we go back?
-      if (this.nav.getActive().name === "PublicationPage") { // PublicationPage should pop with direction forward, or page will be blank
+      if (this.nav.getActive().instance instanceof PublicationPage) { // PublicationPage should pop with direction forward, or page will be blank
         this.nav.pop({ animate: true, direction: 'forward' });
       } else {
         this.nav.pop();
@@ -159,7 +162,7 @@ export class CommonProvider {
 
     canvas.width = w + 2;
     //canvas.height = h + 2;
-    
+
     // keep original clientHeight
     // but make chopped image vertical center
     ctx.putImageData(cut, 0, (canvas.height - (h + 2)) / 2);
