@@ -24,7 +24,9 @@ import { CommonProvider } from '../../providers/common/common';
   selector: 'page-publication',
   templateUrl: 'publication.html',
 })
-export class PublicationPage extends BasepageProvider {
+export class PublicationPage extends BasepageProvider implements PublicationPageBase{
+
+  type: string = 'PublicationPage';
 
   loading: any;
   threads: any = [];
@@ -143,4 +145,8 @@ export class PublicationPage extends BasepageProvider {
     let popover = this.popoverCtrl.create(PopoverComponent, {threadId: threadId, threads: this.threads});
     popover.present({ ev: myEvent });
   }
+}
+
+interface PublicationPageBase {
+    type: string;
 }

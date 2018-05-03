@@ -81,28 +81,28 @@ export class NewPostPage extends BasepageProvider {
     this.l.log("contentInput = " + this.contentInput);
     this.l.log("mainImageInput = " + this.mainImageInput);
     // limit-to directive not working perfectly, check long again
-    if (this.titleInput.length > 128) {
+    if (this.titleInput.trim().length > 128) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'La titre est trop long',
         buttons: ['OK']
       });
       alert.present();
-    } else if (this.titleInput.length < 5) {
+    } else if (this.titleInput.trim().length < 5) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'La titre est trop court',
         buttons: ['OK']
       });
       alert.present();
-    } else if (this.contentInput.length > 1024) {
+    } else if (this.contentInput.trim().length > 1024) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'La contenu est trop longue',
         buttons: ['OK']
       });
       alert.present();
-    } else if (this.contentInput.length < 10) {
+    } else if (this.contentInput.trim().length < 10) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'La contenu est trop courte',
@@ -113,8 +113,8 @@ export class NewPostPage extends BasepageProvider {
       let loading = this.loadingCtrl.create();
       loading.present();
       let location = this.locationEnabled ? this.commonProvider.getLocation() : "";
-      this.threadProvider.store(this.selectedCategory, this.titleInput,
-        this.contentInput, this.mainImageInput, location).subscribe((res) => {
+      this.threadProvider.store(this.selectedCategory, this.titleInput.trim(),
+        this.contentInput.trim(), this.mainImageInput, location).subscribe((res) => {
           loading.dismiss();
           this.doSubscribe(res, () => {
             this.navCtrl.pop();

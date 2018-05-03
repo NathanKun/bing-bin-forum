@@ -40,12 +40,17 @@ export class CollectionPage extends BasepageProvider {
   ngAfterViewInit() {
     this.cardList.changes.subscribe(
       () => {
+        let array: any = [];
         this.threads.forEach((t, index) => {
           if (index >= (10 * this.page - 10) && index < (10 * this.page)) {
-            this.commonProvider.draw(t.author.id_usagi, t.author.id_leaf,
-              <HTMLCanvasElement>document.getElementById("favorite-thread-canvas-" + t.id));
+            array.push({
+              rabbitId: t.author.id_usagi,
+              leafId: t.author.id_leaf,
+              canvas: <HTMLCanvasElement>document.getElementById("favorite-thread-canvas-" + t.id)
+            });
           }
         });
+        this.commonProvider.drawFromArray(array);
       }
     );
   }

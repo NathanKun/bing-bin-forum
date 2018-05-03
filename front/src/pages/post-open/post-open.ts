@@ -95,14 +95,14 @@ export class PostOpenPage extends BasepageProvider {
 
   doComment() {
     // limit-to directive not working perfectly, check long again
-    if (this.commentInput.length > 255) {
+    if (this.commentInput.trim().length > 255) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'Votre commentaire est trop long',
         buttons: ['OK']
       });
       alert.present();
-    } else if (this.commentInput.length < 3) {
+    } else if (this.commentInput.trim().length < 3) {
       let alert = this.alertCtrl.create({
         title: 'Oops',
         subTitle: 'Votre commentaire est trop court',
@@ -112,7 +112,7 @@ export class PostOpenPage extends BasepageProvider {
     } else {
       let loading = this.loadingCtrl.create();
       loading.present();
-      this.postProvider.store(this.thread.id, this.commentInput, 0,
+      this.postProvider.store(this.thread.id, this.commentInput.trim(), 0,
         this.commonProvider.userId).subscribe((res) => {
           loading.dismiss();
           this.doSubscribe(res, () => {
