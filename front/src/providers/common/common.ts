@@ -104,7 +104,6 @@ export class CommonProvider {
       }
     });
     if(foundCache) {
-      console.log('cache')
       return Observable.of(canvas);
     }
 
