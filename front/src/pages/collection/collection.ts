@@ -12,6 +12,7 @@ import { PostProvider } from '../../providers/post/post';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
 import { CommonProvider } from '../../providers/common/common';
+import { LoaderProvider } from '../../providers/loader/loader';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class CollectionPage extends BasepageProvider {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private postProvider: PostProvider,
-    public popoverCtrl: PopoverController, public loadingCtrl: LoadingController
+    public popoverCtrl: PopoverController, public loadingCtrl: LoadingController,
+    private loaderProvider: LoaderProvider
   ) {
 
     super(l);
@@ -58,7 +60,7 @@ export class CollectionPage extends BasepageProvider {
   // call each time before enter to this page
   ionViewWillEnter() {
     if (this.page === 1) {
-      this.loading = this.loadingCtrl.create();
+      this.loading = this.loaderProvider.getLoader(this.loadingCtrl);
       this.loading.present();
 
       this.loadPage(() => this.loading.dismiss());

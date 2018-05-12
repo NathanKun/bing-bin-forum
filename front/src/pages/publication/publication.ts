@@ -13,12 +13,7 @@ import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
 import { CommonProvider } from '../../providers/common/common';
-/**
- * Generated class for the PublicationPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LoaderProvider } from '../../providers/loader/loader';
 
 @Component({
   selector: 'page-publication',
@@ -42,7 +37,8 @@ export class PublicationPage extends BasepageProvider implements PublicationPage
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public loadingCtrl: LoadingController, public alertCtrl: AlertController,
     public popoverCtrl: PopoverController, private commonProvider: CommonProvider,
-    public l: LogProvider, private threadProvider: ThreadProvider) {
+    public l: LogProvider, private threadProvider: ThreadProvider,
+    private loaderProvider: LoaderProvider) {
 
     super(l);
 
@@ -54,7 +50,7 @@ export class PublicationPage extends BasepageProvider implements PublicationPage
 
   ionViewWillEnter() {
     if (this.page === 1) {
-      this.loading = this.loadingCtrl.create();
+      this.loading = this.loaderProvider.getLoader(this.loadingCtrl);
       this.loading.present();
 
       this.loadPage(() => this.loading.dismiss());

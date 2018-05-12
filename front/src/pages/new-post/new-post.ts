@@ -7,6 +7,7 @@ import { ThreadProvider } from '../../providers/thread/thread';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
 import { CommonProvider } from '../../providers/common/common';
+import { LoaderProvider } from '../../providers/loader/loader';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class NewPostPage extends BasepageProvider {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private alertCtrl: AlertController,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController, private loaderProvider: LoaderProvider) {
 
     super(l);
 
@@ -110,7 +111,7 @@ export class NewPostPage extends BasepageProvider {
       });
       alert.present();
     } else {
-      let loading = this.loadingCtrl.create();
+      let loading = this.loaderProvider.getLoader(this.loadingCtrl);
       loading.present();
       let location = this.locationEnabled ? this.commonProvider.getLocation() : "";
       this.threadProvider.store(this.selectedCategory, this.titleInput.trim(),

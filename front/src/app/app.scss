@@ -14,7 +14,86 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+// loader spinning animation
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% {  transform: rotate(359deg); }
+}
+
+#loader {
+    animation: spin 1s linear infinite;
+    max-width: 15vw;
+    max-height: 15vh;
+}
+
 ion-img{
   background: transparent;
   contain: none;
+}
+
+div {
+  font-family: "Futura" !important;
+  font-weight: 400 !important;
+}
+
+h1 {
+  font-family: "Futura" !important;
+  font-weight: 600 !important;
+}
+
+p {
+  color: #fff;
+}
+
+button,
+h2,
+h3 {
+  font-family: "Futura" !important;
+  font-weight: 500 !important; //color: color($colors,primary);
+}
+
+ion-item {
+  border-radius: 10px;
+}
+
+ion-title {
+  color: color($colors, dark);
+}
+
+ion-img {
+  background: transparent;
+}
+
+ion-input {
+  color: color($colors, dark);
+}
+
+.canvas-col {
+  padding: 0 !important;
+}
+
+.name-location {
+  margin: 0;
+  height: 50%;
+  padding: 0.5vh 0 0 0.8em;
+  vertical-align: middle;
+}
+
+canvas {
+  margin: 0 auto;
+  display: none;
+  /* disable antialiasing */
+  image-rendering: optimizeSpeed;
+  /* Older versions of FF          */
+  image-rendering: -moz-crisp-edges;
+  /* FF 6.0+                       */
+  image-rendering: -webkit-optimize-contrast;
+  /* Safari                        */
+  image-rendering: -o-crisp-edges;
+  /* OS X & Windows Opera (12.02+) */
+  image-rendering: pixelated;
+  /* Awesome future-browsers       */
+  -ms-interpolation-mode: nearest-neighbor;
+  /* IE                            */
 }

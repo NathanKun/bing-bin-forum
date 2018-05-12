@@ -31,6 +31,7 @@ import { BingBinHttpProvider } from '../providers/bing-bin-http/bing-bin-http';
 import { LogProvider } from '../providers/log/log';
 import { BasepageProvider } from '../providers/basepage/basepage';
 import { CommonProvider } from '../providers/common/common';
+import { LoaderProvider } from '../providers/loader/loader';
 
 
 @NgModule({
@@ -82,7 +83,8 @@ import { CommonProvider } from '../providers/common/common';
     BingBinHttpProvider,
     LogProvider,
     BasepageProvider,
-    CommonProvider
+    CommonProvider,
+    LoaderProvider
   ]
 })
 export class AppModule {}

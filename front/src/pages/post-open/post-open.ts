@@ -7,6 +7,7 @@ import { PostProvider } from '../../providers/post/post';
 import { LogProvider } from '../../providers/log/log';
 import { BasepageProvider } from '../../providers/basepage/basepage';
 import { CommonProvider } from '../../providers/common/common';
+import { LoaderProvider } from '../../providers/loader/loader';
 
 /**
  * Generated class for the PostOpenPage page.
@@ -29,7 +30,8 @@ export class PostOpenPage extends BasepageProvider {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public l: LogProvider, private threadProvider: ThreadProvider,
     private commonProvider: CommonProvider, private postProvider: PostProvider,
-    public loadingCtrl: LoadingController, private alertCtrl: AlertController
+    public loadingCtrl: LoadingController, private alertCtrl: AlertController,
+    private loaderProvider: LoaderProvider
   ) {
 
     super(l);
@@ -39,7 +41,7 @@ export class PostOpenPage extends BasepageProvider {
 
   private loadPage() {
 
-    this.loading = this.loadingCtrl.create();
+    this.loading = this.loaderProvider.getLoader(this.loadingCtrl);
     this.loading.present();
 
     this.threadProvider.getThread(this.navParams.get('threadId')).subscribe((res) => {
