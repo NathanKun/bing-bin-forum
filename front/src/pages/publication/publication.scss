@@ -13,6 +13,14 @@ page-publication {
     margin: 2vh;
   }
 
+  #title-col {
+    padding: 5px;
+  }
+
+  #title-row {
+    margin-top: 0;
+  }
+
   .canvas-card {
     height: 10vh;
     padding: 0;
@@ -91,10 +99,6 @@ page-publication {
     font-size: 24px;
     cursor: pointer;
     margin-top: -.2em;
-  }
-
-  .title {
-    padding-bottom: 13em;
   }
 
   ion-card {

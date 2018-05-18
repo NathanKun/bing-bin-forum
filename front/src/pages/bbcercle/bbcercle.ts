@@ -136,6 +136,14 @@ export class BbcerclePage extends BasepageProvider {
     }
   }
 
+  swipeEvent(e) {
+    if (e.direction == 2) {
+      this.openCollectionPage();
+    } else if (e.direction == 4) {
+      this.openPublicationPage();
+    }
+  }
+
   openPostPage(threadId: number) {
     this.navCtrl.push(PostOpenPage, { threadId: threadId });
   }

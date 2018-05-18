@@ -19,7 +19,7 @@ import { LoaderProvider } from '../../providers/loader/loader';
   selector: 'page-publication',
   templateUrl: 'publication.html',
 })
-export class PublicationPage extends BasepageProvider implements PublicationPageBase{
+export class PublicationPage extends BasepageProvider implements PublicationPageBase {
 
   type: string = 'PublicationPage';
 
@@ -124,6 +124,11 @@ export class PublicationPage extends BasepageProvider implements PublicationPage
   }
 
 
+  swipeEvent(e) {
+    if (e.direction == 2) {
+      this.goback();
+    }
+  }
 
   goback() {
     this.navCtrl.pop({ animate: true, direction: 'forward' });
@@ -138,11 +143,11 @@ export class PublicationPage extends BasepageProvider implements PublicationPage
   }
 
   presentPopover(myEvent, threadId: number) {
-    let popover = this.popoverCtrl.create(PopoverComponent, {threadId: threadId, threads: this.threads});
+    let popover = this.popoverCtrl.create(PopoverComponent, { threadId: threadId, threads: this.threads });
     popover.present({ ev: myEvent });
   }
 }
 
 interface PublicationPageBase {
-    type: string;
+  type: string;
 }

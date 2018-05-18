@@ -129,6 +129,12 @@ export class CollectionPage extends BasepageProvider {
     }
   }
 
+  swipeEvent(e) {
+    if (e.direction == 4) {
+      this.navCtrl.pop();
+    }
+  }
+
   openPostPage(threadId: number) {
     this.navCtrl.push(PostOpenPage, { threadId: threadId });
   }

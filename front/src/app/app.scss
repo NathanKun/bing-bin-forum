@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,20 +12,29 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-
 // loader spinning animation
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% {  transform: rotate(359deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+ion-card {
+  margin: 20px 4px !important;
+  width: calc(100% - 8px) !important;
 }
 
 #loader {
-    animation: spin 1s linear infinite;
-    max-width: 15vw;
-    max-height: 15vh;
+  animation: spin 1s linear infinite;
+  max-width: 15vw;
+  max-height: 15vh;
 }
 
-ion-img{
+ion-img {
   background: transparent;
   contain: none;
 }
