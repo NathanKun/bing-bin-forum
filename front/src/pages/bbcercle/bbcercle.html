@@ -72,13 +72,15 @@
     </ion-infinite-scroll>
     <div *ngIf="page === 0">Plus de données disponibles.</div>
 
-    <ion-fab right bottom #fab>
-      <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
-      <ion-fab-list side="top">
-        <button ion-fab color="backgroundWhite" (click)="openSearchPage()"><ion-icon name="search" color = "primary"></ion-icon></button>
-        <button ion-fab color="backgroundWhite" (click)="openNewPostPage()"><ion-icon name="add"  color = "primary"></ion-icon></button>
-      </ion-fab-list>
-    </ion-fab>
-
   </div>
+  
+  <ion-fab right bottom #fab>
+    <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="backgroundWhite" (click)="openSearchPage()"><ion-icon name="search" color = "primary"></ion-icon></button>
+      <button ion-fab color="backgroundWhite" (click)="openNewPostPage()"><ion-icon name="add"  color = "primary"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
+
 </ion-content>
