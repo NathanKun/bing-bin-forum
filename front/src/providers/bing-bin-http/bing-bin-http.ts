@@ -12,14 +12,16 @@ export class BingBinHttpProvider {
 
   private options;
 
-  public baseUrl: string = 'https://api.bingbin.io/api/';
+  public baseUrl: string = 'https://104.224.144.184/api/';
   //public baseUrl: string = 'http://localhost:8000/api/';
 
   constructor(private http: HttpClient) { }
 
   public setToken(token: string) {
     this.options = {
-      headers: new HttpHeaders({ 'Authorization': 'BingBinToken ' + token })
+      headers: new HttpHeaders({
+        'Authorization': 'BingBinToken ' + token,
+        'Host': 'api.bingbin.io'})
     };
   }
 
