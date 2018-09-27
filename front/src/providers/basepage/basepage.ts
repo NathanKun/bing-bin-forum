@@ -11,6 +11,11 @@ import { LogProvider } from '../../providers/log/log';
 @Injectable()
 export class BasepageProvider {
 
+  /*
+   * TODO:
+   * Try this
+   * https://stackoverflow.com/questions/46563607/angular-4-image-async-with-bearer-headers
+   */
   public imgBaseUrl = 'https://api.bingbin.io';
 
   constructor(public l: LogProvider) {
